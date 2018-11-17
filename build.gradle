@@ -1,0 +1,16 @@
+plugins {
+	id 'java'
+	id 'application'
+}
+
+repositories {
+	jcenter()
+	maven { url 'https://jitpack.io' }
+}
+
+mainClassName = 'com.fwcd.circuitbuilder.CircuitBuilderMain'
+
+dependencies {
+	implementation 'com.github.fwcd:Fructose:ad1c3e9518af6d8a4f29e899e3e8ae01b34ac8a1'
+	testImplementation 'junit:junit:4.12'
+}
