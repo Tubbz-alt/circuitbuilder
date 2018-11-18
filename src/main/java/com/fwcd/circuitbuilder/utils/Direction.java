@@ -18,18 +18,11 @@ public enum Direction {
 	
 	public Direction invert() {
 		switch (this) {
-		
-		case LEFT:
-			return RIGHT;
-		case UP:
-			return DOWN;
-		case RIGHT:
-			return LEFT;
-		case DOWN:
-			return UP;
-		default:
-			throw new RuntimeException("Invalid direction.");
-		
+			case LEFT: return RIGHT;
+			case UP: return DOWN;
+			case RIGHT: return LEFT;
+			case DOWN: return UP;
+			default: throw new RuntimeException("Invalid direction.");
 		}
 	}
 	
@@ -40,21 +33,11 @@ public enum Direction {
 		int halfSize = CircuitItem.UNIT_SIZE / 2;
 		
 		switch (this) {
-
-		case LEFT:
-			transform.rotate(Math.toRadians(-90), halfSize, halfSize);
-			break;
-		case UP:
-			break;
-		case RIGHT:
-			transform.rotate(Math.toRadians(90), halfSize, halfSize);
-			break;
-		case DOWN:
-			transform.rotate(Math.toRadians(180), halfSize, halfSize);
-			break;
-		default:
-			throw new RuntimeException("Invalid direction.");
-		
+			case LEFT: transform.rotate(Math.toRadians(-90), halfSize, halfSize); break;
+			case UP: break;
+			case RIGHT: transform.rotate(Math.toRadians(90), halfSize, halfSize); break;
+			case DOWN: transform.rotate(Math.toRadians(180), halfSize, halfSize); break;
+			default: throw new RuntimeException("Invalid direction.");
 		}
 		
 		return transform;

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.fwcd.circuitbuilder.core.CircuitCell;
 import com.fwcd.circuitbuilder.core.CircuitGrid;
+import com.fwcd.circuitbuilder.model.cable.CableColor;
 import com.fwcd.circuitbuilder.utils.RelativePos;
 import com.fwcd.fructose.Option;
 

@@ -10,12 +10,12 @@ import javax.swing.JToolBar;
 
 import com.fwcd.circuitbuilder.items.CircuitItem;
 import com.fwcd.circuitbuilder.items.components.Cable;
-import com.fwcd.circuitbuilder.items.components.CableColor;
 import com.fwcd.circuitbuilder.items.components.Inverter;
 import com.fwcd.circuitbuilder.items.components.Lamp;
 import com.fwcd.circuitbuilder.items.components.Lever;
 import com.fwcd.circuitbuilder.items.components.TickingClock;
 import com.fwcd.circuitbuilder.items.nestedcircuits.predefined.XORCircuit;
+import com.fwcd.circuitbuilder.model.cable.CableColor;
 import com.fwcd.circuitbuilder.tools.Screwdriver;
 import com.fwcd.fructose.swing.DrawGraphicsButton;
 import com.fwcd.fructose.swing.Renderable;
@@ -56,7 +56,7 @@ public class CircuitItemPanel implements View {
 		
 		for (CableColor color : CableColor.values()) {
 			Renderable circle = (g2d, canvasSize) -> {
-				g2d.setColor(color.getAWTColor(255));
+				g2d.setColor(color.getColor(255).asAWTColor());
 				
 				int w = (int) canvasSize.getWidth();
 				int h = (int) canvasSize.getHeight();

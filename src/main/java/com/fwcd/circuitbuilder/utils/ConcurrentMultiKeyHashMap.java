@@ -13,12 +13,11 @@ public class ConcurrentMultiKeyHashMap<K, V> implements MultiKeyMap<K, V> {
 	private final Map<K, Set<K>> keyLinks = new ConcurrentHashMap<>();
 	private final Map<K, V> subKeyMap = new ConcurrentHashMap<>();
 	
-	@SafeVarargs
 	@Override
-	public final void put(K mainKey, V value, K... subKeys) {
+	public final void put(K mainKey, V value, Collection<K> subKeys) {
 		mainKeyMap.put(mainKey, value);
 		
-		if (subKeys.length > 0) {
+		if (subKeys.size() > 0) {
 			keyLinks.putIfAbsent(mainKey, new HashSet<>());
 			Set<K> subKeySet = keyLinks.get(mainKey);
 			

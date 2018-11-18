@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -117,7 +118,7 @@ public class CircuitGrid implements View, Renderable, Grid {
 	/**
 	 * Removes empty cells from the registered cells.<br><br>
 	 * 
-	 * (The would be re-initialized once they are needed)
+	 * (They will be re-initialized once they are needed again)
 	 */
 	public void cleanCells() {
 		for (RelativePos key : cells.keySet()) {
@@ -171,7 +172,7 @@ public class CircuitGrid implements View, Renderable, Grid {
 			put(output, outputPos);
 		}
 		
-		nestedCircuits.put(pos, component, component.getOccupiedPositions(pos));
+		nestedCircuits.put(pos, component, Arrays.asList(component.getOccupiedPositions(pos)));
 	}
 	
 	public void put(CircuitComponent component, RelativePos pos) {

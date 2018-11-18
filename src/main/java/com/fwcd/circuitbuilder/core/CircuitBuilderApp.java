@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
 import com.fwcd.circuitbuilder.items.CircuitItem;
-import com.fwcd.circuitbuilder.items.components.CableColor;
+import com.fwcd.circuitbuilder.model.cable.CableColor;
 import com.fwcd.fructose.Option;
 
 public class CircuitBuilderApp {

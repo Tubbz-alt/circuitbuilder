@@ -3,7 +3,6 @@ package com.fwcd.circuitbuilder.core;
 import java.util.Iterator;
 
 import com.fwcd.circuitbuilder.items.components.Cable;
-import com.fwcd.circuitbuilder.items.components.CableColorEqualityChecker;
 import com.fwcd.circuitbuilder.items.components.CircuitComponent;
 import com.fwcd.circuitbuilder.utils.Direction;
 import com.fwcd.circuitbuilder.utils.RelativePos;
@@ -15,7 +14,13 @@ public class CircuitCell implements Iterable<CircuitComponent> {
 	private final CircuitGrid grid;
 	private final RelativePos pos;
 	
-	private SetStack<CircuitComponent> components = new ArraySetStack<>(new CableColorEqualityChecker());
+	private SetStack<CircuitComponent> components = new ArraySetStack<>((a, b) -> {
+		if ((a instanceof Cable) && (b instanceof Cable)) {
+			return ((Cable) a).getColor().equals(((Cable) b).getColor());
+		} else {
+			return false;
+		}
+	});
 	
 	public CircuitCell(CircuitGrid grid, RelativePos pos) {
 		this.grid = grid;

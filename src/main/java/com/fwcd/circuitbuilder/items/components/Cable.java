@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.swing.Icon;
 
 import com.fwcd.circuitbuilder.core.CircuitCell;
+import com.fwcd.circuitbuilder.model.cable.CableColor;
 import com.fwcd.circuitbuilder.utils.AbsolutePos;
 import com.fwcd.circuitbuilder.utils.Direction;
 import com.fwcd.fructose.Option;
@@ -60,7 +61,7 @@ public class Cable extends BasicComponent {
 
 		int colorStrength = isPowered() ? 255 : 50;
 		
-		g2d.setColor(color.getAWTColor(colorStrength)); // Signal based color
+		g2d.setColor(color.getColor(colorStrength).asAWTColor()); // Signal based color
 		g2d.fillRect(pos.getX() + subSize, pos.getY() + subSize, subSize, subSize);
 		
 		for (Direction connection : connectedDirs) {

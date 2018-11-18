@@ -13,8 +13,7 @@ import java.util.function.BiConsumer;
  *
  */
 public interface MultiKeyMap<K, V> {
-	@SuppressWarnings("unchecked")
-	void put(K mainKey, V value, K... subKeys);
+	void put(K mainKey, V value, Collection<K> subKeys);
 	
 	/**
 	 * Fetches the set of all main keys.
