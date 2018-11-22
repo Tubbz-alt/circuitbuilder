@@ -12,5 +12,6 @@ mainClassName = 'com.fwcd.circuitbuilder.CircuitBuilderMain'
 
 dependencies {
 	implementation 'com.github.fwcd:Fructose:ad1c3e9518af6d8a4f29e899e3e8ae01b34ac8a1'
+	implementation 'org.scilab.forge:jlatexmath:1.0.7'
 	testImplementation 'junit:junit:4.12'
 }
