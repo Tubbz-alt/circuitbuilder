@@ -6,6 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import com.fwcd.circuitbuilder.model.CircuitBuilderModel;
+import com.fwcd.circuitbuilder.utils.BackgroundLooper;
 import com.fwcd.fructose.swing.View;
 
 /**
@@ -14,6 +15,7 @@ import com.fwcd.fructose.swing.View;
  */
 public class CircuitBuilderView implements View {
 	private final JPanel component;
+	private final int tickDelay = 1000 / 60; // Run with 60 TPS
 	
 	private CircuitToolsPanel itemPanel;
 	private CircuitGridView grid;
@@ -29,6 +31,8 @@ public class CircuitBuilderView implements View {
 		
 		grid = new CircuitGridView(model.getGrid());
 		component.add(grid.getComponent(), BorderLayout.CENTER);
+		
+		new BackgroundLooper("Circuit engine", tickDelay, model.getEngine()::tick).start();
 	}
 	
 	@Override
