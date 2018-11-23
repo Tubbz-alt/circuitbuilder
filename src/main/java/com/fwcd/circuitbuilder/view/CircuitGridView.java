@@ -40,6 +40,7 @@ public class CircuitGridView implements View {
 		this.context = context;
 		component = new RenderPanel(this::render);
 		setupMouseHandler();
+		model.getChangeListeners().add(component::repaint);
 	}
 	
 	private void setupMouseHandler() {
@@ -107,7 +108,7 @@ public class CircuitGridView implements View {
 		
 		for (RelativePos cellPos : model.getCells().keySet()) {
 			for (Circuit1x1ComponentModel circuitComponent : model.getCells().get(cellPos).getComponents()) {
-				if (circuitComponent.isAtomic()) {
+				if (circuitComponent != null && circuitComponent.isAtomic()) {
 					renderItem(circuitComponent, g2d, cellPos);
 				}
 			}

@@ -15,7 +15,7 @@ import com.fwcd.fructose.swing.View;
  */
 public class CircuitBuilderView implements View {
 	private final JPanel component;
-	private final int tickDelay = 1000 / 60; // Run with 60 TPS
+	private final int tickDelay = 500; // ms delay (= 2 TPS)
 	
 	private CircuitToolsPanel itemPanel;
 	private CircuitGridView grid;

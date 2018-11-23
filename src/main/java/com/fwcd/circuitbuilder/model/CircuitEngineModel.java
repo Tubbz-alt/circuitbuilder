@@ -24,6 +24,7 @@ public class CircuitEngineModel {
 	}
 	
 	public void tick() {
+		cableNetworks.clear();
 		Set<RelativePos> networkCoverage = new HashSet<>();
 		
 		// Pre ticking - Grouping of cables using networks
@@ -36,14 +37,19 @@ public class CircuitEngineModel {
 					CableNetwork network = new CableNetwork();
 					network.build(pos, grid);
 					cableNetworks.add(network);
+					((CableModel) component).setNetworkStatus(network.getStatus());
 				}
 			}
 		});
 		
+		for (CableNetwork network : cableNetworks) {
+			network.updateStatus(grid);
+		}
+		
 		// Main ticking
 		
 		grid.forEach1x1((cell, component) -> component.tick(grid.getNeighbors(cell.getPos())));
-		grid.getLargeComponents().values().forEach(nestedCircuit -> nestedCircuit.tick());
+		grid.getLargeComponents().values().forEach(largeComponent -> largeComponent.tick());
 		
 		// Updating
 		

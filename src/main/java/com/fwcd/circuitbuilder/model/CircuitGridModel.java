@@ -104,11 +104,11 @@ public class CircuitGridModel {
 	
 	public void forEach1x1(BiConsumer<CircuitCellModel, Circuit1x1ComponentModel> consumer) {
 		for (CircuitCellModel cell : cells.values()) {
-			cell.getComponent().forEach(component -> consumer.accept(cell, component));
+			cell.getComponents().forEach(component -> consumer.accept(cell, component));
 		}
 	}
 	
-	ListenerList getChangeListeners() { return changeListeners; }
+	public ListenerList getChangeListeners() { return changeListeners; }
 	
 	/**
 	 * A read-only view of all large components on this grid.

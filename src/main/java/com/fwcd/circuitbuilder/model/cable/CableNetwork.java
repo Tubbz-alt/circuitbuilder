@@ -41,7 +41,11 @@ public class CableNetwork {
 		return cableSet.contains(cable);
 	}
 	
-	public boolean isPowered(CircuitGridModel grid) {
+	public void updateStatus(CircuitGridModel grid) {
+		status.setPowered(isPowered(grid));
+	}
+	
+	private boolean isPowered(CircuitGridModel grid) {
 		for (RelativePos cablePos : cables.keySet()) {
 			CableModel cable = cables.get(cablePos);
 			
