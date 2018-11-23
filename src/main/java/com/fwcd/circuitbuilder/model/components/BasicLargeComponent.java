@@ -50,11 +50,12 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 		int inputsCount = inputs.size();
 		int outputsCount = outputs.size();
 		boolean[] boolInputs = new boolean[inputsCount];
-		boolean[] boolOutputs = new boolean[outputsCount];
 		
 		for (int i = 0; i < inputsCount; i++) {
 			boolInputs[i] = inputs.get(i).isPowered();
 		}
+		
+		boolean[] boolOutputs = compute(boolInputs);
 		
 		if (boolOutputs.length != outputsCount) {
 			throw new RuntimeException("compute() can't return more output booleans than there are outputs in this nested circuit!");
