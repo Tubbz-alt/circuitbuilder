@@ -107,9 +107,12 @@ public class CircuitGridView implements View {
 		}
 		
 		for (RelativePos cellPos : model.getCells().keySet()) {
-			for (Circuit1x1ComponentModel circuitComponent : model.getCells().get(cellPos).getComponents()) {
-				if (circuitComponent != null && circuitComponent.isAtomic()) {
-					renderItem(circuitComponent, g2d, cellPos);
+			CircuitCellModel cell = model.getCells().get(cellPos);
+			if (cell != null) {
+				for (Circuit1x1ComponentModel circuitComponent : cell.getComponents()) {
+					if (circuitComponent != null && circuitComponent.isAtomic()) {
+						renderItem(circuitComponent, g2d, cellPos);
+					}
 				}
 			}
 		}
