@@ -10,10 +10,11 @@ import javax.swing.JPanel;
 
 import com.fwcd.circuitbuilder.model.CircuitCellModel;
 import com.fwcd.circuitbuilder.model.CircuitGridModel;
+import com.fwcd.circuitbuilder.model.CircuitItemModel;
 import com.fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
 import com.fwcd.circuitbuilder.utils.AbsolutePos;
 import com.fwcd.circuitbuilder.utils.RelativePos;
-import com.fwcd.circuitbuilder.view.components.CircuitItemView;
+import com.fwcd.circuitbuilder.view.components.CircuitItemRenderer;
 import com.fwcd.circuitbuilder.view.tools.CircuitTool;
 import com.fwcd.fructose.Option;
 import com.fwcd.fructose.swing.MouseHandler;
@@ -91,6 +92,10 @@ public class CircuitGridView implements View {
 		}.connect(component);
 	}
 	
+	private void renderItem(CircuitItemModel item, Graphics2D g2d, RelativePos pos) {
+		item.accept(new CircuitItemRenderer(g2d, coordMap.toAbsolutePos(pos), unitSize));
+	}
+	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		g2d.setColor(Color.GRAY);
 		
@@ -101,15 +106,15 @@ public class CircuitGridView implements View {
 		}
 		
 		for (RelativePos cellPos : model.getCells().keySet()) {
-			for (Circuit1x1ComponentModel component : model.getCells().get(cellPos).getComponents()) {
-				if (component.isAtomic()) {
-					new CircuitItemView(component).render(g2d, coordMap.toAbsolutePos(cellPos));
+			for (Circuit1x1ComponentModel circuitComponent : model.getCells().get(cellPos).getComponents()) {
+				if (circuitComponent.isAtomic()) {
+					renderItem(circuitComponent, g2d, cellPos);
 				}
 			}
 		}
 		
 		model.getLargeComponents().forEachMainKey((pos, largeComponent) -> {
-			new CircuitItemView(largeComponent).render(g2d, coordMap.toAbsolutePos(pos));
+			renderItem(largeComponent, g2d, pos);
 		});
 		
 		Option<CircuitTool> selectedTool = context.getSelectedTool().get();

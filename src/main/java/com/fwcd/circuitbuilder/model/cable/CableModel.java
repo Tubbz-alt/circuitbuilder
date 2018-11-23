@@ -50,6 +50,11 @@ public class CableModel implements Circuit1x1ComponentModel {
 		nowPowered = soonPowered;
 	}
 	
+	/**
+	 * Fetches the color of this cable. It is always safe
+	 * to unwrap the returned {@link Option} if this
+	 * method is called on CableModel.
+	 */
 	@Override
 	public Option<CableColor> getColor() { return Option.of(color); }
 	
@@ -91,6 +96,8 @@ public class CableModel implements Circuit1x1ComponentModel {
 		
 		return connectedToEmitter;
 	}
+	
+	public Set<? extends Direction> getConnections() { return connections; }
 	
 	@Override
 	public void accept(CircuitItemVisitor visitor) { visitor.visitCable(this); }

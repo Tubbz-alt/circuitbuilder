@@ -1,8 +1,8 @@
 package com.fwcd.circuitbuilder.model;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 import com.fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
@@ -19,7 +19,7 @@ import com.fwcd.fructose.ListenerList;
  * A 2D-grid of circuit components.
  */
 public class CircuitGridModel {
-	private final Map<RelativePos, CircuitCellModel> cells = new HashMap<>();
+	private final Map<RelativePos, CircuitCellModel> cells = new ConcurrentHashMap<>();
 	private final MultiKeyMap<RelativePos, CircuitLargeComponentModel> largeComponents = new ConcurrentMultiKeyHashMap<>();
 	private final ListenerList changeListeners = new ListenerList();
 	
