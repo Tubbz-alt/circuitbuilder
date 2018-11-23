@@ -1,10 +1,12 @@
 package com.fwcd.circuitbuilder.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.fwcd.circuitbuilder.model.cable.CableColor;
 import com.fwcd.circuitbuilder.model.cable.CableModel;
 import com.fwcd.circuitbuilder.model.cable.CableNetwork;
 import com.fwcd.circuitbuilder.utils.RelativePos;
@@ -14,6 +16,7 @@ import com.fwcd.circuitbuilder.utils.RelativePos;
  * on a circuit grid.
  */
 public class CircuitEngineModel {
+	private static final boolean DEBUG_NETWORKS = false;
 	private final CircuitGridModel grid;
 	private final List<CableNetwork> cableNetworks = new ArrayList<>();
 	
@@ -25,25 +28,43 @@ public class CircuitEngineModel {
 	
 	public void tick() {
 		cableNetworks.clear();
-		Set<RelativePos> networkCoverage = new HashSet<>();
+		Map<CableColor, Map<RelativePos, CableNetwork>> networkCoverage = new HashMap<>();
 		
 		// Pre ticking - Grouping of cables using networks
 		
 		grid.forEach1x1((cell, component) -> {
 			if (component instanceof CableModel) {
+				CableModel cable = (CableModel) component;
 				RelativePos pos = cell.getPos();
+				CableColor color = cable.getColor().unwrap();
 				
-				if (!networkCoverage.contains(pos)) {
-					CableNetwork network = new CableNetwork();
+				networkCoverage.putIfAbsent(color, new HashMap<>());
+				Map<RelativePos, CableNetwork> colorCoverage = networkCoverage.get(color);
+				CableNetwork network;
+				
+				if (colorCoverage.containsKey(pos)) {
+					network = colorCoverage.get(pos);
+				} else {
+					network = new CableNetwork();
 					network.build(pos, grid);
+					
+					for (RelativePos networkPos : network.getPositions()) {
+						colorCoverage.put(networkPos, network);
+					}
+					
 					cableNetworks.add(network);
-					((CableModel) component).setNetworkStatus(network.getStatus());
 				}
+				cable.setNetworkStatus(network.getStatus());
 			}
 		});
 		
 		for (CableNetwork network : cableNetworks) {
 			network.updateStatus(grid);
+		}
+		
+		if (DEBUG_NETWORKS) {
+			// TODO: Logging
+			System.out.println("Networks: " + cableNetworks.stream().map(it -> "Network " + it.getPositions() + " >> " + it.getStatus().isPowered()).collect(Collectors.toList()));
 		}
 		
 		// Main ticking

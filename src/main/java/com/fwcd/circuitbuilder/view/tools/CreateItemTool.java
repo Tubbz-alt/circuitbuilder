@@ -19,7 +19,7 @@ public class CreateItemTool<T extends CircuitItemModel> implements CircuitTool {
 	public CreateItemTool(Supplier<T> factory) {
 		this.factory = Objects.requireNonNull(factory, "Tried to construct a CreateItemTool with a 'null' factory");
 		sample = factory.get();
-		sample.accept(new CircuitItemImageProvider(newImg -> image = Option.of(newImg)));
+		sample.accept(new CircuitItemImageProvider(newImg -> image = Option.of(newImg), true /* alwaysUsePoweredImage */));
 	}
 	
 	@Override

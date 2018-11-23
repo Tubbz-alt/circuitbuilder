@@ -74,5 +74,7 @@ public class CableNetwork {
 		}
 	}
 	
+	public Set<? extends RelativePos> getPositions() { return cables.keySet(); }
+	
 	public CableNetworkStatus getStatus() { return status; }
 }

@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import com.fwcd.circuitbuilder.model.CircuitItemVisitor;
 import com.fwcd.circuitbuilder.model.cable.CableModel;
+import com.fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
 import com.fwcd.circuitbuilder.model.components.InputComponentModel;
 import com.fwcd.circuitbuilder.model.components.InverterModel;
 import com.fwcd.circuitbuilder.model.components.LampModel;
@@ -32,9 +33,15 @@ public class CircuitItemImageProvider implements CircuitItemVisitor {
 	private static final Image OUT_ICON = new ResourceImage("/outIcon.png").get();
 	private static final Image XOR_IMAGE = new ResourceImage("/xorImage.png").get();
 	private final Consumer<Image> consumer;
+	private final boolean alwaysUsePoweredImage;
+	
+	public CircuitItemImageProvider(Consumer<Image> consumer, boolean alwaysUsePoweredImage) {
+		this.consumer = consumer;
+		this.alwaysUsePoweredImage = alwaysUsePoweredImage;
+	}
 	
 	public CircuitItemImageProvider(Consumer<Image> consumer) {
-		this.consumer = consumer;
+		this(consumer, false);
 	}
 	
 	@Override
@@ -59,21 +66,25 @@ public class CircuitItemImageProvider implements CircuitItemVisitor {
 	
 	@Override
 	public void visitLamp(LampModel lamp) {
-		consumer.accept(lamp.isPowered() ? LAMP_ON : LAMP_OFF);
+		consumer.accept(isPowered(lamp) ? LAMP_ON : LAMP_OFF);
 	}
 	
 	@Override
 	public void visitInverter(InverterModel inverter) {
-		consumer.accept(inverter.isPowered() ? INVERTER_ON : INVERTER_OFF);
+		consumer.accept(isPowered(inverter) ? INVERTER_ON : INVERTER_OFF);
 	}
 	
 	@Override
 	public void visitLever(LeverModel lever) {
-		consumer.accept(lever.isPowered() ? LEVER_ON : LEVER_OFF);
+		consumer.accept(isPowered(lever) ? LEVER_ON : LEVER_OFF);
 	}
 	
 	@Override
 	public void visitXor(XorModel xor) {
 		consumer.accept(XOR_IMAGE);
+	}
+	
+	private boolean isPowered(Circuit1x1ComponentModel component) {
+		return component.isPowered() || alwaysUsePoweredImage;
 	}
 }

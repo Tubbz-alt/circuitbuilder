@@ -14,6 +14,9 @@ import com.fwcd.circuitbuilder.utils.Direction;
 import com.fwcd.circuitbuilder.view.CircuitItemImageProvider;
 import com.fwcd.fructose.Option;
 
+/**
+ * Renders a circuit item to a graphics context.
+ */
 public class CircuitItemRenderer implements CircuitItemVisitor {
 	private final Graphics2D g2d;
 	private final AbsolutePos pos;
