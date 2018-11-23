@@ -8,7 +8,7 @@ import com.fwcd.circuitbuilder.utils.AbsolutePos;
 
 /**
  * The root interface for all components and
- * tools. Register an item in {@link CircuitItemPanel}.
+ * tools. Register an item in {@link CircuitItemPickerView}.
  * 
  * @author Fredrik
  *

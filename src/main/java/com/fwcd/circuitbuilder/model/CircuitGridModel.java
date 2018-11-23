@@ -69,7 +69,7 @@ public class CircuitGridModel {
 		}
 	}
 	
-	public void put(CircuitLargeComponentModel component, RelativePos pos) {
+	public void putLarge(CircuitLargeComponentModel component, RelativePos pos) {
 		for (InputComponentModel input : component.getInputs()) {
 			RelativePos inputPos = new RelativePos(pos.add(input.getDeltaPos()));
 			put(input, inputPos);

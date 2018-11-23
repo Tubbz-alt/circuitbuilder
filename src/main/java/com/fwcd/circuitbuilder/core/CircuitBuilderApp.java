@@ -11,7 +11,7 @@ import com.fwcd.fructose.Option;
 public class CircuitBuilderApp {
 	private final JFrame view;
 	
-	private CircuitItemPanel itemPanel;
+	private CircuitItemPickerView itemPanel;
 	private CircuitGrid grid;
 	
 	private Option<CircuitItem> selectedItem = Option.empty();
@@ -25,7 +25,7 @@ public class CircuitBuilderApp {
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setLayout(new BorderLayout());
 		
-		itemPanel = new CircuitItemPanel(this);
+		itemPanel = new CircuitItemPickerView(this);
 		view.add(itemPanel.getComponent(), BorderLayout.WEST);
 		
 		grid = new CircuitGrid(this);

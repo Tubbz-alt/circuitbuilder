@@ -1,4 +1,4 @@
-package com.fwcd.circuitbuilder.core;
+package com.fwcd.circuitbuilder.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,33 +8,27 @@ import javax.swing.JComponent;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 
-import com.fwcd.circuitbuilder.items.CircuitItem;
-import com.fwcd.circuitbuilder.items.components.Cable;
-import com.fwcd.circuitbuilder.items.components.Inverter;
-import com.fwcd.circuitbuilder.items.components.Lamp;
-import com.fwcd.circuitbuilder.items.components.Lever;
-import com.fwcd.circuitbuilder.items.components.TickingClock;
-import com.fwcd.circuitbuilder.items.nestedcircuits.predefined.XORCircuit;
+import com.fwcd.circuitbuilder.model.CircuitItemModel;
 import com.fwcd.circuitbuilder.model.cable.CableColor;
-import com.fwcd.circuitbuilder.tools.Screwdriver;
+import com.fwcd.circuitbuilder.view.tools.CircuitTool;
 import com.fwcd.fructose.swing.DrawGraphicsButton;
 import com.fwcd.fructose.swing.Renderable;
 import com.fwcd.fructose.swing.SelectedButtonPanel;
 import com.fwcd.fructose.swing.View;
 
-public class CircuitItemPickerView implements View {
+public class CircuitToolsPanel implements View {
 	private JToolBar view;
-	private final CircuitItem[] items = {
+	private static final CircuitTool[] TOOLS = {
+		new Place1x1ItemTool<>(CableModel::new),
+		new Place1x1ItemTool<>(InverterModel::new),
+		new Place1x1ItemTool<>(LampModel::new),
+		new Place1x1ItemTool<>(LeverModel::new),
+		new Place1x1ItemTool<>(TickingClockModel::new),
+		new PlaceLargeItemTool<>(XorModel::new)
 			new Screwdriver(),
-			new Cable(),
-			new Inverter(),
-			new Lamp(),
-			new Lever(),
-			new TickingClock(),
-			new XORCircuit()
 	};
 	
-	public CircuitItemPickerView(CircuitBuilderApp parent) {
+	public CircuitToolsPanel() {
 		view = new JToolBar(JToolBar.VERTICAL);
 		view.setPreferredSize(new Dimension(50, 10));
 		view.setFloatable(false);
@@ -45,7 +39,7 @@ public class CircuitItemPickerView implements View {
 		
 		SelectedButtonPanel itemsPanel = new SelectedButtonPanel(false, Color.LIGHT_GRAY);
 		
-		for (CircuitItem item : items) {
+		for (CircuitItemModel item : TOOLS) {
 			itemsPanel.add(new JButton(item.getIcon()), () -> parent.selectItem(item));
 		}
 		
