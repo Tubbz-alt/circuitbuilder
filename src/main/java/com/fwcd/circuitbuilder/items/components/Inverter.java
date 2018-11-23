@@ -33,7 +33,7 @@ public class Inverter extends BasicComponent {
 	@Override
 	public void render(Graphics2D g2d, AbsolutePos pos) {
 		ResourceImage currentImage = nowEmitting ? IMAGE_ENABLED : IMAGE_DISABLED;
-		g2d.drawImage(currentImage.get(), facing.getTransform(pos), null);
+		g2d.drawImage(currentImage.get(), pos.getX(), pos.getY(), null);
 	}
 
 	@Override
