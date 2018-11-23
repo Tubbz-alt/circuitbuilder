@@ -30,6 +30,9 @@ public class InverterModel implements Circuit1x1ComponentModel {
 	public void update() {
 		nowEmitting = soonEmitting;
 	}
+		
+	@Override
+	public String getName() { return "Inverter"; }
 	
 	@Override
 	public boolean isPowered() { return nowEmitting; }

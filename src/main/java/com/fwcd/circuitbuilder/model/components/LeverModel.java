@@ -7,6 +7,9 @@ public class LeverModel extends BasicEmitter {
 	public void toggle() {
 		setPowered(!isPowered());
 	}
+		
+	@Override
+	public String getName() { return "Lever"; }
 	
 	@Override
 	public void accept(CircuitItemVisitor visitor) { visitor.visitLever(this); }

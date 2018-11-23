@@ -12,6 +12,9 @@ public class OutputComponentModel extends BasicEmitter {
 	public OutputComponentModel(RelativePos deltaPos) {
 		this.deltaPos = deltaPos;
 	}
+		
+	@Override
+	public String getName() { return "Output"; }
 	
 	/**
 	 * Fetches the offset from the parent component's

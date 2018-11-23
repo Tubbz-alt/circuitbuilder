@@ -67,6 +67,8 @@ public class CircuitGridModel {
 			
 			largeComponents.removeAllMappings(pos);
 		}
+		
+		changeListeners.fire();
 	}
 	
 	public void putLarge(CircuitLargeComponentModel component, RelativePos pos) {
@@ -109,4 +111,10 @@ public class CircuitGridModel {
 	ListenerList getChangeListeners() { return changeListeners; }
 	
 	Collection<? extends CircuitLargeComponentModel> getLargeComponents() { return largeComponents.values(); }
+	
+	public void clear() {
+		cells.clear();
+		largeComponents.clear();
+		changeListeners.fire();
+	}
 }

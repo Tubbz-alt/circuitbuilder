@@ -11,6 +11,8 @@ import com.fwcd.fructose.Option;
  * A visual tool used to modify the circuit.
  */
 public interface CircuitTool {
+	String getName();
+	
 	default Option<Image> getImage() { return Option.empty(); }
 	
 	default void onLeftClick(CircuitGridModel grid, CircuitCellModel cell) {}

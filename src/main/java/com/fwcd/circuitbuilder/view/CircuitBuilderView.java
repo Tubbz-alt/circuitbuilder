@@ -24,7 +24,7 @@ public class CircuitBuilderView implements View {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		itemPanel = new CircuitToolsPanel();
+		itemPanel = new CircuitToolsPanel(model);
 		component.add(itemPanel.getComponent(), BorderLayout.WEST);
 		
 		grid = new CircuitGridView(model.getGrid());

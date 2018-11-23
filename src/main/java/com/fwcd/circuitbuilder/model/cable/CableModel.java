@@ -34,6 +34,9 @@ public class CableModel implements Circuit1x1ComponentModel {
 	}
 	
 	@Override
+	public String getName() { return "Cable"; }
+	
+	@Override
 	public void onPlace(Map<Direction, CircuitCellModel> neighbors) {
 		for (Direction dir : neighbors.keySet()) {
 			if (!neighbors.get(dir).isEmpty() && canConnectTo(neighbors.get(dir))) {

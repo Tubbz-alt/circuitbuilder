@@ -12,6 +12,9 @@ public class XorModel extends BasicLargeComponent {
 	public XorModel() {
 		super(INPUTS_COUNT, OUTPUTS_COUNT);
 	}
+		
+	@Override
+	public String getName() { return "XOR"; }
 	
 	@Override
 	public void accept(CircuitItemVisitor visitor) { visitor.visitXor(this); }

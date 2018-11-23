@@ -18,6 +18,9 @@ public class InputComponentModel extends BasicReceiver {
 	 * top-left grid position.
 	 */
 	public RelativePos getDeltaPos() { return deltaPos; }
+		
+	@Override
+	public String getName() { return "Input"; }
 	
 	@Override
 	public void accept(CircuitItemVisitor visitor) { visitor.visitInputComponent(this); }

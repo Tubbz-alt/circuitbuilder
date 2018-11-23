@@ -18,6 +18,9 @@ public class TickingClockModel extends BasicEmitter {
 		tickDelayModeIndex = (tickDelayModeIndex + 1) % tickDelayModes.length;
 		maxTickDelay = tickDelayModes[tickDelayModeIndex];
 	}
+		
+	@Override
+	public String getName() { return "TickingClock"; }
 	
 	@Override
 	public void tick(Map<Direction, CircuitCellModel> neighbors) {

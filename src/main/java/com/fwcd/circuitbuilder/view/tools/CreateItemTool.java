@@ -12,12 +12,16 @@ import com.fwcd.fructose.Option;
  */
 public class CreateItemTool<T extends CircuitItemModel> implements CircuitTool {
 	private final Supplier<T> factory;
+	private final T sample = createItem();
 	private Option<Image> image = Option.empty();
 	
 	public CreateItemTool(Supplier<T> factory) {
 		this.factory = factory;
-		createItem().accept(new CircuitItemImageProvider(newImg -> image = Option.of(newImg)));
+		sample.accept(new CircuitItemImageProvider(newImg -> image = Option.of(newImg)));
 	}
+	
+	@Override
+	public String getName() { return sample.getName(); }
 	
 	@Override
 	public Option<Image> getImage() { return image; }
