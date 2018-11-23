@@ -12,9 +12,9 @@ import com.fwcd.circuitbuilder.model.CircuitBuilderModel;
 public class CircuitBuilderFrame {
 	private final JFrame frame;
 	
-	public CircuitBuilderFrame() {
-		frame = new JFrame("CircuitBuilder");
-		frame.setSize(800, 600);
+	public CircuitBuilderFrame(String title, int width, int height) {
+		frame = new JFrame(title);
+		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.add(new CircuitBuilderView(
