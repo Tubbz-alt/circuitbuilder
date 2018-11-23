@@ -27,7 +27,7 @@ import com.fwcd.circuitbuilder.tools.CircuitTool;
 import com.fwcd.circuitbuilder.utils.AbsolutePos;
 import com.fwcd.circuitbuilder.utils.ConcurrentMultiKeyHashMap;
 import com.fwcd.circuitbuilder.utils.Direction;
-import com.fwcd.circuitbuilder.utils.Grid;
+import com.fwcd.circuitbuilder.utils.CoordinateMapper;
 import com.fwcd.circuitbuilder.utils.MultiKeyMap;
 import com.fwcd.circuitbuilder.utils.RelativePos;
 import com.fwcd.fructose.Option;
@@ -35,7 +35,7 @@ import com.fwcd.fructose.swing.RenderPanel;
 import com.fwcd.fructose.swing.Renderable;
 import com.fwcd.fructose.swing.View;
 
-public class CircuitGrid implements View, Renderable, Grid {
+public class CircuitGrid implements View, Renderable, CoordinateMapper {
 	private final JPanel view;
 	private final CircuitBuilderApp parent;
 	

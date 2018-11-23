@@ -16,10 +16,27 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	
 	boolean outputsTowards(Direction outputDir);
 	
+	/**
+	 * Whether this component should be considered
+	 * "standalone" (may be false for parts of multi-cell-components).
+	 */
+	default boolean isAtomic() { return true; }
+	
+	/**
+	 * Whether this component can be "stacked" on
+	 * top of other components on the grid.
+	 */
 	default boolean isStackable() { return false; }
 	
+	/**
+	 * "Toggles" this component in some way. The precise meaning
+	 * may depend on the implementation.
+	 */
 	default void toggle() {}
 	
+	/**
+	 * Fetches a color associated with this component.
+	 */
 	default Option<CableColor> getColor() { return Option.empty(); }
 	
 	/**

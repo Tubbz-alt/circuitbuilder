@@ -110,7 +110,19 @@ public class CircuitGridModel {
 	
 	ListenerList getChangeListeners() { return changeListeners; }
 	
-	Collection<? extends CircuitLargeComponentModel> getLargeComponents() { return largeComponents.values(); }
+	/**
+	 * A read-only view of all large components on this grid.
+	 * To add or remove cells, use {@code putLarge} or
+	 * {@code clearCell} instead.
+	 */
+	public MultiKeyMap<? extends RelativePos, ? extends CircuitLargeComponentModel> getLargeComponents() { return largeComponents; }
+	
+	/**
+	 * A read-only view of the cells on this grid.
+	 * To add or remove cells, use {@code put} or
+	 * {@code clearCell} instead.
+	 */
+	public Map<? extends RelativePos, ? extends CircuitCellModel> getCells() { return cells; }
 	
 	public void clear() {
 		cells.clear();

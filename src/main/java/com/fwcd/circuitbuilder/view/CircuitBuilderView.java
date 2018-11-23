@@ -29,7 +29,7 @@ public class CircuitBuilderView implements View {
 		itemPanel = new CircuitToolsPanel(model, context);
 		component.add(itemPanel.getComponent(), BorderLayout.WEST);
 		
-		grid = new CircuitGridView(model.getGrid());
+		grid = new CircuitGridView(model.getGrid(), context);
 		component.add(grid.getComponent(), BorderLayout.CENTER);
 		
 		new BackgroundLooper("Circuit engine", tickDelay, model.getEngine()::tick).start();

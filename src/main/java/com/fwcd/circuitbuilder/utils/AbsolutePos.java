@@ -11,7 +11,7 @@ public class AbsolutePos extends GridPos {
 		super(x, y);
 	}
 
-	public RelativePos toRelative(Grid grid) {
+	public RelativePos toRelative(CoordinateMapper grid) {
 		return grid.toRelativePos(this);
 	}
 	

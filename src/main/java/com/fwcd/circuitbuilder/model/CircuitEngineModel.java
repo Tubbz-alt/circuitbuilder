@@ -43,7 +43,7 @@ public class CircuitEngineModel {
 		// Main ticking
 		
 		grid.forEach1x1((cell, component) -> component.tick(grid.getNeighbors(cell.getPos())));
-		grid.getLargeComponents().forEach(nestedCircuit -> nestedCircuit.tick());
+		grid.getLargeComponents().values().forEach(nestedCircuit -> nestedCircuit.tick());
 		
 		// Updating
 		
