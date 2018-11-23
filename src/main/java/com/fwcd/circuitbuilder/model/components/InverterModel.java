@@ -27,6 +27,11 @@ public class InverterModel implements Circuit1x1ComponentModel {
 	}
 	
 	@Override
+	public void toggle() {
+		facing = facing.cycle();
+	}
+	
+	@Override
 	public void update() {
 		nowEmitting = soonEmitting;
 	}
@@ -40,8 +45,8 @@ public class InverterModel implements Circuit1x1ComponentModel {
 	@Override
 	public void accept(CircuitItemVisitor visitor) { visitor.visitInverter(this); }
 	
+	public Direction getFacing() { return facing; }
+	
 	@Override
-	public boolean outputsTowards(Direction outputDir) {
-		return outputDir.equals(facing);
-	}
+	public boolean outputsTowards(Direction outputDir) { return outputDir.equals(facing); }
 }
