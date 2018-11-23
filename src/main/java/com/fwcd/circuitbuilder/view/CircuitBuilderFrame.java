@@ -17,7 +17,10 @@ public class CircuitBuilderFrame {
 		frame.setSize(800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		frame.add(new CircuitBuilderView(new CircuitBuilderModel()).getComponent(), BorderLayout.CENTER);
+		frame.add(new CircuitBuilderView(
+			new CircuitBuilderModel(),
+			new CircuitBuilderContext()
+		).getComponent(), BorderLayout.CENTER);
 		frame.setVisible(true);
 	}
 	

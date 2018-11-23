@@ -10,7 +10,6 @@ import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 
 import com.fwcd.circuitbuilder.model.CircuitBuilderModel;
-import com.fwcd.circuitbuilder.model.CircuitItemModel;
 import com.fwcd.circuitbuilder.model.cable.CableColor;
 import com.fwcd.circuitbuilder.model.cable.CableModel;
 import com.fwcd.circuitbuilder.model.components.InverterModel;
@@ -35,9 +34,9 @@ public class CircuitToolsPanel implements View {
 	private JToolBar view;
 	private final CircuitTool[] tools;
 	
-	public CircuitToolsPanel(CircuitBuilderModel model) {
+	public CircuitToolsPanel(CircuitBuilderModel model, CircuitBuilderContext context) {
 		tools = new CircuitTool[] {
-			new Place1x1ItemTool<>(() -> new CableModel(model.getSelectedColor().get())),
+			new Place1x1ItemTool<>(() -> new CableModel(context.getSelectedColor().get())),
 			new Place1x1ItemTool<>(InverterModel::new),
 			new Place1x1ItemTool<>(LampModel::new),
 			new Place1x1ItemTool<>(LeverModel::new),
@@ -61,7 +60,7 @@ public class CircuitToolsPanel implements View {
 				.map(ImageIcon::new)
 				.map(JButton::new)
 				.orElseGet(() -> new JButton(tool.getName()));
-			itemsPanel.add(button, () -> model.getSelectedItem().set(Option.of(tool)));
+			itemsPanel.add(button, () -> context.getSelectedTool().set(Option.of(tool)));
 		}
 		
 		view.add(itemsPanel.getComponent());
@@ -81,7 +80,7 @@ public class CircuitToolsPanel implements View {
 			};
 			
 			JButton button = new DrawGraphicsButton(new Dimension(24, 24), circle);
-			colorsPanel.add(button, () -> parent.setSelectedColor(color));
+			colorsPanel.add(button, () -> context.getSelectedColor().set(color));
 		}
 		
 		view.add(colorsPanel.getComponent());

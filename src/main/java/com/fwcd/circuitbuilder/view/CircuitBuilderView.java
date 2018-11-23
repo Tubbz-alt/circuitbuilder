@@ -20,11 +20,11 @@ public class CircuitBuilderView implements View {
 	
 	// TODO: Serialization
 	
-	public CircuitBuilderView(CircuitBuilderModel model) {
+	public CircuitBuilderView(CircuitBuilderModel model, CircuitBuilderContext context) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		itemPanel = new CircuitToolsPanel(model);
+		itemPanel = new CircuitToolsPanel(model, context);
 		component.add(itemPanel.getComponent(), BorderLayout.WEST);
 		
 		grid = new CircuitGridView(model.getGrid());
