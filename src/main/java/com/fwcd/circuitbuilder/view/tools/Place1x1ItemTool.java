@@ -16,6 +16,6 @@ public class Place1x1ItemTool<T extends Circuit1x1ComponentModel> extends Create
 	
 	@Override
 	public void onLeftClick(CircuitGridModel grid, CircuitCellModel cell) {
-		cell.place(createItem());
+		grid.put(createItem(), cell.getPos());
 	}
 }
