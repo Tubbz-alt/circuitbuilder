@@ -1,13 +1,13 @@
 package com.fwcd.circuitbuilder.model.logic;
 
 /**
- * A logical OR.
+ * A logical implication.
  */
-public class Disjunction implements LogicExpression {
+public class Implication implements LogicExpression {
 	private final LogicExpression left;
 	private final LogicExpression right;
 	
-	public Disjunction(LogicExpression left, LogicExpression right) {
+	public Implication(LogicExpression left, LogicExpression right) {
 		this.left = left;
 		this.right = right;
 	}
@@ -19,6 +19,6 @@ public class Disjunction implements LogicExpression {
 	
 	@Override
 	public boolean evaluate() {
-		return left.evaluate() || right.evaluate();
+		return !left.evaluate() || right.evaluate();
 	}
 }
