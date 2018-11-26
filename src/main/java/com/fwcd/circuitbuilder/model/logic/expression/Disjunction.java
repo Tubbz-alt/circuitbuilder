@@ -1,4 +1,4 @@
-package com.fwcd.circuitbuilder.model.logic;
+package com.fwcd.circuitbuilder.model.logic.expression;
 
 /**
  * A logical OR.
