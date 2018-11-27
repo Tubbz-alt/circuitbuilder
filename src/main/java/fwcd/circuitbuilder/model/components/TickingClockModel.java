@@ -33,5 +33,5 @@ public class TickingClockModel extends BasicEmitter {
 	}
 	
 	@Override
-	public void accept(CircuitItemVisitor visitor) { visitor.visitTickingClock(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitTickingClock(this); }
 }

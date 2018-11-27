@@ -17,11 +17,10 @@ import fwcd.fructose.Option;
 /**
  * Renders a circuit item to a graphics context.
  */
-public class CircuitItemRenderer implements CircuitItemVisitor {
+public class CircuitItemRenderer implements CircuitItemVisitor<Unit> {
 	private final Graphics2D g2d;
 	private final AbsolutePos pos;
 	private final int unitSize;
-	private Option<Image> image = Option.empty();
 	
 	public CircuitItemRenderer(Graphics2D g2d, AbsolutePos pos, int unitSize) {
 		this.g2d = g2d;
@@ -30,18 +29,21 @@ public class CircuitItemRenderer implements CircuitItemVisitor {
 	}
 	
 	@Override
-	public void visitCable(CableModel cable) {
+	public Unit visitCable(CableModel cable) {
 		new CableView(cable, unitSize).render(g2d, pos);
+		return Unit.UNIT;
 	}
 	
 	@Override
-	public void visitInverter(InverterModel inverter) {
+	public Unit visitInverter(InverterModel inverter) {
 		g2d.drawImage(imageOf(inverter), getTransform(pos, inverter.getFacing()), null);
+		return Unit.UNIT;
 	}
 	
 	@Override
-	public void visitItem(CircuitItemModel item) {
+	public Unit visitItem(CircuitItemModel item) {
 		g2d.drawImage(imageOf(item), pos.getX(), pos.getY(), null);
+		return Unit.UNIT;
 	}
 	
 	private AffineTransform getTransform(AbsolutePos pos, Direction direction) {
@@ -62,7 +64,7 @@ public class CircuitItemRenderer implements CircuitItemVisitor {
 	}
 	
 	private Image imageOf(CircuitItemModel item) {
-		item.accept(new CircuitItemImageProvider(it -> image = Option.of(it)));
+		Option<Image> image = item.accept(new CircuitItemImageProvider());
 		if (image.isPresent()) {
 			return image.unwrap();
 		} else {

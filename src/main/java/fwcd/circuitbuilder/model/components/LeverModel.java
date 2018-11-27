@@ -12,5 +12,5 @@ public class LeverModel extends BasicEmitter {
 	public String getName() { return "Lever"; }
 	
 	@Override
-	public void accept(CircuitItemVisitor visitor) { visitor.visitLever(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitLever(this); }
 }

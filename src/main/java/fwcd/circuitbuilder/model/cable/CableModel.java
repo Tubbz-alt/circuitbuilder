@@ -100,5 +100,5 @@ public class CableModel implements Circuit1x1ComponentModel {
 	public Set<? extends Direction> getConnections() { return connections; }
 	
 	@Override
-	public void accept(CircuitItemVisitor visitor) { visitor.visitCable(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitCable(this); }
 }

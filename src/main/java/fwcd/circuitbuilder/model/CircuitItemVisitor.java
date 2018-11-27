@@ -11,26 +11,26 @@ import fwcd.circuitbuilder.model.components.OutputComponentModel;
 import fwcd.circuitbuilder.model.components.TickingClockModel;
 import fwcd.circuitbuilder.model.components.XorModel;
 
-public interface CircuitItemVisitor {
-	default void visitInverter(InverterModel inverter) { visit1x1Component(inverter); }
+public interface CircuitItemVisitor<T> {
+	T visitItem(CircuitItemModel item);
 	
-	default void visitLamp(LampModel lamp) { visit1x1Component(lamp); }
+	default T visitLargeComponent(CircuitLargeComponentModel largeComponent) { return visitItem(largeComponent); }
 	
-	default void visitLever(LeverModel lever) { visit1x1Component(lever); }
+	default T visit1x1Component(Circuit1x1ComponentModel component) { return visitItem(component); }
 	
-	default void visitTickingClock(TickingClockModel clock) { visit1x1Component(clock); }
+	default T visitInverter(InverterModel inverter) { return visit1x1Component(inverter); }
 	
-	default void visitCable(CableModel cable) { visit1x1Component(cable); }
+	default T visitLamp(LampModel lamp) { return visit1x1Component(lamp); }
 	
-	default void visitInputComponent(InputComponentModel input) { visit1x1Component(input); }
+	default T visitLever(LeverModel lever) { return visit1x1Component(lever); }
 	
-	default void visitOutputComponent(OutputComponentModel output) { visit1x1Component(output); }
+	default T visitTickingClock(TickingClockModel clock) { return visit1x1Component(clock); }
 	
-	default void visitXor(XorModel xor) { visitLargeComponent(xor); }
+	default T visitCable(CableModel cable) { return visit1x1Component(cable); }
 	
-	default void visitLargeComponent(CircuitLargeComponentModel largeComponent) { visitItem(largeComponent); }
+	default T visitInputComponent(InputComponentModel input) { return visit1x1Component(input); }
 	
-	default void visit1x1Component(Circuit1x1ComponentModel component) { visitItem(component); }
+	default T visitOutputComponent(OutputComponentModel output) { return visit1x1Component(output); }
 	
-	default void visitItem(CircuitItemModel item) {}
+	default T visitXor(XorModel xor) { return visitLargeComponent(xor); }
 }

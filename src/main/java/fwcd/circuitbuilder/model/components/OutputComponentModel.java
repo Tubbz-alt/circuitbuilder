@@ -29,5 +29,5 @@ public class OutputComponentModel extends BasicEmitter {
 	public boolean isAtomic() { return false; }
 	
 	@Override
-	public void accept(CircuitItemVisitor visitor) { visitor.visitOutputComponent(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitOutputComponent(this); }
 }

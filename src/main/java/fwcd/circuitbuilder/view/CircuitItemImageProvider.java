@@ -1,7 +1,6 @@
 package fwcd.circuitbuilder.view;
 
 import java.awt.Image;
-import java.util.function.Consumer;
 
 import fwcd.circuitbuilder.model.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.cable.CableModel;
@@ -19,7 +18,7 @@ import fwcd.fructose.swing.ResourceImage;
  * Associates an image to be rendered on the grid
  * with a circuit item.
  */
-public class CircuitItemImageProvider implements CircuitItemVisitor {
+public class CircuitItemImageProvider implements CircuitItemVisitor<Option<Image>> {
 	private static final Image CABLE = new ResourceImage("/cable.png").get();
 	private static final Image CLOCK_OFF = new ResourceImage("/clockOff.png").get();
 	private static final Image CLOCK_ON = new ResourceImage("/clockOn.png").get();
@@ -32,56 +31,59 @@ public class CircuitItemImageProvider implements CircuitItemVisitor {
 	private static final Image LEVER_ON = new ResourceImage("/leverOn.png").get();
 	private static final Image OUT_ICON = new ResourceImage("/outIcon.png").get();
 	private static final Image XOR_IMAGE = new ResourceImage("/xorImage.png").get();
-	private final Consumer<Image> consumer;
 	private final boolean alwaysUsePoweredImage;
 	
-	public CircuitItemImageProvider(Consumer<Image> consumer, boolean alwaysUsePoweredImage) {
-		this.consumer = consumer;
+	public CircuitItemImageProvider(boolean alwaysUsePoweredImage) {
 		this.alwaysUsePoweredImage = alwaysUsePoweredImage;
 	}
 	
-	public CircuitItemImageProvider(Consumer<Image> consumer) {
-		this(consumer, false);
+	public CircuitItemImageProvider() {
+		this(false);
 	}
 	
 	@Override
-	public void visitCable(CableModel cable) {
-		consumer.accept(CABLE);
+	public Option<Image> visitCable(CableModel cable) {
+		return Option.of(CABLE);
 	}
 	
 	@Override
-	public void visitTickingClock(TickingClockModel clock) {
-		consumer.accept(clock.isPowered() ? CLOCK_ON : CLOCK_OFF);
+	public Option<Image> visitTickingClock(TickingClockModel clock) {
+		return Option.of(clock.isPowered() ? CLOCK_ON : CLOCK_OFF);
 	}
 	
 	@Override
-	public void visitInputComponent(InputComponentModel input) {
-		consumer.accept(IN_ICON);
+	public Option<Image> visitInputComponent(InputComponentModel input) {
+		return Option.of(IN_ICON);
 	}
 	
 	@Override
-	public void visitOutputComponent(OutputComponentModel output) {
-		consumer.accept(OUT_ICON);
+	public Option<Image> visitOutputComponent(OutputComponentModel output) {
+		return Option.of(OUT_ICON);
 	}
 	
 	@Override
-	public void visitLamp(LampModel lamp) {
-		consumer.accept(isPowered(lamp) ? LAMP_ON : LAMP_OFF);
+	public Option<Image> visitLamp(LampModel lamp) {
+		return Option.of(isPowered(lamp) ? LAMP_ON : LAMP_OFF);
 	}
 	
 	@Override
-	public void visitInverter(InverterModel inverter) {
-		consumer.accept(isPowered(inverter) ? INVERTER_ON : INVERTER_OFF);
+	public Option<Image> visitInverter(InverterModel inverter) {
+		return Option.of(isPowered(inverter) ? INVERTER_ON : INVERTER_OFF);
 	}
 	
 	@Override
-	public void visitLever(LeverModel lever) {
-		consumer.accept(isPowered(lever) ? LEVER_ON : LEVER_OFF);
+	public Option<Image> visitLever(LeverModel lever) {
+		return Option.of(isPowered(lever) ? LEVER_ON : LEVER_OFF);
 	}
 	
 	@Override
-	public void visitXor(XorModel xor) {
-		consumer.accept(XOR_IMAGE);
+	public Option<Image> visitXor(XorModel xor) {
+		return Option.of(XOR_IMAGE);
+	}
+	
+	@Override
+	public Option<Image> visitItem(CircuitItemModel item) {
+		return Option.empty();
 	}
 	
 	private boolean isPowered(Circuit1x1ComponentModel component) {

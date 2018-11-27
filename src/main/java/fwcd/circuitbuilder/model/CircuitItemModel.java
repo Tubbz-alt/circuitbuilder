@@ -6,5 +6,5 @@ package fwcd.circuitbuilder.model;
 public interface CircuitItemModel {
 	String getName();
 	
-	void accept(CircuitItemVisitor visitor);
+	<T> T accept(CircuitItemVisitor<T> visitor);
 }

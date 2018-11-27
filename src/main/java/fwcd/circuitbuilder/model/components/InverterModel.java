@@ -43,7 +43,7 @@ public class InverterModel implements Circuit1x1ComponentModel {
 	public boolean isPowered() { return nowEmitting; }
 	
 	@Override
-	public void accept(CircuitItemVisitor visitor) { visitor.visitInverter(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitInverter(this); }
 	
 	public Direction getFacing() { return facing; }
 	

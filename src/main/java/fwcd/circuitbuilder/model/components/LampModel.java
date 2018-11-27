@@ -7,5 +7,5 @@ public class LampModel extends BasicReceiver {
 	public String getName() { return "Lamp"; }
 	
 	@Override
-	public void accept(CircuitItemVisitor visitor) { visitor.visitLamp(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitLamp(this); }
 }

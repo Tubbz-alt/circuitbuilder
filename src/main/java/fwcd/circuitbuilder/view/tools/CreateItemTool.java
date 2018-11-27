@@ -14,12 +14,12 @@ import fwcd.fructose.Option;
 public class CreateItemTool<T extends CircuitItemModel> implements CircuitTool {
 	private final Supplier<T> factory;
 	private final T sample;
-	private Option<Image> image = Option.empty();
+	private final Option<Image> image;
 	
 	public CreateItemTool(Supplier<T> factory) {
 		this.factory = Objects.requireNonNull(factory, "Tried to construct a CreateItemTool with a 'null' factory");
 		sample = factory.get();
-		sample.accept(new CircuitItemImageProvider(newImg -> image = Option.of(newImg), true /* alwaysUsePoweredImage */));
+		image = sample.accept(new CircuitItemImageProvider(true /* alwaysUsePoweredImage */));
 	}
 	
 	@Override

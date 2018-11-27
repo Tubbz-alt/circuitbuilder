@@ -17,7 +17,7 @@ public class XorModel extends BasicLargeComponent {
 	public String getName() { return "XOR"; }
 	
 	@Override
-	public void accept(CircuitItemVisitor visitor) { visitor.visitXor(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitXor(this); }
 	
 	@Override
 	protected boolean[] compute(boolean[] inputs) {
