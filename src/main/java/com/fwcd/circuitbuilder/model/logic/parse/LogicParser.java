@@ -1,8 +1,9 @@
 package com.fwcd.circuitbuilder.model.logic.parse;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fwcd.circuitbuilder.model.logic.expression.LogicExpression;
 import com.fwcd.circuitbuilder.model.logic.parse.token.LogicToken;
@@ -15,17 +16,19 @@ import com.fwcd.fructose.parsers.StringParser;
  */
 public class LogicParser implements StringParser<LogicExpression> {
 	private final LogicLexer lexer;
-	private final List<NotationPattern> precedencePatterns;
+	private final List<NotationPattern> patterns;
+	private final Map<String, Integer> precendences;
 	
 	public LogicParser(LogicNotation notation) {
-		lexer = new LogicLexer(notation.getPatterns()
+		lexer = new LogicLexer(Stream.concat(
+				Stream.of("(", ")"),
+				notation.getPatterns().stream().map(NotationPattern::getValue))
+			.collect(Collectors.toList()));
+		patterns = notation.getPatterns()
 			.stream()
-			.map(NotationPattern::getValue)
-			.collect(Collectors.toCollection(ArrayList::new)));
-		precedencePatterns = notation.getPatterns()
-			.stream()
-			.sorted((a, b) -> Integer.compare(a.getPrecedence(), b.getPrecedence()))
-			.collect(Collectors.toCollection(ArrayList::new));
+			.collect(Collectors.toList());
+		precendences = notation.getPatterns().stream()
+			.collect(Collectors.toMap(NotationPattern::getValue, NotationPattern::getPrecedence));
 	}
 	
 	/**
