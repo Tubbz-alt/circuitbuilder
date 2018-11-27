@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A parse pattern that matches a prefixed
- * string.
+ * A parse pattern that matches a prefix
+ * and returns the rest of the string.
  */
 public class PrefixPattern implements NotationPattern {
 	private final String prefix;
