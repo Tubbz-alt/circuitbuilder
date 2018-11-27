@@ -1,8 +1,11 @@
 package com.fwcd.circuitbuilder.model.logic.expression;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
- * The logical equivalence operator. Evaluates to
- * true if both operands have the same boolean value.
+ * The logical equivalence operator. Evaluates to true if both operands have the
+ * same boolean value.
  */
 public class Equivalence implements LogicExpression {
 	private final LogicExpression left;
@@ -16,6 +19,16 @@ public class Equivalence implements LogicExpression {
 	@Override
 	public int getInputCount() {
 		return 2;
+	}
+	
+	@Override
+	public List<LogicExpression> getOperands() {
+		return Arrays.asList(left, right);
+	}
+	
+	@Override
+	public <T> T accept(LogicExpressionVisitor<T> visitor) {
+		return visitor.visitEquivalence(this);
 	}
 	
 	@Override
