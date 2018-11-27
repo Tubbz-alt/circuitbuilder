@@ -22,15 +22,18 @@ public class LogicLexer implements StringParser<List<LogicToken>> {
 		for (int i = 0; i < charCount; i++) {
 			char c = raw.charAt(i);
 			boolean wasIdentifier = isIdentifier;
+			boolean skipToken = Character.isWhitespace(c);
 			isIdentifier = Character.isLetterOrDigit(c);
 			
-			boolean isNextToken = isIdentifier != wasIdentifier;
+			boolean isNextToken = !wasIdentifier || skipToken;
 			if (isNextToken && current.length() > 0) {
 				tokens.add(new LogicToken(toTokenType(wasIdentifier), current.toString()));
 				current.delete(0, current.length());
 			}
 			
-			current.append(c);
+			if (!skipToken) {
+				current.append(c);
+			}
 		}
 		
 		if (current.length() > 0) {
