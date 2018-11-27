@@ -1,7 +1,14 @@
 package com.fwcd.circuitbuilder.model.logic.parse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fwcd.circuitbuilder.model.logic.parse.token.LogicToken;
 import com.fwcd.circuitbuilder.model.logic.parse.token.LogicTokenType;
@@ -12,38 +19,33 @@ import com.fwcd.fructose.parsers.StringParser;
  * of tokens.
  */
 public class LogicLexer implements StringParser<List<LogicToken>> {
+	private final Set<? extends String> symbols;
+	
+	public LogicLexer(Collection<? extends String> symbols) {
+		this.symbols = new HashSet<>(symbols);
+	}
+	
 	@Override
 	public List<LogicToken> parse(String raw) {
-		List<LogicToken> tokens = new ArrayList<>();
-		int charCount = raw.length();
-		StringBuilder current = new StringBuilder();
-		boolean isIdentifier = true;
-		
-		for (int i = 0; i < charCount; i++) {
-			char c = raw.charAt(i);
-			boolean wasIdentifier = isIdentifier;
-			boolean skipToken = Character.isWhitespace(c);
-			isIdentifier = Character.isLetterOrDigit(c);
-			
-			boolean isNextToken = !wasIdentifier || skipToken;
-			if (isNextToken && current.length() > 0) {
-				tokens.add(new LogicToken(toTokenType(wasIdentifier), current.toString()));
-				current.delete(0, current.length());
-			}
-			
-			if (!skipToken) {
-				current.append(c);
-			}
+		if (raw.length() == 0) {
+			return Collections.emptyList();
 		}
 		
-		if (current.length() > 0) {
-			tokens.add(new LogicToken(toTokenType(isIdentifier), current.toString()));
+		Stream<LogicToken> splitted = Stream.of(new LogicToken(LogicTokenType.IDENTIFIER, raw));
+		
+		for (String symbol : symbols) {
+			splitted = splitted
+				.flatMap(it -> it.getType() == LogicTokenType.SYMBOL
+					? Stream.of(it)
+					: Arrays.stream(ParseUtils.splitWithDelimiter(symbol, it.getValue()))
+						.map(inner -> new LogicToken(inner.equals(symbol) ? LogicTokenType.SYMBOL : LogicTokenType.IDENTIFIER, inner)));
 		}
 		
-		return tokens;
-	}
-
-	private LogicTokenType toTokenType(boolean isIdentifier) {
-		return isIdentifier ? LogicTokenType.IDENTIFIER : LogicTokenType.SYMBOL;
+		return splitted
+			.flatMap(it -> it.getType() != LogicTokenType.IDENTIFIER
+				? Stream.of(it)
+				: Arrays.stream(it.getValue().split(" "))
+					.map(inner -> new LogicToken(LogicTokenType.IDENTIFIER, inner)))
+			.collect(Collectors.toCollection(ArrayList::new));
 	}
 }
