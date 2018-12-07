@@ -8,10 +8,10 @@ repositories {
 	maven { url 'https://jitpack.io' }
 }
 
-mainClassName = 'com.fwcd.circuitbuilder.CircuitBuilderMain'
+mainClassName = 'fwcd.circuitbuilder.CircuitBuilderMain'
 
 dependencies {
-	implementation 'com.github.fwcd:Fructose:ad1c3e9518af6d8a4f29e899e3e8ae01b34ac8a1'
+	implementation 'com.github.fwcd:Fructose:b12e36618dc3d386cde73b25efe45723f88eb859'
 	implementation 'org.scilab.forge:jlatexmath:1.0.7'
 	testImplementation 'junit:junit:4.12'
 }
