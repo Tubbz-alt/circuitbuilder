@@ -34,7 +34,7 @@ public class LogicParser implements StringParser<LogicExpression> {
 	/**
 	 * Parses an expression using precedence climbing.
 	 */
-	private String parseExpression(String lhs, int minPrecedence) {
+	private String parseExpression(List<LogicToken> lhs, int minPrecedence) {
 		// Source: https://en.wikipedia.org/wiki/Operator-precedence_parser (pseudocode)
 		
 		throw new TodoException();
