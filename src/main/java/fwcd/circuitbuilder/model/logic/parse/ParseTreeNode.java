@@ -34,6 +34,21 @@ public class ParseTreeNode {
 	public boolean isLeaf() { return !lhs.isPresent() && !rhs.isPresent(); }
 	
 	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (obj.getClass() != getClass()) return false;
+		ParseTreeNode other = (ParseTreeNode) obj;
+		return other.lhs.equals(lhs)
+			&& other.rhs.equals(rhs)
+			&& other.token.equals(token);
+	}
+	
+	@Override
+	public int hashCode() {
+		return lhs.hashCode() * rhs.hashCode() * token.hashCode();
+	}
+	
+	@Override
 	public String toString() {
 		return isLeaf()
 			? token.getValue()

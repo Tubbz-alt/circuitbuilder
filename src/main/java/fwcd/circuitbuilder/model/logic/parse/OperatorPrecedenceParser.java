@@ -71,7 +71,7 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 	
 	@Override
 	public ParseTreeNode parse(String raw) {
-		throw new TodoException(); // TODO
+		return rpnToParseTree(shuntingYard(tokenize(raw)));
 	}
 	
 	private int precedenceOf(ParseToken token) {
@@ -81,6 +81,9 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 		);
 	}
 	
+	/**
+	 * Parses a list of tokens into reverse polish notation.
+	 */
 	public List<ParseToken> shuntingYard(List<ParseToken> tokens) {
 		// Source: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 		Stack<ParseToken> output = new ArrayStack<>();
@@ -121,6 +124,20 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 		}
 		
 		return output.asBottomToTopList();
+	}
+	
+	private ParseTreeNode rpnToParseTree(List<ParseToken> rpn) {
+		Stack<ParseTreeNode> nodes = new ArrayStack<>();
+		for (ParseToken token : rpn) {
+			if (token.getType() == ParseTokenType.OPERATOR) {
+				ParseTreeNode rhs = nodes.pop();
+				ParseTreeNode lhs = nodes.pop();
+				nodes.push(ParseTreeNode.of(token, lhs, rhs));
+			} else {
+				nodes.push(ParseTreeNode.ofLeaf(token));
+			}
+		}
+		return nodes.pop();
 	}
 	
 	private boolean greaterOrEqualPrecedence(ParseToken a, ParseToken b) {

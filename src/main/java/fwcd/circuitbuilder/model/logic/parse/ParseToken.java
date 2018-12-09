@@ -15,5 +15,13 @@ public class ParseToken {
 	public ParseTokenType getType() { return type; }
 	
 	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (obj.getClass() != getClass()) return false;
+		ParseToken other = (ParseToken) obj;
+		return other.value.equals(value) && other.type.equals(type);
+	}
+	
+	@Override
 	public String toString() { return (type == ParseTokenType.VALUE) ? ("'" + value + "'") : value; }
 }

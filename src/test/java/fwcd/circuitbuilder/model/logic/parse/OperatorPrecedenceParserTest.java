@@ -29,4 +29,22 @@ public class OperatorPrecedenceParserTest {
 				.collect(Collectors.toList())
 		);
 	}
+	
+	@Test
+	public void testParse() {
+		assertEquals(
+			op(op(op("0", "v", op("1", "^", "0")), "v", "0"), "=>", op("1", "^", "0")),
+			parser.parse("0v1^0v0=>1^0")
+		);
+	}
+	
+	private ParseTreeNode lf(String leafValue) { return ParseTreeNode.ofLeaf(new ParseToken(ParseTokenType.VALUE, leafValue)); }
+	
+	private ParseTreeNode op(ParseTreeNode lhs, String value, ParseTreeNode rhs) { return ParseTreeNode.of(new ParseToken(ParseTokenType.OPERATOR, value), lhs, rhs); }
+	
+	private ParseTreeNode op(String lhs, String value, String rhs) { return op(lf(lhs), value, lf(rhs)); }
+	
+	private ParseTreeNode op(ParseTreeNode lhs, String value, String rhs) { return op(lhs, value, lf(rhs)); }
+	
+	private ParseTreeNode op(String lhs, String value, ParseTreeNode rhs) { return op(lf(lhs), value, rhs); }
 }
