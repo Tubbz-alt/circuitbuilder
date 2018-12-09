@@ -1,8 +1,13 @@
 package fwcd.circuitbuilder.model.logic.parse;
 
-import fwcd.fructose.Option;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class ParseTreeNode {
+import fwcd.fructose.Option;
+import fwcd.fructose.structs.TreeNode;
+
+public class ParseTreeNode implements TreeNode {
 	private final ParseToken token;
 	private final Option<ParseTreeNode> lhs;
 	private final Option<ParseTreeNode> rhs;
@@ -13,11 +18,11 @@ public class ParseTreeNode {
 		this.rhs = rhs;
 	}
 	
-	public static ParseTreeNode of(ParseToken token, Option<ParseTreeNode> lhs, Option<ParseTreeNode> rhs) {
-		return new ParseTreeNode(token, lhs, rhs);
+	public static ParseTreeNode ofUnary(ParseToken token, ParseTreeNode operand) {
+		return new ParseTreeNode(token, Option.of(operand), Option.empty());
 	}
 	
-	public static ParseTreeNode of(ParseToken token, ParseTreeNode lhs, ParseTreeNode rhs) {
+	public static ParseTreeNode ofBinary(ParseToken token, ParseTreeNode lhs, ParseTreeNode rhs) {
 		return new ParseTreeNode(token, Option.of(lhs), Option.of(rhs));
 	}
 	
@@ -32,6 +37,10 @@ public class ParseTreeNode {
 	public ParseToken getToken() { return token; }
 	
 	public boolean isLeaf() { return !lhs.isPresent() && !rhs.isPresent(); }
+	
+	public boolean isUnary() { return lhs.isPresent() && !rhs.isPresent(); }
+	
+	public boolean isBinary() { return lhs.isPresent() && rhs.isPresent(); }
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -50,14 +59,19 @@ public class ParseTreeNode {
 	
 	@Override
 	public String toString() {
-		return isLeaf()
-			? token.getValue()
-			: "("
-				+ lhs.map(ParseTreeNode::toString).orElse("?")
-				+ " "
-				+ token
-				+ " "
-				+ rhs.map(ParseTreeNode::toString).orElse("?")
-				+ ")";
+		if (isLeaf()) {
+			return token.getValue();
+		} else if (isUnary()) {
+			return token.toString() + lhs.unwrap().toString();
+		} else if (isBinary()) {
+			return "(" + lhs.unwrap() + " " + token.getValue() + " " + rhs.unwrap() + ")";
+		} else {
+			return "?";
+		}
+	}
+
+	@Override
+	public List<? extends TreeNode> getChildren() {
+		return Stream.of(lhs, rhs).filter(Option::isPresent).map(Option::unwrap).collect(Collectors.toList());
 	}
 }

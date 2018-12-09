@@ -14,6 +14,11 @@ public class ParseToken {
 	
 	public ParseTokenType getType() { return type; }
 	
+	public boolean isOperator() {
+		return type == ParseTokenType.UNARY_OPERATOR
+			|| type == ParseTokenType.BINARY_OPERATOR;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;

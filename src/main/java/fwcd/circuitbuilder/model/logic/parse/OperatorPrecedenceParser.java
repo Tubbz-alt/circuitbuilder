@@ -3,23 +3,34 @@ package fwcd.circuitbuilder.model.logic.parse;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import fwcd.fructose.Option;
-import fwcd.fructose.exception.TodoException;
+import fwcd.circuitbuilder.utils.ConcatIterable;
 import fwcd.fructose.parsers.StringParser;
 import fwcd.fructose.structs.ArrayStack;
 import fwcd.fructose.structs.Stack;
 
+/**
+ * A parser for infix operator grammars.
+ */
 public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 	private final Map<String, Integer> precedenceTable;
+	private final Set<String> unaryOperators;
 	private final Pattern regex;
 	
-	public OperatorPrecedenceParser(Map<String, Integer> precedenceTable) {
+	/**
+	 * Constructs a new operator precedence table.
+	 * 
+	 * @param precedenceTable - The binary operators together with their precedences
+	 * @param unaryOperators - The unary prefix operators (which have a higher precedence than all binary operators)
+	 */
+	public OperatorPrecedenceParser(Map<String, Integer> precedenceTable, Set<String> unaryOperators) {
 		this.precedenceTable = precedenceTable;
+		this.unaryOperators = unaryOperators;
 		if (precedenceTable.isEmpty()) {
 			regex = Pattern.compile(".+"); // Match entire string
 		} else {
@@ -30,7 +41,7 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 	public Pattern constructRegex() {
 		StringBuilder builder = new StringBuilder();
 		int i = 0;
-		for (String operator : precedenceTable.keySet()) {
+		for (String operator : new ConcatIterable<>(precedenceTable.keySet(), unaryOperators)) {
 			if (i != 0) {
 				builder.append('|');
 			}
@@ -54,14 +65,18 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 			}
 			// TODO: Deal with empty tokens
 			// TODO: Parentheses
-			tokens.accept(new ParseToken(ParseTokenType.OPERATOR, matcher.group()));
+			String value = matcher.group();
+			ParseTokenType type = unaryOperators.contains(value)
+				? ParseTokenType.UNARY_OPERATOR
+				: ParseTokenType.BINARY_OPERATOR;
+			tokens.accept(new ParseToken(type, value));
 			matchedChars = end;
 		}
 		if (matchedChars < raw.length()) {
 			tokens.accept(new ParseToken(ParseTokenType.VALUE, raw.substring(matchedChars)));
 		}
 		return tokens.build()
-			.flatMap(it -> it.getType() == ParseTokenType.OPERATOR
+			.flatMap(it -> it.isOperator()
 				? Stream.of(it)
 				: Stream.of(it.getValue().trim())
 					.filter(str -> !str.isEmpty())
@@ -88,13 +103,20 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 		// Source: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 		Stack<ParseToken> output = new ArrayStack<>();
 		Stack<ParseToken> operators = new ArrayStack<>();
+		Stack<ParseToken> unaryOperators = new ArrayStack<>();
 		
 		for (ParseToken token : tokens) {
 			switch (token.getType()) {
 				case VALUE:
 					output.push(token);
+					while (!unaryOperators.isEmpty()) {
+						output.push(unaryOperators.pop());
+					}
 					break;
-				case OPERATOR:
+				case UNARY_OPERATOR:
+					unaryOperators.push(token);
+					break;
+				case BINARY_OPERATOR:
 					while (!operators.isEmpty() && greaterOrEqualPrecedence(operators.peek(), token)) {
 						output.push(operators.pop());
 					}
@@ -126,23 +148,34 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 		return output.asBottomToTopList();
 	}
 	
+	/**
+	 * Converts a list of tokens in reverse polish notation to a
+	 * parse tree.
+	 */
 	private ParseTreeNode rpnToParseTree(List<ParseToken> rpn) {
 		Stack<ParseTreeNode> nodes = new ArrayStack<>();
 		for (ParseToken token : rpn) {
-			if (token.getType() == ParseTokenType.OPERATOR) {
-				ParseTreeNode rhs = nodes.pop();
-				ParseTreeNode lhs = nodes.pop();
-				nodes.push(ParseTreeNode.of(token, lhs, rhs));
-			} else {
-				nodes.push(ParseTreeNode.ofLeaf(token));
+			switch (token.getType()) {
+				case BINARY_OPERATOR:
+					ParseTreeNode rhs = nodes.pop();
+					ParseTreeNode lhs = nodes.pop();
+					nodes.push(ParseTreeNode.ofBinary(token, lhs, rhs));
+					break;
+				case UNARY_OPERATOR:
+					ParseTreeNode operand = nodes.pop();
+					nodes.push(ParseTreeNode.ofUnary(token, operand));
+					break;
+				default:
+					nodes.push(ParseTreeNode.ofLeaf(token));
+					break;
 			}
 		}
 		return nodes.pop();
 	}
 	
 	private boolean greaterOrEqualPrecedence(ParseToken a, ParseToken b) {
-		return a.getType() == ParseTokenType.OPERATOR
-			&& b.getType() == ParseTokenType.OPERATOR
+		return a.getType() == ParseTokenType.BINARY_OPERATOR
+			&& b.getType() == ParseTokenType.BINARY_OPERATOR
 			&& precedenceOf(a) >= precedenceOf(b);
 	}
 }
