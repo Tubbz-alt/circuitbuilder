@@ -14,7 +14,7 @@ public class CircuitBuilderMenuBar implements View {
 	public CircuitBuilderMenuBar(CircuitBuilderView view, CircuitBuilderModel model) {
 		component = new JMenuBar();
 		component.add(menuOf("File",
-			itemOf("New", () -> model.getGrid().clear())
+			itemOf("New Grid", () -> model.getGrid().clear())
 		));
 	}
 	
