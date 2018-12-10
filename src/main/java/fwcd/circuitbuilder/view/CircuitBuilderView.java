@@ -3,8 +3,8 @@ package fwcd.circuitbuilder.view;
 import java.awt.BorderLayout;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
 import fwcd.circuitbuilder.view.formula.FormulaEditorView;
@@ -17,7 +17,7 @@ import fwcd.fructose.swing.View;
  * the circuit editor, sidebar and more.
  */
 public class CircuitBuilderView implements View {
-	private final JPanel component;
+	private final JSplitPane component;
 	
 	private final CircuitGridEditorView gridEditor;
 	private final FormulaEditorView formulaEditor;
@@ -25,19 +25,18 @@ public class CircuitBuilderView implements View {
 	// TODO: Serialization
 	
 	public CircuitBuilderView(CircuitBuilderModel model, CircuitBuilderAppContext context) {
-		component = new JPanel();
-		component.setLayout(new BorderLayout());
+		component = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		component.setResizeWeight(1);
+		context.runAfterLaunch(() -> component.setDividerLocation(0.9));
 		
-		JSplitPane content = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		context.runAfterLaunch(() -> content.setDividerLocation(0.8));
+		JTabbedPane content = new JTabbedPane();
+		component.setTopComponent(content);
 		
 		gridEditor = new CircuitGridEditorView(model.getGrid(), new CircuitGridContext());
-		content.setLeftComponent(gridEditor.getComponent());
+		content.addTab("Grid Editor", gridEditor.getComponent());
 		
 		formulaEditor = new FormulaEditorView();
-		content.setRightComponent(formulaEditor.getComponent());
-		
-		component.add(content, BorderLayout.CENTER);
+		component.setBottomComponent(formulaEditor.getComponent());
 	}
 	
 	@Override
