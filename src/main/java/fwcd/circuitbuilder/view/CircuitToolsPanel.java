@@ -46,10 +46,6 @@ public class CircuitToolsPanel implements View {
 		view.setPreferredSize(new Dimension(50, 10));
 		view.setFloatable(false);
 		
-		JButton clearButton = new JButton("Clear");
-		clearButton.addActionListener((l) -> model.getGrid().clear());
-		view.add(clearButton);
-		
 		SelectedButtonPanel itemsPanel = new SelectedButtonPanel(false, Color.LIGHT_GRAY);
 		itemsPanel.setFolding(true);
 		
