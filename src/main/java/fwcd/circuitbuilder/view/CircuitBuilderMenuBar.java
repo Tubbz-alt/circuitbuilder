@@ -13,7 +13,6 @@ public class CircuitBuilderMenuBar implements View {
 	private final JMenuBar component;
 	
 	public CircuitBuilderMenuBar(CircuitBuilderView view, CircuitBuilderModel model) {
-		// TODO: Native menu bar on macOS
 		component = new JMenuBar();
 		component.add(menuOf("File",
 			itemOf("New", () -> model.getGrid().clear())
