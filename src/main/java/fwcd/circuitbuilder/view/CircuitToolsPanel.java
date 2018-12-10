@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
@@ -33,12 +32,10 @@ import fwcd.fructose.swing.View;
 public class CircuitToolsPanel implements View {
 	private JToolBar view;
 	private final CircuitTool[] tools;
-	
+
 	public CircuitToolsPanel(CircuitBuilderModel model, CircuitBuilderContext context) {
-		tools = new CircuitTool[] {
-			new Place1x1ItemTool<>(() -> new CableModel(context.getSelectedColor().get())),
-			new Place1x1ItemTool<>(InverterModel::new),
-			new Place1x1ItemTool<>(LampModel::new),
+		tools = new CircuitTool[] { new Place1x1ItemTool<>(() -> new CableModel(context.getSelectedColor().get())),
+				new Place1x1ItemTool<>(InverterModel::new), new Place1x1ItemTool<>(LampModel::new),
 			new Place1x1ItemTool<>(LeverModel::new),
 			new Place1x1ItemTool<>(TickingClockModel::new),
 			new PlaceLargeItemTool<>(XorModel::new),
@@ -54,6 +51,7 @@ public class CircuitToolsPanel implements View {
 		view.add(clearButton);
 		
 		SelectedButtonPanel itemsPanel = new SelectedButtonPanel(false, Color.LIGHT_GRAY);
+		itemsPanel.setFolding(true);
 		
 		for (CircuitTool tool : tools) {
 			JButton button = tool.getImage()
@@ -64,9 +62,9 @@ public class CircuitToolsPanel implements View {
 		}
 		
 		view.add(itemsPanel.getComponent());
-		view.add(new JSeparator());
 		
 		SelectedButtonPanel colorsPanel = new SelectedButtonPanel(false, Color.LIGHT_GRAY);
+		colorsPanel.setFolding(true);
 		
 		for (CableColor color : CableColor.values()) {
 			Renderable circle = (g2d, canvasSize) -> {
