@@ -1,15 +1,36 @@
 package fwcd.circuitbuilder.view.formula;
 
+import java.awt.BorderLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import fwcd.fructose.swing.View;
 
 public class FormulaEditorView implements View {
-	private final JTextArea component;
+	private final JPanel component;
 	
 	public FormulaEditorView() {
-		component = new JTextArea();
+		component = new JPanel();
+		component.setLayout(new BorderLayout());
+		
+		JTextArea text = new JTextArea();
+		component.add(text, BorderLayout.CENTER);
+		
+		JPanel buttons = new JPanel();
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
+		buttons.add(buttonOf("Open in Grid Editor", () -> { /*TODO*/ }));
+		buttons.add(buttonOf("Open in Graph Editor", () -> { /*TODO*/ }));
+		component.add(buttons, BorderLayout.EAST);
+	}
+	
+	private JButton buttonOf(String name, Runnable action) {
+		JButton button = new JButton(name);
+		button.addActionListener(e -> action.run());
+		return button;
 	}
 	
 	@Override
