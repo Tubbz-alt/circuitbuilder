@@ -3,7 +3,7 @@ package fwcd.circuitbuilder.view.formula;
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
 
-import com.fwcd.fructose.swing.View;
+import fwcd.fructose.swing.View;
 
 public class FormulaEditorView implements View {
 	private final JTextArea component;

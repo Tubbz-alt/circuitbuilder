@@ -5,9 +5,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import com.fwcd.fructose.swing.View;
-
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
+import fwcd.fructose.swing.View;
 
 public class CircuitBuilderMenuBar implements View {
 	private final JMenuBar component;
