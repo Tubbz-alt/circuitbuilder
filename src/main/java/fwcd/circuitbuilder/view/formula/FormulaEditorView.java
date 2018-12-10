@@ -6,9 +6,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 import fwcd.fructose.swing.View;
+import fwcd.palm.PalmEditor;
 
 public class FormulaEditorView implements View {
 	private final JPanel component;
@@ -17,8 +17,9 @@ public class FormulaEditorView implements View {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		JTextArea text = new JTextArea();
-		component.add(text, BorderLayout.CENTER);
+		PalmEditor editor = new PalmEditor();
+		editor.getView().setFontSize(18);
+		component.add(editor.getView().getComponent(), BorderLayout.CENTER);
 		
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
