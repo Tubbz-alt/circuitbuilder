@@ -8,7 +8,11 @@ import fwcd.circuitbuilder.model.CircuitGridModel;
 import fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.view.utils.PositionedRenderable;
+<<<<<<< HEAD:src/main/java/fwcd/circuitbuilder/view/tools/CircuitTool.java
 import fwcd.fructose.Option;
+=======
+import com.fwcd.fructose.Option;
+>>>>>>> Moved com.fwcd to fwcd:src/main/java/fwcd/circuitbuilder/view/tools/CircuitTool.java
 
 /**
  * A visual tool used to modify the circuit.

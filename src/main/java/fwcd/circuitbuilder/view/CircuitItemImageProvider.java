@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.view;
 
 import java.awt.Image;
 
+import fwcd.circuitbuilder.model.CircuitItemModel;
 import fwcd.circuitbuilder.model.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.cable.CableModel;
 import fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
@@ -12,12 +13,9 @@ import fwcd.circuitbuilder.model.components.LeverModel;
 import fwcd.circuitbuilder.model.components.OutputComponentModel;
 import fwcd.circuitbuilder.model.components.TickingClockModel;
 import fwcd.circuitbuilder.model.components.XorModel;
+import fwcd.fructose.Option;
 import fwcd.fructose.swing.ResourceImage;
 
-/**
- * Associates an image to be rendered on the grid
- * with a circuit item.
- */
 public class CircuitItemImageProvider implements CircuitItemVisitor<Option<Image>> {
 	private static final Image CABLE = new ResourceImage("/cable.png").get();
 	private static final Image CLOCK_OFF = new ResourceImage("/clockOff.png").get();

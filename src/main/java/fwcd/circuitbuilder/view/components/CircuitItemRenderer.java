@@ -13,6 +13,7 @@ import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.view.CircuitItemImageProvider;
 import fwcd.fructose.Option;
+import fwcd.fructose.Unit;
 
 /**
  * Renders a circuit item to a graphics context.
