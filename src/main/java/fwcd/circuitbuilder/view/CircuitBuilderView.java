@@ -24,22 +24,20 @@ public class CircuitBuilderView implements View {
 	
 	// TODO: Serialization
 	
-	public CircuitBuilderView(CircuitBuilderModel model) {
+	public CircuitBuilderView(CircuitBuilderModel model, CircuitBuilderAppContext context) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		JSplitPane contentWithEditor = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		
 		JSplitPane content = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		contentWithEditor.setTopComponent(content);
+		context.runAfterLaunch(() -> content.setDividerLocation(0.8));
 		
 		gridEditor = new CircuitGridEditorView(model.getGrid(), new CircuitGridContext());
 		content.setLeftComponent(gridEditor.getComponent());
 		
 		formulaEditor = new FormulaEditorView();
-		contentWithEditor.setBottomComponent(formulaEditor.getComponent());
+		content.setRightComponent(formulaEditor.getComponent());
 		
-		component.add(contentWithEditor, BorderLayout.CENTER);
+		component.add(content, BorderLayout.CENTER);
 	}
 	
 	@Override

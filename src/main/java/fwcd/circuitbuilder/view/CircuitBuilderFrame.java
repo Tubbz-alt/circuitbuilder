@@ -14,7 +14,8 @@ public class CircuitBuilderFrame {
 	
 	public CircuitBuilderFrame(String title, int width, int height) {
 		CircuitBuilderModel model = new CircuitBuilderModel();
-		CircuitBuilderView view = new CircuitBuilderView(model);
+		CircuitBuilderAppContext context = new CircuitBuilderAppContext();
+		CircuitBuilderView view = new CircuitBuilderView(model, context);
 		
 		frame = new JFrame(title);
 		frame.setSize(width, height);
@@ -23,6 +24,8 @@ public class CircuitBuilderFrame {
 		frame.setJMenuBar(new CircuitBuilderMenuBar(view, model).getComponent());
 		frame.add(view.getComponent(), BorderLayout.CENTER);
 		frame.setVisible(true);
+		
+		context.pollAndRunLaunchTasks();
 	}
 	
 	public JFrame getFrame() { return frame; }
