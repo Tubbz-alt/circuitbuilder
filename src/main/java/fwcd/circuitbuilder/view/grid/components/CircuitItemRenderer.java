@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view.components;
+package fwcd.circuitbuilder.view.grid.components;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -11,7 +11,7 @@ import fwcd.circuitbuilder.model.cable.CableModel;
 import fwcd.circuitbuilder.model.components.InverterModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.Direction;
-import fwcd.circuitbuilder.view.CircuitItemImageProvider;
+import fwcd.circuitbuilder.view.grid.CircuitItemImageProvider;
 import fwcd.fructose.Option;
 import fwcd.fructose.Unit;
 

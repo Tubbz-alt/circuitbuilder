@@ -1,11 +1,11 @@
-package fwcd.circuitbuilder.view.tools;
+package fwcd.circuitbuilder.view.grid.tools;
 
 import java.awt.Image;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 import fwcd.circuitbuilder.model.CircuitItemModel;
-import fwcd.circuitbuilder.view.CircuitItemImageProvider;
+import fwcd.circuitbuilder.view.grid.CircuitItemImageProvider;
 import fwcd.fructose.Option;
 
 /**

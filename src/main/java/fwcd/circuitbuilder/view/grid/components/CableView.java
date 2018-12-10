@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view.components;
+package fwcd.circuitbuilder.view.grid.components;
 
 import java.awt.Graphics2D;
 

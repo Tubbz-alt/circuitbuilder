@@ -11,12 +11,14 @@ public class BackgroundLooper {
 	private final int delayMs;
 	private final Runnable task;
 	private final String name;
+	private final Timer timer;
 	private boolean started = false;
 	
 	public BackgroundLooper(String name, int delayMs, Runnable task) {
 		this.name = name;
 		this.delayMs = delayMs;
 		this.task = task;
+		timer = new Timer(name);
 	}
 	
 	public void start() {
@@ -24,11 +26,15 @@ public class BackgroundLooper {
 			throw new IllegalStateException("Attempted to restart a running BackgroundLooper");
 		}
 		
-		new Timer(name).scheduleAtFixedRate(new TimerTask() {
+		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
 				task.run();
 			}
 		}, delayMs, delayMs);
+	}
+	
+	public void stop() {
+		timer.cancel();
 	}
 }

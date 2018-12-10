@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view;
+package fwcd.circuitbuilder.view.grid;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
-import fwcd.circuitbuilder.model.CircuitBuilderModel;
+import fwcd.circuitbuilder.model.CircuitGridModel;
 import fwcd.circuitbuilder.model.cable.CableColor;
 import fwcd.circuitbuilder.model.cable.CableModel;
 import fwcd.circuitbuilder.model.components.InverterModel;
@@ -16,10 +16,10 @@ import fwcd.circuitbuilder.model.components.LampModel;
 import fwcd.circuitbuilder.model.components.LeverModel;
 import fwcd.circuitbuilder.model.components.TickingClockModel;
 import fwcd.circuitbuilder.model.components.XorModel;
-import fwcd.circuitbuilder.view.tools.CircuitTool;
-import fwcd.circuitbuilder.view.tools.Place1x1ItemTool;
-import fwcd.circuitbuilder.view.tools.PlaceLargeItemTool;
-import fwcd.circuitbuilder.view.tools.Screwdriver;
+import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
+import fwcd.circuitbuilder.view.grid.tools.Place1x1ItemTool;
+import fwcd.circuitbuilder.view.grid.tools.PlaceLargeItemTool;
+import fwcd.circuitbuilder.view.grid.tools.Screwdriver;
 import fwcd.fructose.Option;
 import fwcd.fructose.swing.DrawGraphicsButton;
 import fwcd.fructose.swing.Renderable;
@@ -33,7 +33,7 @@ public class CircuitToolsPanel implements View {
 	private JToolBar view;
 	private final CircuitTool[] tools;
 
-	public CircuitToolsPanel(CircuitBuilderModel model, CircuitBuilderContext context) {
+	public CircuitToolsPanel(CircuitGridModel model, CircuitGridContext context) {
 		tools = new CircuitTool[] { new Place1x1ItemTool<>(() -> new CableModel(context.getSelectedColor().get())),
 				new Place1x1ItemTool<>(InverterModel::new), new Place1x1ItemTool<>(LampModel::new),
 			new Place1x1ItemTool<>(LeverModel::new),

@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view.tools;
+package fwcd.circuitbuilder.view.grid.tools;
 
 import java.awt.Image;
 

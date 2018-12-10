@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view;
+package fwcd.circuitbuilder.view.grid;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,8 +14,8 @@ import fwcd.circuitbuilder.model.CircuitItemModel;
 import fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.RelativePos;
-import fwcd.circuitbuilder.view.components.CircuitItemRenderer;
-import fwcd.circuitbuilder.view.tools.CircuitTool;
+import fwcd.circuitbuilder.view.grid.components.CircuitItemRenderer;
+import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
 import fwcd.fructose.Option;
 import fwcd.fructose.swing.MouseHandler;
 import fwcd.fructose.swing.RenderPanel;
@@ -27,7 +27,7 @@ import fwcd.fructose.swing.View;
 public class CircuitGridView implements View {
 	private final JPanel component;
 	private final CircuitGridModel model;
-	private final CircuitBuilderContext context;
+	private final CircuitGridContext context;
 	
 	private final int unitSize = 24;
 	private final CircuitGridCoordinateMapper coordMap = new CircuitGridCoordinateMapper(unitSize);
@@ -35,7 +35,7 @@ public class CircuitGridView implements View {
 	private Option<AbsolutePos> mousePos = Option.empty();
 	private int mouseButton = 0;
 	
-	public CircuitGridView(CircuitGridModel model, CircuitBuilderContext context) {
+	public CircuitGridView(CircuitGridModel model, CircuitGridContext context) {
 		this.model = model;
 		this.context = context;
 		component = new RenderPanel(this::render);

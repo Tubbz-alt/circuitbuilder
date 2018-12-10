@@ -7,8 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
-import fwcd.circuitbuilder.utils.BackgroundLooper;
 import fwcd.circuitbuilder.view.formula.FormulaEditorView;
+import fwcd.circuitbuilder.view.grid.CircuitGridContext;
+import fwcd.circuitbuilder.view.grid.CircuitGridEditorView;
 import fwcd.fructose.swing.View;
 
 /**
@@ -17,15 +18,13 @@ import fwcd.fructose.swing.View;
  */
 public class CircuitBuilderView implements View {
 	private final JPanel component;
-	private final int tickDelay = 80; // ms tick delay
 	
-	private final CircuitToolsPanel itemPanel;
-	private final CircuitGridView grid;
+	private final CircuitGridEditorView gridEditor;
 	private final FormulaEditorView formulaEditor;
 	
 	// TODO: Serialization
 	
-	public CircuitBuilderView(CircuitBuilderModel model, CircuitBuilderContext context) {
+	public CircuitBuilderView(CircuitBuilderModel model) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
@@ -34,18 +33,13 @@ public class CircuitBuilderView implements View {
 		JSplitPane content = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		contentWithEditor.setTopComponent(content);
 		
-		itemPanel = new CircuitToolsPanel(model, context);
-		component.add(itemPanel.getComponent(), BorderLayout.WEST);
-		
-		grid = new CircuitGridView(model.getGrid(), context);
-		content.setLeftComponent(grid.getComponent());
+		gridEditor = new CircuitGridEditorView(model.getGrid(), new CircuitGridContext());
+		content.setLeftComponent(gridEditor.getComponent());
 		
 		formulaEditor = new FormulaEditorView();
 		contentWithEditor.setBottomComponent(formulaEditor.getComponent());
 		
 		component.add(contentWithEditor, BorderLayout.CENTER);
-		
-		new BackgroundLooper("Circuit engine", tickDelay, model.getEngine()::tick).start();
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view;
+package fwcd.circuitbuilder.view.grid;
 
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.CoordinateMapper;

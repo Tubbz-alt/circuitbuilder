@@ -14,7 +14,7 @@ public class CircuitBuilderFrame {
 	
 	public CircuitBuilderFrame(String title, int width, int height) {
 		CircuitBuilderModel model = new CircuitBuilderModel();
-		CircuitBuilderView view = new CircuitBuilderView(model, new CircuitBuilderContext());
+		CircuitBuilderView view = new CircuitBuilderView(model);
 		
 		frame = new JFrame(title);
 		frame.setSize(width, height);
