@@ -7,14 +7,14 @@ import java.util.List;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpressionType;
 import fwcd.circuitbuilder.model.logic.parse.Associativity;
 import fwcd.circuitbuilder.model.logic.parse.LogicNotation;
-import fwcd.circuitbuilder.model.logic.parse.NotationPattern;
-import fwcd.circuitbuilder.model.logic.parse.PatternPosition;
+import fwcd.circuitbuilder.model.logic.parse.OperatorPattern;
+import fwcd.circuitbuilder.model.logic.parse.OperatorType;
 
 public class TestNotation implements LogicNotation {
-	private static final List<NotationPattern> PATTERNS = Arrays.asList(
-		new NotationPattern(LogicExpressionType.CONJUNCTION, "and", PatternPosition.INFIX, 1, Associativity.LEFT),
-		new NotationPattern(LogicExpressionType.DISJUNCTION, "or", PatternPosition.INFIX, 1, Associativity.RIGHT)
+	private static final List<OperatorPattern> PATTERNS = Arrays.asList(
+		new OperatorPattern(LogicExpressionType.CONJUNCTION, "and", OperatorType.INFIX, 1, Associativity.LEFT),
+		new OperatorPattern(LogicExpressionType.DISJUNCTION, "or", OperatorType.INFIX, 1, Associativity.RIGHT)
 	);
 	
-	public Collection<? extends NotationPattern> getPatterns() { return PATTERNS; }
+	public Collection<? extends OperatorPattern> getPatterns() { return PATTERNS; }
 }
