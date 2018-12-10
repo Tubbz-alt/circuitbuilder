@@ -1,29 +1,34 @@
-package fwcd.circuitbuilder.model.logic.ast;
+package fwcd.circuitbuilder.model.logic.notation;
 
 import fwcd.circuitbuilder.model.logic.expression.LogicExpressionType;
 
 public class OperatorPattern {
 	private final LogicExpressionType expressionType;
 	private final String value;
-	private final OperatorType operatorType;
 	
 	public OperatorPattern(
 		LogicExpressionType expressionType,
-		String value,
-		OperatorType operatorType
+		String value
 	) {
 		this.expressionType = expressionType;
 		this.value = value;
-		this.operatorType = operatorType;
 	}
 	
-	public OperatorType getOperatorType() { return operatorType; }
+	public OperatorType getOperatorType() {
+		if (isUnary()) {
+			return OperatorType.UNARY;
+		} else if (isBinary()) {
+			return OperatorType.BINARY;
+		} else {
+			throw new IllegalStateException("Operator with " + expressionType.getInputCount() + " inputs is neither unary nor binary!");
+		}
+	}
 	
 	public int getPrecedence() { return expressionType.getPrecedence(); }
 	
-	public boolean isUnary() { return operatorType == OperatorType.UNARY; }
+	public boolean isUnary() { return expressionType.getInputCount() == 1; }
 	
-	public boolean isBinary() { return operatorType == OperatorType.BINARY; }
+	public boolean isBinary() { return expressionType.getInputCount() == 2; }
 	
 	public String getValue() { return value; }
 	

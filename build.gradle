@@ -12,6 +12,6 @@ mainClassName = 'fwcd.circuitbuilder.CircuitBuilderMain'
 
 dependencies {
 	implementation 'com.github.fwcd:Fructose:b12e36618dc3d386cde73b25efe45723f88eb859'
-	implementation 'com.github.fwcd:Palm:eaf238acff5a3f6ee797bfe37f83ae9a5cba7975'
+	implementation 'com.github.fwcd:Palm:a8b4ce126939310fbd4d398cdeae3ec02b2dea28'
 	testImplementation 'junit:junit:4.12'
 }

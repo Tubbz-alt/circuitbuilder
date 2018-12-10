@@ -18,7 +18,11 @@ public class FormulaEditorView implements View {
 		component.setLayout(new BorderLayout());
 		
 		PalmEditor editor = new PalmEditor();
+		// TODO: Auto-completion is experimental
+		// editor.getModel().getCompletionProvider().set(new FormulaCompletionProvider(new MathematicalNotation()));
+		// editor.getController().getCompletionController().setHideOnSpace(false);
 		editor.getView().setFontSize(18);
+		editor.getView().setShowLineHighlight(false);
 		component.add(editor.getView().getComponent(), BorderLayout.CENTER);
 		
 		JPanel buttons = new JPanel();

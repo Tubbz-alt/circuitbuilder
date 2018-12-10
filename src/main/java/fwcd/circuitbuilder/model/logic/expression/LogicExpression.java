@@ -7,8 +7,6 @@ import java.util.List;
  * true or false.
  */
 public interface LogicExpression {
-	int getInputCount();
-	
 	List<LogicExpression> getOperands();
 	
 	<T> T accept(LogicExpressionVisitor<T> visitor);

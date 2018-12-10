@@ -14,11 +14,6 @@ public class Negation implements LogicExpression {
 	}
 	
 	@Override
-	public int getInputCount() {
-		return 2;
-	}
-	
-	@Override
 	public List<LogicExpression> getOperands() {
 		return Collections.singletonList(value);
 	}

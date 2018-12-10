@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpressionType;
+import fwcd.circuitbuilder.model.logic.notation.LogicNotation;
+import fwcd.circuitbuilder.model.logic.notation.OperatorPattern;
 import fwcd.circuitbuilder.model.logic.parse.OperatorPrecedenceParser;
 import fwcd.circuitbuilder.model.logic.parse.ParseTreeNode;
 import fwcd.fructose.exception.TodoException;

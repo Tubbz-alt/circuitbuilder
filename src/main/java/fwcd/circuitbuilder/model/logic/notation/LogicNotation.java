@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.model.logic.ast;
+package fwcd.circuitbuilder.model.logic.notation;
 
 import java.util.Collection;
 import java.util.stream.Stream;
