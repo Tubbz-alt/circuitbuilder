@@ -42,7 +42,7 @@ public class LogicBoolean implements LogicExpression {
 	}
 	
 	@Override
-	public List<LogicExpression> getOperands() {
+	public List<? extends LogicExpression> getOperands() {
 		return Collections.emptyList();
 	}
 	

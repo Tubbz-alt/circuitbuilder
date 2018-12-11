@@ -7,8 +7,10 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import fwcd.circuitbuilder.model.logic.LogicEditorModel;
+import fwcd.circuitbuilder.view.utils.DocumentChangeListener;
 import fwcd.fructose.swing.View;
 import fwcd.palm.PalmEditor;
+import fwcd.palm.model.editor.PalmDocument;
 
 public class FormulaEditorView implements View {
 	private final JPanel component;
@@ -23,6 +25,10 @@ public class FormulaEditorView implements View {
 		// editor.getController().getCompletionController().setHideOnSpace(false);
 		editor.getView().setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 		editor.getView().setShowLineHighlight(false);
+		
+		PalmDocument document = editor.getView().getModel().getDocument();
+		document.addDocumentListener((DocumentChangeListener) e -> model.getRawFormula().set(document.getText()));
+		
 		component.add(editor.getView().getComponent(), BorderLayout.CENTER);
 	}
 	

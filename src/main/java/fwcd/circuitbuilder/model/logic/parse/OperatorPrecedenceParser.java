@@ -157,11 +157,17 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 		for (ParseToken token : rpn) {
 			switch (token.getType()) {
 				case BINARY_OPERATOR:
+					if (nodes.size() < 2) {
+						throw new ParseException("Binary operator does not have enough operands.");
+					}
 					ParseTreeNode rhs = nodes.pop();
 					ParseTreeNode lhs = nodes.pop();
 					nodes.push(ParseTreeNode.ofBinary(token, lhs, rhs));
 					break;
 				case UNARY_OPERATOR:
+					if (nodes.size() < 1) {
+						throw new ParseException("Unary operator does not have an operand.");
+					}
 					ParseTreeNode operand = nodes.pop();
 					nodes.push(ParseTreeNode.ofUnary(token, operand));
 					break;

@@ -16,7 +16,7 @@ public class Conjunction implements LogicExpression {
 	}
 	
 	@Override
-	public List<LogicExpression> getOperands() {
+	public List<? extends LogicExpression> getOperands() {
 		return Arrays.asList(left, right);
 	}
 	
