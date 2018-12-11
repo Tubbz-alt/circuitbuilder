@@ -1,6 +1,7 @@
 package fwcd.circuitbuilder.view.logic.formula;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JComponent;
@@ -8,6 +9,7 @@ import javax.swing.JPanel;
 
 import fwcd.circuitbuilder.model.logic.LogicEditorModel;
 import fwcd.circuitbuilder.view.utils.DocumentChangeListener;
+import fwcd.fructose.swing.StatusBar;
 import fwcd.fructose.swing.View;
 import fwcd.palm.PalmEditor;
 import fwcd.palm.model.editor.PalmDocument;
@@ -30,6 +32,10 @@ public class FormulaEditorView implements View {
 		document.addDocumentListener((DocumentChangeListener) e -> model.getRawFormula().set(document.getText()));
 		
 		component.add(editor.getView().getComponent(), BorderLayout.CENTER);
+		
+		StatusBar statusBar = new StatusBar();
+		model.getErrorMessage().listen(msg -> msg.ifPresentOrElse(it -> statusBar.display(it, Color.ORANGE), statusBar::reset));
+		component.add(statusBar.getComponent(), BorderLayout.SOUTH);
 	}
 	
 	@Override
