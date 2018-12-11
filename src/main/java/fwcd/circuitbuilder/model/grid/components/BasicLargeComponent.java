@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.model.components;
+package fwcd.circuitbuilder.model.grid.components;
 
 import java.util.List;
 import java.util.stream.Collectors;

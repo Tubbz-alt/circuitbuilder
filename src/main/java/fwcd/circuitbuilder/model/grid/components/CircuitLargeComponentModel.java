@@ -1,8 +1,8 @@
-package fwcd.circuitbuilder.model.components;
+package fwcd.circuitbuilder.model.grid.components;
 
 import java.util.List;
 
-import fwcd.circuitbuilder.model.CircuitItemModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**

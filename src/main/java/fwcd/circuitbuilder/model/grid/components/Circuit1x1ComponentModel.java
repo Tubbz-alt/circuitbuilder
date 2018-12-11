@@ -1,10 +1,10 @@
-package fwcd.circuitbuilder.model.components;
+package fwcd.circuitbuilder.model.grid.components;
 
 import java.util.Map;
 
-import fwcd.circuitbuilder.model.CircuitCellModel;
-import fwcd.circuitbuilder.model.CircuitItemModel;
-import fwcd.circuitbuilder.model.cable.CableColor;
+import fwcd.circuitbuilder.model.grid.CircuitCellModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemModel;
+import fwcd.circuitbuilder.model.grid.cable.CableColor;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.fructose.Option;
 

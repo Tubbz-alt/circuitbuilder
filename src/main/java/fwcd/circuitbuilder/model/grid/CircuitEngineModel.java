@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.model;
+package fwcd.circuitbuilder.model.grid;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import fwcd.circuitbuilder.model.cable.CableColor;
-import fwcd.circuitbuilder.model.cable.CableModel;
-import fwcd.circuitbuilder.model.cable.CableNetwork;
+import fwcd.circuitbuilder.model.grid.cable.CableColor;
+import fwcd.circuitbuilder.model.grid.cable.CableModel;
+import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**

@@ -1,6 +1,6 @@
-package fwcd.circuitbuilder.model.components;
+package fwcd.circuitbuilder.model.grid.components;
 
-import fwcd.circuitbuilder.model.CircuitItemVisitor;
+import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 
 public class LeverModel extends BasicEmitter {
 	@Override

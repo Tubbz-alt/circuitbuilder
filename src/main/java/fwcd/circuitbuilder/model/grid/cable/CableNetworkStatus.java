@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.model.cable;
+package fwcd.circuitbuilder.model.grid.cable;
 
 public class CableNetworkStatus {
 	private boolean powered = false;

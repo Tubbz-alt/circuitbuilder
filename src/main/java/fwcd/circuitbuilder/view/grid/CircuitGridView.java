@@ -8,10 +8,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import fwcd.circuitbuilder.model.CircuitCellModel;
-import fwcd.circuitbuilder.model.CircuitGridModel;
-import fwcd.circuitbuilder.model.CircuitItemModel;
-import fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.model.grid.CircuitCellModel;
+import fwcd.circuitbuilder.model.grid.CircuitGridModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemModel;
+import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.circuitbuilder.view.grid.components.CircuitItemRenderer;

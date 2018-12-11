@@ -2,9 +2,9 @@ package fwcd.circuitbuilder.view.grid.tools;
 
 import java.util.function.Supplier;
 
-import fwcd.circuitbuilder.model.CircuitCellModel;
-import fwcd.circuitbuilder.model.CircuitGridModel;
-import fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.model.grid.CircuitCellModel;
+import fwcd.circuitbuilder.model.grid.CircuitGridModel;
+import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 
 /**
  * A simple tool that places a 1x1 component item.

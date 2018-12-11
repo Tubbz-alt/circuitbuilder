@@ -1,6 +1,6 @@
 package fwcd.circuitbuilder.view.grid;
 
-import fwcd.circuitbuilder.model.cable.CableColor;
+import fwcd.circuitbuilder.model.grid.cable.CableColor;
 import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
 import fwcd.fructose.Observable;
 import fwcd.fructose.Option;

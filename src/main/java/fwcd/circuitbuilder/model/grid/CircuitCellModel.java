@@ -1,9 +1,9 @@
-package fwcd.circuitbuilder.model;
+package fwcd.circuitbuilder.model.grid;
 
 import java.util.stream.Stream;
 
-import fwcd.circuitbuilder.model.cable.CableColorEqualityChecker;
-import fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.model.grid.cable.CableColorEqualityChecker;
+import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
 import fwcd.fructose.StreamUtils;

@@ -1,8 +1,8 @@
-package fwcd.circuitbuilder.model.components;
+package fwcd.circuitbuilder.model.grid.components;
 
 import java.util.Map;
 
-import fwcd.circuitbuilder.model.CircuitCellModel;
+import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.utils.Direction;
 
 /**

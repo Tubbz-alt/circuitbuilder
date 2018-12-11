@@ -2,8 +2,8 @@ package fwcd.circuitbuilder.view.grid.tools;
 
 import java.awt.Image;
 
-import fwcd.circuitbuilder.model.CircuitCellModel;
-import fwcd.circuitbuilder.model.CircuitGridModel;
+import fwcd.circuitbuilder.model.grid.CircuitCellModel;
+import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.fructose.Option;
 import fwcd.fructose.swing.ResourceImage;
 

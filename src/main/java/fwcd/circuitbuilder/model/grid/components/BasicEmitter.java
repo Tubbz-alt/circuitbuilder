@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.model.components;
+package fwcd.circuitbuilder.model.grid.components;
 
 import fwcd.circuitbuilder.utils.Direction;
 

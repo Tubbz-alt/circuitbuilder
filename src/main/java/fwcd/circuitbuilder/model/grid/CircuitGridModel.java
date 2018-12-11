@@ -1,14 +1,14 @@
-package fwcd.circuitbuilder.model;
+package fwcd.circuitbuilder.model.grid;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
-import fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
-import fwcd.circuitbuilder.model.components.CircuitLargeComponentModel;
-import fwcd.circuitbuilder.model.components.InputComponentModel;
-import fwcd.circuitbuilder.model.components.OutputComponentModel;
+import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
+import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
+import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
 import fwcd.circuitbuilder.utils.ConcurrentMultiKeyHashMap;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.MultiKeyMap;

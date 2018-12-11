@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import fwcd.circuitbuilder.model.CircuitItemModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.view.grid.CircuitItemImageProvider;
 import fwcd.fructose.Option;
 

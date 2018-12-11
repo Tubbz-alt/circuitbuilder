@@ -1,9 +1,9 @@
-package fwcd.circuitbuilder.model.components;
+package fwcd.circuitbuilder.model.grid.components;
 
 import java.util.Map;
 
-import fwcd.circuitbuilder.model.CircuitCellModel;
-import fwcd.circuitbuilder.model.CircuitItemVisitor;
+import fwcd.circuitbuilder.model.grid.CircuitCellModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.Direction;
 
 public class InverterModel implements Circuit1x1ComponentModel {

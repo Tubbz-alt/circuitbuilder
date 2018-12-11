@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.model;
+package fwcd.circuitbuilder.model.grid;
 
 /**
  * An item that can be placed on a circuit board.

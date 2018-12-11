@@ -2,7 +2,7 @@ package fwcd.circuitbuilder.view.grid.components;
 
 import java.awt.Graphics2D;
 
-import fwcd.circuitbuilder.model.cable.CableModel;
+import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.view.utils.PositionedRenderable;

@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.model.cable;
+package fwcd.circuitbuilder.model.grid.cable;
 
 import java.util.function.IntFunction;
 

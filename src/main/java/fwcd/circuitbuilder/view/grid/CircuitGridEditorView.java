@@ -5,8 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import fwcd.circuitbuilder.model.CircuitEngineModel;
-import fwcd.circuitbuilder.model.CircuitGridModel;
+import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
+import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.utils.BackgroundLooper;
 import fwcd.fructose.swing.View;
 

@@ -1,8 +1,8 @@
-package fwcd.circuitbuilder.model.cable;
+package fwcd.circuitbuilder.model.grid.cable;
 
 import java.util.function.BiPredicate;
 
-import fwcd.circuitbuilder.model.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 
 public class CableColorEqualityChecker implements BiPredicate<Circuit1x1ComponentModel, Circuit1x1ComponentModel> {
 	@Override

@@ -1,5 +1,7 @@
 package fwcd.circuitbuilder.model;
 
+import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
+import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.logic.LogicEditorModel;
 
 /**

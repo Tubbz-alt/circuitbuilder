@@ -5,10 +5,10 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.util.NoSuchElementException;
 
-import fwcd.circuitbuilder.model.CircuitItemModel;
-import fwcd.circuitbuilder.model.CircuitItemVisitor;
-import fwcd.circuitbuilder.model.cable.CableModel;
-import fwcd.circuitbuilder.model.components.InverterModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
+import fwcd.circuitbuilder.model.grid.cable.CableModel;
+import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.view.grid.CircuitItemImageProvider;
