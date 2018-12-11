@@ -34,8 +34,9 @@ public class CircuitToolsPanel implements View {
 	private final CircuitTool[] tools;
 
 	public CircuitToolsPanel(CircuitGridModel model, CircuitGridContext context) {
-		tools = new CircuitTool[] { new Place1x1ItemTool<>(() -> new CableModel(context.getSelectedColor().get())),
-				new Place1x1ItemTool<>(InverterModel::new), new Place1x1ItemTool<>(LampModel::new),
+		tools = new CircuitTool[] {
+			new Place1x1ItemTool<>(() -> new CableModel(context.getSelectedColor().get())),
+			new Place1x1ItemTool<>(InverterModel::new), new Place1x1ItemTool<>(LampModel::new),
 			new Place1x1ItemTool<>(LeverModel::new),
 			new Place1x1ItemTool<>(TickingClockModel::new),
 			new PlaceLargeItemTool<>(XorModel::new),
