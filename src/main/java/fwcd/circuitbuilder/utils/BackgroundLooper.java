@@ -34,6 +34,10 @@ public class BackgroundLooper {
 		}, delayMs, delayMs);
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	public void stop() {
 		timer.cancel();
 	}
