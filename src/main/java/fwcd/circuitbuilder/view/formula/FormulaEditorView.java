@@ -1,6 +1,7 @@
 package fwcd.circuitbuilder.view.formula;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -21,7 +22,7 @@ public class FormulaEditorView implements View {
 		// TODO: Auto-completion is experimental
 		// editor.getModel().getCompletionProvider().set(new FormulaCompletionProvider(new MathematicalNotation()));
 		// editor.getController().getCompletionController().setHideOnSpace(false);
-		editor.getView().setFontSize(18);
+		editor.getView().setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 		editor.getView().setShowLineHighlight(false);
 		component.add(editor.getView().getComponent(), BorderLayout.CENTER);
 		

@@ -10,6 +10,7 @@ import fwcd.circuitbuilder.model.CircuitBuilderModel;
 import fwcd.circuitbuilder.view.formula.FormulaEditorView;
 import fwcd.circuitbuilder.view.grid.CircuitGridContext;
 import fwcd.circuitbuilder.view.grid.CircuitGridEditorView;
+import fwcd.circuitbuilder.view.logic.LogicEditorView;
 import fwcd.fructose.swing.View;
 
 /**
@@ -21,6 +22,7 @@ public class CircuitBuilderView implements View {
 	
 	private final CircuitGridEditorView gridEditor;
 	private final FormulaEditorView formulaEditor;
+	private final LogicEditorView logicEditor;
 	
 	// TODO: Serialization
 	
@@ -34,6 +36,9 @@ public class CircuitBuilderView implements View {
 		
 		gridEditor = new CircuitGridEditorView(model.getGrid(), new CircuitGridContext());
 		content.addTab("Grid Editor", gridEditor.getComponent());
+		
+		logicEditor = new LogicEditorView();
+		content.addTab("Logic Editor", logicEditor.getComponent());
 		
 		formulaEditor = new FormulaEditorView();
 		component.setBottomComponent(formulaEditor.getComponent());
