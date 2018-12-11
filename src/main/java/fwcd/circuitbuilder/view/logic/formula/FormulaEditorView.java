@@ -6,13 +6,14 @@ import java.awt.Font;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import fwcd.circuitbuilder.model.logic.LogicEditorModel;
 import fwcd.fructose.swing.View;
 import fwcd.palm.PalmEditor;
 
 public class FormulaEditorView implements View {
 	private final JPanel component;
 	
-	public FormulaEditorView() {
+	public FormulaEditorView(LogicEditorModel model) {
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		

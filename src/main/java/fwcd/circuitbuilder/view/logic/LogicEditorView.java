@@ -16,7 +16,7 @@ public class LogicEditorView implements View {
 		component.setResizeWeight(1);
 		context.runAfterLaunch(() -> component.setDividerLocation(0.9));
 		
-		FormulaEditorView formulaEditor = new FormulaEditorView();
+		FormulaEditorView formulaEditor = new FormulaEditorView(model);
 		component.setBottomComponent(formulaEditor.getComponent());
 	}
 	

@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.model.logic.ast;
+package fwcd.circuitbuilder.model.logic;
 
 import java.util.Map;
 import java.util.Set;
@@ -13,11 +13,11 @@ import fwcd.circuitbuilder.model.logic.parse.ParseTreeNode;
 import fwcd.fructose.exception.TodoException;
 import fwcd.fructose.parsers.StringParser;
 
-public class LogicASTParser implements StringParser<LogicExpression> {
+public class LogicExpressionParser implements StringParser<LogicExpression> {
 	private final OperatorPrecedenceParser opParser;
 	private final Map<String, LogicExpressionType> expressionTypes;
 	
-	public LogicASTParser(LogicNotation notation) {
+	public LogicExpressionParser(LogicNotation notation) {
 		assertUnaryOperatorsPrecedence(notation);
 		opParser = new OperatorPrecedenceParser(precedenceTableFrom(notation), unaryOperatorsFrom(notation));
 		expressionTypes = typeMapFrom(notation);
