@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.model.grid;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
@@ -37,12 +38,12 @@ public class CircuitGridModel {
 	}
 	
 	public boolean isCellEmpty(RelativePos pos) {
-		return cells.containsKey(pos) ? cells.get(pos).isEmpty() : true;
+		return cells.containsKey(pos) ? Objects.requireNonNull(cells.get(pos)).isEmpty() : true;
 	}
 	
 	public CircuitCellModel getCell(RelativePos pos) {
 		cells.putIfAbsent(pos, new CircuitCellModel(pos));
-		return cells.get(pos);
+		return Objects.requireNonNull(cells.get(pos));
 	}
 	
 	public Map<Direction, CircuitCellModel> getNeighbors(RelativePos pos) {
