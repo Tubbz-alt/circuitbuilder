@@ -1,11 +1,14 @@
 package fwcd.circuitbuilder.view;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
+import fwcd.circuitbuilder.view.utils.KeyUtils;
 import fwcd.fructose.swing.View;
 
 public class CircuitBuilderMenuBar implements View {
@@ -14,7 +17,7 @@ public class CircuitBuilderMenuBar implements View {
 	public CircuitBuilderMenuBar(CircuitBuilderView view, CircuitBuilderModel model) {
 		component = new JMenuBar();
 		component.add(menuOf("File",
-			itemOf("New Grid", () -> model.getGrid().clear())
+			itemOf("New Grid", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyUtils.CTRL_OR_META_DOWN_MASK), () -> model.getGrid().clear())
 		));
 	}
 	
