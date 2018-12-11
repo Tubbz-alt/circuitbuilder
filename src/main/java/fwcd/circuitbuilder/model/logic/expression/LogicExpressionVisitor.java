@@ -15,4 +15,6 @@ public interface LogicExpressionVisitor<T> {
 	default T visitImplication(Implication implication) { return visitExpression(implication); }
 	
 	default T visitNegation(Negation negation) { return visitExpression(negation); }
+	
+	default T visitBoolean(LogicBoolean bool) { return visitExpression(bool); }
 }

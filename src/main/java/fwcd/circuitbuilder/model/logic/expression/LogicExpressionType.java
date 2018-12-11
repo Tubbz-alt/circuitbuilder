@@ -2,6 +2,8 @@ package fwcd.circuitbuilder.model.logic.expression;
 
 import java.util.function.Function;
 
+import fwcd.circuitbuilder.model.logic.parse.ParseException;
+
 public enum LogicExpressionType {
 	CONJUNCTION(20, 2, in -> new Conjunction(in[0], in[1])),
 	DISJUNCTION(10, 2, in -> new Disjunction(in[0], in[1])),
@@ -20,6 +22,9 @@ public enum LogicExpressionType {
 	}
 	
 	public LogicExpression create(LogicExpression... inputs) {
+		if (inputs.length != inputCount) {
+			throw new ParseException(toString() + " expected " + inputCount + " parameters but got " + inputs.length);
+		}
 		return constructor.apply(inputs);
 	}
 	

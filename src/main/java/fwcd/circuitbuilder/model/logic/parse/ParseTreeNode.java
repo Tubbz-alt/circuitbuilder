@@ -30,6 +30,8 @@ public class ParseTreeNode implements TreeNode {
 		return new ParseTreeNode(token, Option.empty(), Option.empty());
 	}
 	
+	public Option<ParseTreeNode> getOperand() { return lhs; }
+	
 	public Option<ParseTreeNode> getLhs() { return lhs; }
 	
 	public Option<ParseTreeNode> getRhs() { return rhs; }
