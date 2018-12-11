@@ -1,6 +1,9 @@
 package fwcd.circuitbuilder.view.logic;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import fwcd.circuitbuilder.model.logic.LogicEditorModel;
@@ -17,9 +20,17 @@ public class LogicEditorView implements View {
 		component.setResizeWeight(1);
 		context.runAfterLaunch(() -> component.setDividerLocation(0.9));
 		
+		JPanel content = new JPanel();
+		content.setLayout(new BorderLayout());
+		
+		LogicEvaluatorView evaluator = new LogicEvaluatorView(model);
+		content.add(evaluator.getComponent(), BorderLayout.NORTH);
+		
 		TreePlotter plotter = new TreePlotter();
 		model.getExpression().listenAndFire(expr -> plotter.setTree(expr.orElseNull()));
-		component.setTopComponent(plotter.getComponent());
+		content.add(plotter.getComponent(), BorderLayout.CENTER);
+		
+		component.setTopComponent(content);
 		
 		FormulaEditorView formulaEditor = new FormulaEditorView(model);
 		component.setBottomComponent(formulaEditor.getComponent());
