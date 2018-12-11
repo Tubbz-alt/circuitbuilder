@@ -29,4 +29,9 @@ public class Conjunction implements LogicExpression {
 	public boolean evaluate() {
 		return left.evaluate() && right.evaluate();
 	}
+	
+	@Override
+	public String toString() {
+		return "AND";
+	}
 }

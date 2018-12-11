@@ -27,4 +27,9 @@ public class Negation implements LogicExpression {
 	public boolean evaluate() {
 		return !value.evaluate();
 	}
+	
+	@Override
+	public String toString() {
+		return "NOT";
+	}
 }

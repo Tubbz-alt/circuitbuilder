@@ -29,4 +29,9 @@ public class Implication implements LogicExpression {
 	public boolean evaluate() {
 		return !left.evaluate() || right.evaluate();
 	}
+	
+	@Override
+	public String toString() {
+		return "=>";
+	}
 }

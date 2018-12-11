@@ -29,4 +29,9 @@ public class Disjunction implements LogicExpression {
 	public boolean evaluate() {
 		return left.evaluate() || right.evaluate();
 	}
+	
+	@Override
+	public String toString() {
+		return "OR";
+	}
 }
