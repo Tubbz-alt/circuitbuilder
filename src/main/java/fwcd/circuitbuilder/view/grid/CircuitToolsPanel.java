@@ -47,7 +47,6 @@ public class CircuitToolsPanel implements View {
 		view.setFloatable(false);
 		
 		SelectedButtonPanel itemsPanel = new SelectedButtonPanel(false, Color.LIGHT_GRAY);
-		itemsPanel.setFolding(true);
 		
 		for (CircuitTool tool : tools) {
 			JButton button = tool.getImage()
@@ -60,7 +59,6 @@ public class CircuitToolsPanel implements View {
 		view.add(itemsPanel.getComponent());
 		
 		SelectedButtonPanel colorsPanel = new SelectedButtonPanel(false, Color.LIGHT_GRAY);
-		colorsPanel.setFolding(true);
 		
 		for (CableColor color : CableColor.values()) {
 			Renderable circle = (g2d, canvasSize) -> {
