@@ -1,10 +1,8 @@
-package fwcd.circuitbuilder.view.formula;
+package fwcd.circuitbuilder.view.logic.formula;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -25,18 +23,6 @@ public class FormulaEditorView implements View {
 		editor.getView().setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 		editor.getView().setShowLineHighlight(false);
 		component.add(editor.getView().getComponent(), BorderLayout.CENTER);
-		
-		JPanel buttons = new JPanel();
-		buttons.setLayout(new BoxLayout(buttons, BoxLayout.Y_AXIS));
-		buttons.add(buttonOf("Open in Grid Editor", () -> { /*TODO*/ }));
-		buttons.add(buttonOf("Open in Graph Editor", () -> { /*TODO*/ }));
-		component.add(buttons, BorderLayout.EAST);
-	}
-	
-	private JButton buttonOf(String name, Runnable action) {
-		JButton button = new JButton(name);
-		button.addActionListener(e -> action.run());
-		return button;
 	}
 	
 	@Override

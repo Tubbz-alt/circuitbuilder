@@ -1,47 +1,34 @@
 package fwcd.circuitbuilder.view;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JComponent;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
-import fwcd.circuitbuilder.view.formula.FormulaEditorView;
 import fwcd.circuitbuilder.view.grid.CircuitGridContext;
 import fwcd.circuitbuilder.view.grid.CircuitGridEditorView;
 import fwcd.circuitbuilder.view.logic.LogicEditorView;
 import fwcd.fructose.swing.View;
 
 /**
- * The main application component that contains
- * the circuit editor, sidebar and more.
+ * The main application component that contains the circuit editor, sidebar and
+ * more.
  */
 public class CircuitBuilderView implements View {
-	private final JSplitPane component;
+	private final JTabbedPane component;
 	
 	private final CircuitGridEditorView gridEditor;
-	private final FormulaEditorView formulaEditor;
 	private final LogicEditorView logicEditor;
 	
 	// TODO: Serialization
 	
 	public CircuitBuilderView(CircuitBuilderModel model, CircuitBuilderAppContext context) {
-		component = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		component.setResizeWeight(1);
-		context.runAfterLaunch(() -> component.setDividerLocation(0.9));
-		
-		JTabbedPane content = new JTabbedPane();
-		component.setTopComponent(content);
+		component = new JTabbedPane();
 		
 		gridEditor = new CircuitGridEditorView(model.getGrid(), new CircuitGridContext());
-		content.addTab("Grid Editor", gridEditor.getComponent());
+		component.addTab("Grid Editor", gridEditor.getComponent());
 		
-		logicEditor = new LogicEditorView();
-		content.addTab("Logic Editor", logicEditor.getComponent());
-		
-		formulaEditor = new FormulaEditorView();
-		component.setBottomComponent(formulaEditor.getComponent());
+		logicEditor = new LogicEditorView(model.getLogicEditor(), context);
+		component.addTab("Logic Editor", logicEditor.getComponent());
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view.formula;
+package fwcd.circuitbuilder.view.logic.formula;
 
 import java.util.List;
 import java.util.stream.Collectors;
