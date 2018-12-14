@@ -9,7 +9,9 @@ public enum LogicExpressionType {
 	DISJUNCTION(10, 2, in -> new Disjunction(in[0], in[1])),
 	EQUIVALENCE(40, 2, in -> new Equivalence(in[0], in[1])),
 	IMPLICATION(30, 2, in -> new Implication(in[0], in[1])),
-	NEGATION(100, 1, in -> new Negation(in[0]));
+	NEGATION(100, 1, in -> new Negation(in[0])),
+	TRUE(Integer.MAX_VALUE, 0, in -> LogicBoolean.of(true)),
+	FALSE(Integer.MAX_VALUE, 0, in -> LogicBoolean.of(false));
 	
 	private final Function<LogicExpression[], LogicExpression> constructor;
 	private final int inputCount;

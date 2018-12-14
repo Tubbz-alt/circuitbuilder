@@ -7,7 +7,7 @@ import org.junit.Test;
 public class GraycodeTest {
 	@Test
 	public void testGraycode() {
-		assertArrayEquals(new long[] {
+		assertArrayEquals(new int[] {
 			0b0,
 			0b1,
 			0b11,
