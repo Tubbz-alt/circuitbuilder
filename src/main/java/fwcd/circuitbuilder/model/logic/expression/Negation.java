@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.model.logic.expression;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A logical NOT.
@@ -24,8 +25,8 @@ public class Negation implements LogicExpression {
 	}
 	
 	@Override
-	public boolean evaluate() {
-		return !value.evaluate();
+	public boolean evaluate(Map<String, Boolean> inputs) {
+		return !value.evaluate(inputs);
 	}
 	
 	@Override

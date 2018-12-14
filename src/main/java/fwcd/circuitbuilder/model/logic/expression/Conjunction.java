@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.model.logic.expression;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A logical AND.
@@ -26,8 +27,8 @@ public class Conjunction implements LogicExpression {
 	}
 	
 	@Override
-	public boolean evaluate() {
-		return left.evaluate() && right.evaluate();
+	public boolean evaluate(Map<String, Boolean> inputs) {
+		return left.evaluate(inputs) && right.evaluate(inputs);
 	}
 	
 	@Override

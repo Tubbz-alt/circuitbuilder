@@ -10,6 +10,8 @@ public interface LogicExpressionVisitor<T> {
 	
 	default T visitDisjunction(Disjunction disjunction) { return visitExpression(disjunction); }
 	
+	default T visitExclusiveDisjunction(ExclusiveDisjunction xor) { return visitExpression(xor); }
+	
 	default T visitEquivalence(Equivalence equivalence) { return visitExpression(equivalence); }
 	
 	default T visitImplication(Implication implication) { return visitExpression(implication); }

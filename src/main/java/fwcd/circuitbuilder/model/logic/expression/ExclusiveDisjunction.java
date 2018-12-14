@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A logical OR.
+ * A logical XOR.
  */
-public class Disjunction implements LogicExpression {
+public class ExclusiveDisjunction implements LogicExpression {
 	private final LogicExpression left;
 	private final LogicExpression right;
 	
-	public Disjunction(LogicExpression left, LogicExpression right) {
+	public ExclusiveDisjunction(LogicExpression left, LogicExpression right) {
 		this.left = left;
 		this.right = right;
 	}
@@ -23,16 +23,16 @@ public class Disjunction implements LogicExpression {
 	
 	@Override
 	public <T> T accept(LogicExpressionVisitor<T> visitor) {
-		return visitor.visitDisjunction(this);
+		return visitor.visitExclusiveDisjunction(this);
 	}
 	
 	@Override
 	public boolean evaluate(Map<String, Boolean> inputs) {
-		return left.evaluate(inputs) || right.evaluate(inputs);
+		return left.evaluate(inputs) ^ right.evaluate(inputs);
 	}
 	
 	@Override
 	public String toString() {
-		return "OR";
+		return "XOR";
 	}
 }

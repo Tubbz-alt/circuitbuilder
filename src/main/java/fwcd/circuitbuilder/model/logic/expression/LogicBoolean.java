@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.model.logic.expression;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A constant logic expression.
@@ -37,7 +38,7 @@ public class LogicBoolean implements LogicExpression {
 	}
 	
 	@Override
-	public boolean evaluate() {
+	public boolean evaluate(Map<String, Boolean> inputs) {
 		return value;
 	}
 	

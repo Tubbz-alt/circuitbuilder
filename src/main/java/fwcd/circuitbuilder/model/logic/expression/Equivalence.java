@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.model.logic.expression;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The logical equivalence operator. Evaluates to true if both operands have the
@@ -27,8 +28,8 @@ public class Equivalence implements LogicExpression {
 	}
 	
 	@Override
-	public boolean evaluate() {
-		return left.evaluate() == right.evaluate();
+	public boolean evaluate(Map<String, Boolean> inputs) {
+		return left.evaluate(inputs) == right.evaluate(inputs);
 	}
 	
 	@Override
