@@ -61,7 +61,8 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 			int skipped = start - matchedChars;
 			// TODO: This relies on the matcher evaluating in the correct order
 			if (skipped > 0) {
-				tokens.accept(new ParseToken(ParseTokenType.VALUE, raw.substring(matchedChars, start)));
+				String skippedString = raw.substring(matchedChars, start);
+				tokens.accept(new ParseToken(typeOfStringToken(skippedString), skippedString));
 			}
 			// TODO: Deal with empty tokens
 			// TODO: Parentheses
@@ -73,15 +74,24 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 			matchedChars = end;
 		}
 		if (matchedChars < raw.length()) {
-			tokens.accept(new ParseToken(ParseTokenType.VALUE, raw.substring(matchedChars)));
+			String remainingString = raw.substring(matchedChars);
+			tokens.accept(new ParseToken(typeOfStringToken(remainingString), remainingString));
 		}
 		return tokens.build()
 			.flatMap(it -> it.isOperator()
 				? Stream.of(it)
 				: Stream.of(it.getValue().trim())
 					.filter(str -> !str.isEmpty())
-					.map(str -> new ParseToken(ParseTokenType.VALUE, str)))
+					.map(str -> new ParseToken(it.getType(), str)))
 			.collect(Collectors.toList());
+	}
+	
+	private ParseTokenType typeOfStringToken(String raw) {
+		if (raw.equals("0") || raw.equals("1")) {
+			return ParseTokenType.CONSTANT;
+		} else {
+			return ParseTokenType.IDENTIFIER;
+		}
 	}
 	
 	@Override
@@ -107,7 +117,8 @@ public class OperatorPrecedenceParser implements StringParser<ParseTreeNode> {
 		
 		for (ParseToken token : tokens) {
 			switch (token.getType()) {
-				case VALUE:
+				case CONSTANT:
+				case IDENTIFIER:
 					output.push(token);
 					while (!unaryOperators.isEmpty()) {
 						output.push(unaryOperators.pop());

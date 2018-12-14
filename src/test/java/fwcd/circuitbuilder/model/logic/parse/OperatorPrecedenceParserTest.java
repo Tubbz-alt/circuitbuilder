@@ -44,7 +44,7 @@ public class OperatorPrecedenceParserTest {
 		);
 	}
 	
-	private ParseTreeNode lf(String leafValue) { return ParseTreeNode.ofLeaf(new ParseToken(ParseTokenType.VALUE, leafValue)); }
+	private ParseTreeNode lf(String leafValue) { return ParseTreeNode.ofLeaf(new ParseToken(ParseTokenType.CONSTANT, leafValue)); }
 	
 	private ParseTreeNode op(String value, ParseTreeNode operand) { return ParseTreeNode.ofUnary(new ParseToken(ParseTokenType.UNARY_OPERATOR, value), operand); }
 	

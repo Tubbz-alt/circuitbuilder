@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import fwcd.circuitbuilder.model.logic.expression.LogicBoolean;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpressionType;
+import fwcd.circuitbuilder.model.logic.expression.LogicVariable;
 import fwcd.circuitbuilder.model.logic.notation.LogicNotation;
 import fwcd.circuitbuilder.model.logic.notation.OperatorPattern;
 import fwcd.circuitbuilder.model.logic.parse.OperatorPrecedenceParser;
@@ -38,14 +39,15 @@ public class LogicExpressionParser implements StringParser<LogicExpression> {
 	private LogicExpression parseExpression(ParseTreeNode tree) {
 		ParseToken token = tree.getToken();
 		switch (token.getType()) {
-			case VALUE: return parseLogicConstant(token);
+			case CONSTANT: return parseLogicConstant(token);
+			case IDENTIFIER: return parseLogicIdentifier(token);
 			case BINARY_OPERATOR: return parseBinaryOperator(tree);
 			case UNARY_OPERATOR: return parseUnaryOperator(tree);
 			default: throw new ParseException(token.getType().toString() + " is not a valid logic expression");
 		}
 	}
 	
-	private LogicBoolean parseLogicConstant(ParseToken token) {
+	private LogicExpression parseLogicConstant(ParseToken token) {
 		String raw = token.getValue();
 		if (raw.equalsIgnoreCase("true")) {
 			return LogicBoolean.of(true);
@@ -79,6 +81,10 @@ public class LogicExpressionParser implements StringParser<LogicExpression> {
 		}
 		ParseTreeNode operand = node.getOperand().orElseThrow(() -> new ParseException(raw + " has no operand"));
 		return expressionType.create("", parseExpression(operand));
+	}
+	
+	private LogicExpression parseLogicIdentifier(ParseToken token) {
+		return new LogicVariable(token.getValue());
 	}
 	
 	private Set<String> unaryOperatorsFrom(LogicNotation notation) {

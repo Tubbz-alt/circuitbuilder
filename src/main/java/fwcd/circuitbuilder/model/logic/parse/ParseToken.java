@@ -1,7 +1,6 @@
 package fwcd.circuitbuilder.model.logic.parse;
 
 public class ParseToken {
-	public static final ParseToken END = new ParseToken(ParseTokenType.END, "");
 	private final String value;
 	private final ParseTokenType type;
 	
@@ -28,5 +27,5 @@ public class ParseToken {
 	}
 	
 	@Override
-	public String toString() { return (type == ParseTokenType.VALUE) ? ("'" + value + "'") : value; }
+	public String toString() { return (type == ParseTokenType.CONSTANT) ? ("'" + value + "'") : value; }
 }

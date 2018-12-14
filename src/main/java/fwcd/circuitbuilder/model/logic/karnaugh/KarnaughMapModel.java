@@ -3,9 +3,12 @@ package fwcd.circuitbuilder.model.logic.karnaugh;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
+import fwcd.circuitbuilder.model.logic.expression.LogicVariable;
+import fwcd.circuitbuilder.model.logic.expression.LogicVariableFinder;
 import fwcd.circuitbuilder.model.utils.BoolUtils;
 import fwcd.circuitbuilder.model.utils.Graycode;
 
@@ -15,6 +18,12 @@ public class KarnaughMapModel {
 	private final LogicExpression expression;
 	private final int xAxisBitCount;
 	private final int yAxisBitCount;
+	
+	public KarnaughMapModel(LogicExpression expression) {
+		this(expression, expression.accept(new LogicVariableFinder())
+			.map(LogicVariable::getName)
+			.collect(Collectors.toList()));
+	}
 	
 	public KarnaughMapModel(LogicExpression expression, List<String> inputVariables) {
 		this.inputVariables = inputVariables;
@@ -59,6 +68,11 @@ public class KarnaughMapModel {
 	}
 	
 	public boolean getCell(int x, int y) {
+		if (y < 0 || y >= cells.length) {
+			throw new IndexOutOfBoundsException("Cell y index " + y + " not in bounds [0, " + cells.length + ")");
+		} else if (x < 0 || x >= cells[0].length) {
+			throw new IndexOutOfBoundsException("Cell x index " + x + " not in bounds [0, " + cells[0].length + ")");
+		}
 		return cells[y][x];
 	}
 	

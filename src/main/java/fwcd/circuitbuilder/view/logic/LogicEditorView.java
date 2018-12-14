@@ -7,8 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import fwcd.circuitbuilder.model.logic.LogicEditorModel;
+import fwcd.circuitbuilder.model.logic.karnaugh.KarnaughMapModel;
 import fwcd.circuitbuilder.view.CircuitBuilderAppContext;
 import fwcd.circuitbuilder.view.logic.formula.FormulaEditorView;
+import fwcd.circuitbuilder.view.logic.karnaugh.KarnaughMapView;
 import fwcd.fructose.swing.TreePlotter;
 import fwcd.fructose.swing.View;
 
@@ -26,9 +28,11 @@ public class LogicEditorView implements View {
 		LogicEvaluatorView evaluator = new LogicEvaluatorView(model);
 		content.add(evaluator.getComponent(), BorderLayout.NORTH);
 		
-		TreePlotter plotter = new TreePlotter();
-		model.getExpression().listenAndFire(expr -> plotter.setTree(expr.orElseNull()));
-		content.add(plotter.getComponent(), BorderLayout.CENTER);
+		// TreePlotter plotter = new TreePlotter();
+		// model.getExpression().listenAndFire(expr -> plotter.setTree(expr.orElseNull()));
+		// content.add(plotter.getComponent(), BorderLayout.CENTER);
+		
+		model.getExpression().listen(it -> it.ifPresent(expr -> content.add(new KarnaughMapView(new KarnaughMapModel(expr)).getComponent(), BorderLayout.CENTER)));
 		
 		component.setTopComponent(content);
 		
