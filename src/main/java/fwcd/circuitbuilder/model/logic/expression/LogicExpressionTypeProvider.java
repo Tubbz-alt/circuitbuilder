@@ -35,4 +35,14 @@ public class LogicExpressionTypeProvider implements LogicExpressionVisitor<Logic
 	public LogicExpressionType visitNegation(Negation negation) {
 		return LogicExpressionType.NEGATION;
 	}
+	
+	@Override
+	public LogicExpressionType visitExclusiveDisjunction(ExclusiveDisjunction xor) {
+		return LogicExpressionType.EXCLUSIVE_DISJUNCTION;
+	}
+	
+	@Override
+	public LogicExpressionType visitVariable(LogicVariable variable) {
+		return LogicExpressionType.VARIABLE;
+	}
 }

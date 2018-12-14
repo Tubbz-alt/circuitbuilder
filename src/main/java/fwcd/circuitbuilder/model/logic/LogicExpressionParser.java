@@ -68,7 +68,7 @@ public class LogicExpressionParser implements StringParser<LogicExpression> {
 		}
 		ParseTreeNode lhs = node.getLhs().orElseThrow(() -> new ParseException(raw + " has no left-hand side"));
 		ParseTreeNode rhs = node.getRhs().orElseThrow(() -> new ParseException(raw + " has no right-hand side"));
-		return expressionType.create(parseExpression(lhs), parseExpression(rhs));
+		return expressionType.create("", parseExpression(lhs), parseExpression(rhs));
 	}
 	
 	private LogicExpression parseUnaryOperator(ParseTreeNode node) {
@@ -78,7 +78,7 @@ public class LogicExpressionParser implements StringParser<LogicExpression> {
 			throw new ParseException("Invalid unary operator: " + node.getToken().getValue());
 		}
 		ParseTreeNode operand = node.getOperand().orElseThrow(() -> new ParseException(raw + " has no operand"));
-		return expressionType.create(parseExpression(operand));
+		return expressionType.create("", parseExpression(operand));
 	}
 	
 	private Set<String> unaryOperatorsFrom(LogicNotation notation) {

@@ -23,7 +23,7 @@ public class LogicEditorModel {
 					expression.set(Option.of(parser.parse(raw)));
 					errorMessage.set(Option.empty());
 				} catch (ParseException e) {
-					errorMessage.set(Option.of(e.getParseMessage()));
+					errorMessage.set(Option.of(e.getMessage()));
 				}
 			}
 		});
