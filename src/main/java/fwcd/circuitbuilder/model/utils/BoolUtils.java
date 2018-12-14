@@ -72,7 +72,7 @@ public class BoolUtils {
 	}
 	
 	public static int[] binaryToBits(int binary) {
-		return binaryToBits(Math.max(0, Integer.highestOneBit(binary) - 1));
+		return binaryToBits(binary, Math.max(0, Integer.highestOneBit(binary) - 1));
 	}
 	
 	public static boolean[] binaryToBooleans(int binary, int bitCount) {
@@ -83,8 +83,8 @@ public class BoolUtils {
 		return toBooleans(binaryToBits(binary));
 	}
 	
-	public static int concatBinary(int a, int b, int aBitCount) {
-		return (a << aBitCount) | b;
+	public static int concatBinary(int a, int b, int bBitCount) {
+		return (a << bBitCount) | b;
 	}
 	
 	public static int[] concat(int[] a, int[] b) {

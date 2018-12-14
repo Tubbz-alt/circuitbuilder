@@ -22,5 +22,6 @@ public class BoolUtilsTest {
 		assertEquals(0b10110, BoolUtils.toBinary(1, 0, 1, 1, 0));
 		assertArrayEquals(new int[] {1, 0, 1}, BoolUtils.binaryToBits(0b101));
 		assertArrayEquals(new int[] {1, 0, 1, 1}, BoolUtils.concat(new int[] {1, 0}, new int[] {1, 1}));
+		assertEquals(0b110010, BoolUtils.concatBinary(0b11, 0b10, 4));
 	}
 }

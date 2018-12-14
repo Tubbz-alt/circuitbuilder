@@ -21,8 +21,8 @@ public class KarnaughMapModel {
 		this.expression = expression;
 		
 		int inputCount = inputVariables.size();
-		xAxisBitCount = inputCount / 2;
-		yAxisBitCount = inputCount - xAxisBitCount;
+		yAxisBitCount = inputCount / 2;
+		xAxisBitCount = inputCount - yAxisBitCount;
 		
 		int rowCount = getRowCount();
 		int colCount = getColCount();
@@ -39,7 +39,7 @@ public class KarnaughMapModel {
 	
 	public IntStream getYAxisCode() { return Graycode.nBits(yAxisBitCount); }
 	
-	public int getCode(int x, int y) { return BoolUtils.concatBinary(Graycode.ofBinary(x), Graycode.ofBinary(y), xAxisBitCount); }
+	public int getCode(int x, int y) { return BoolUtils.concatBinary(Graycode.ofBinary(x), Graycode.ofBinary(y), yAxisBitCount); }
 	
 	public int getXAxisBitCount() { return xAxisBitCount; }
 	
@@ -50,7 +50,7 @@ public class KarnaughMapModel {
 	public int getColCount() { return 1 << xAxisBitCount; }
 	
 	private boolean computeCell(int x, int y) {
-		boolean[] inputs = BoolUtils.binaryToBooleans(getCode(x, y), xAxisBitCount + yAxisBitCount);
+		boolean[] inputs = BoolUtils.binaryToBooleans(getCode(x, y), inputVariables.size());
 		Map<String, Boolean> inputMap = new HashMap<>();
 		for (int i = 0; i < inputs.length; i++) {
 			inputMap.put(inputVariables.get(i), inputs[i]);
