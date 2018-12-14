@@ -63,12 +63,20 @@ public class BoolUtils {
 		return toBinary(toBooleans(bits));
 	}
 	
-	public static int[] binaryToBits(int binary) {
-		int[] bits = new int[Math.max(0, Integer.highestOneBit(binary) - 1)];
+	public static int[] binaryToBits(int binary, int bitCount) {
+		int[] bits = new int[bitCount];
 		for (int i = 0; i < bits.length; i++) {
 			bits[(bits.length - 1) - i] = (binary >> i) & 1;
 		}
 		return bits;
+	}
+	
+	public static int[] binaryToBits(int binary) {
+		return binaryToBits(Math.max(0, Integer.highestOneBit(binary) - 1));
+	}
+	
+	public static boolean[] binaryToBooleans(int binary, int bitCount) {
+		return toBooleans(binaryToBits(binary, bitCount));
 	}
 	
 	public static boolean[] binaryToBooleans(int binary) {
