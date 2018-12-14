@@ -8,8 +8,8 @@ import java.util.Map;
  * A constant logic expression.
  */
 public class LogicBoolean implements LogicExpression {
-	private static final LogicBoolean TRUE = new LogicBoolean(true);
-	private static final LogicBoolean FALSE = new LogicBoolean(false);
+	public static final LogicBoolean TRUE = new LogicBoolean(true);
+	public static final LogicBoolean FALSE = new LogicBoolean(false);
 	private final boolean value;
 	
 	private LogicBoolean(boolean value) {
