@@ -22,6 +22,7 @@ public class KarnaughMapModel {
 	public KarnaughMapModel(LogicExpression expression) {
 		this(expression, expression.accept(new LogicVariableFinder())
 			.map(LogicVariable::getName)
+			.distinct()
 			.collect(Collectors.toList()));
 	}
 	
