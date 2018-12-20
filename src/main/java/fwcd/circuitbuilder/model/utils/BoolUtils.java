@@ -1,6 +1,9 @@
 package fwcd.circuitbuilder.model.utils;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -121,5 +124,16 @@ public class BoolUtils {
 	
 	public static int toBit(boolean value) {
 		return value ? 1 : 0;
+	}
+	
+	public static <T> Map<T, Boolean> toMap(List<? extends T> names, boolean... bools) {
+		Map<T, Boolean> result = new HashMap<>();
+		if (bools.length != names.size()) {
+			throw new IllegalArgumentException("Length of names list (" + names.size() + ") does not match length of bools (" + bools.length + ")");
+		}
+		for (int i = 0; i < bools.length; i++) {
+			result.put(names.get(i), bools[i]);
+		}
+		return result;
 	}
 }
