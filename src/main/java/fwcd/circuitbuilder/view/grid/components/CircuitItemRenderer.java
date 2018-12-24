@@ -11,7 +11,6 @@ import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.Direction;
-import fwcd.circuitbuilder.view.grid.CircuitItemImageProvider;
 import fwcd.fructose.Option;
 import fwcd.fructose.Unit;
 
@@ -22,11 +21,18 @@ public class CircuitItemRenderer implements CircuitItemVisitor<Unit> {
 	private final Graphics2D g2d;
 	private final AbsolutePos pos;
 	private final int unitSize;
+	private final CircuitItemVisitor<Option<Image>> imageProvider;
 	
-	public CircuitItemRenderer(Graphics2D g2d, AbsolutePos pos, int unitSize) {
+	public CircuitItemRenderer(
+		Graphics2D g2d,
+		AbsolutePos pos,
+		int unitSize,
+		CircuitItemVisitor<Option<Image>> imageProvider
+	) {
 		this.g2d = g2d;
 		this.pos = pos;
 		this.unitSize = unitSize;
+		this.imageProvider = imageProvider;
 	}
 	
 	@Override
@@ -65,7 +71,7 @@ public class CircuitItemRenderer implements CircuitItemVisitor<Unit> {
 	}
 	
 	private Image imageOf(CircuitItemModel item) {
-		Option<Image> image = item.accept(new CircuitItemImageProvider());
+		Option<Image> image = item.accept(imageProvider);
 		if (image.isPresent()) {
 			return image.unwrap();
 		} else {

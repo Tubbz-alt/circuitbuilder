@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.view.grid;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableColor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
@@ -34,12 +36,14 @@ public class CircuitToolsPanel implements View {
 	private final CircuitTool[] tools;
 
 	public CircuitToolsPanel(CircuitGridModel model, CircuitGridContext context) {
+		CircuitItemVisitor<Option<Image>> imageProvider = context.getSelectedTheme().get().getItemImageProvider();
 		tools = new CircuitTool[] {
-			new Place1x1ItemTool<>(() -> new CableModel(context.getSelectedColor().get())),
-			new Place1x1ItemTool<>(InverterModel::new), new Place1x1ItemTool<>(LampModel::new),
-			new Place1x1ItemTool<>(LeverModel::new),
-			new Place1x1ItemTool<>(TickingClockModel::new),
-			new PlaceLargeItemTool<>(XorModel::new),
+			new Place1x1ItemTool<>(() -> new CableModel(context.getSelectedColor().get()), imageProvider),
+			new Place1x1ItemTool<>(InverterModel::new, imageProvider),
+			new Place1x1ItemTool<>(LampModel::new, imageProvider),
+			new Place1x1ItemTool<>(LeverModel::new, imageProvider),
+			new Place1x1ItemTool<>(TickingClockModel::new, imageProvider),
+			new PlaceLargeItemTool<>(XorModel::new, imageProvider),
 			new Screwdriver()
 		};
 		
