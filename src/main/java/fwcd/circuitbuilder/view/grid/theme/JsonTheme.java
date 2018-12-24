@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.view.grid.theme;
 
 import java.awt.Image;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -29,7 +30,11 @@ public class JsonTheme implements CircuitGridTheme {
 			throw new UncheckedIOException(e);
 		}
 		
-		itemImageProvider = new JsonItemImageProvider(resourcePath, data.getItemImages());
+		itemImageProvider = new JsonItemImageProvider(findParent(resourcePath), data.getItemImages());
+	}
+	
+	private String findParent(String resourcePath) {
+		return resourcePath.substring(0, resourcePath.lastIndexOf(File.separator));
 	}
 	
 	@Override
