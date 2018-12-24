@@ -13,9 +13,14 @@ import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableColor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
+import fwcd.circuitbuilder.model.grid.components.AndModel;
+import fwcd.circuitbuilder.model.grid.components.EqvModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
+import fwcd.circuitbuilder.model.grid.components.NandModel;
+import fwcd.circuitbuilder.model.grid.components.NorModel;
+import fwcd.circuitbuilder.model.grid.components.OrModel;
 import fwcd.circuitbuilder.model.grid.components.TickingClockModel;
 import fwcd.circuitbuilder.model.grid.components.XorModel;
 import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
@@ -43,7 +48,12 @@ public class CircuitToolsPanel implements View {
 			new Place1x1ItemTool<>(LampModel::new, imageProvider),
 			new Place1x1ItemTool<>(LeverModel::new, imageProvider),
 			new Place1x1ItemTool<>(TickingClockModel::new, imageProvider),
+			new PlaceLargeItemTool<>(OrModel::new, imageProvider),
+			new PlaceLargeItemTool<>(AndModel::new, imageProvider),
 			new PlaceLargeItemTool<>(XorModel::new, imageProvider),
+			new PlaceLargeItemTool<>(EqvModel::new, imageProvider),
+			new PlaceLargeItemTool<>(NandModel::new, imageProvider),
+			new PlaceLargeItemTool<>(NorModel::new, imageProvider),
 			new Screwdriver()
 		};
 		

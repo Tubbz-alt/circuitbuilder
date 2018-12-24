@@ -12,6 +12,11 @@
 		"output": "out.png",
 		"clockOn": "clock.png",
 		"clockOff": "clock.png",
-		"xor": "xor.png"
+		"xor": "xor.png",
+		"eqv": "eqv.png",
+		"and": "and.png",
+		"or": "or.png",
+		"nand": "nand.png",
+		"nor": "nor.png"
 	}
 }
