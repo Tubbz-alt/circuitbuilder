@@ -3,7 +3,11 @@
 		"classic": {
 			"name": "Classic",
 			"path": "classic/theme.json"
+		},
+		"rectangular": {
+			"name": "Rectangular",
+			"path": "rectangular/theme.json"
 		}
 	},
-	"defaultTheme": "classic"
+	"defaultTheme": "rectangular"
 }

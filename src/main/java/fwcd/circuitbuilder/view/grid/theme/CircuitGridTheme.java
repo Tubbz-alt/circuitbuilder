@@ -1,5 +1,6 @@
 package fwcd.circuitbuilder.view.grid.theme;
 
+import java.awt.Color;
 import java.awt.Image;
 
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
@@ -12,4 +13,6 @@ public interface CircuitGridTheme {
 	String getName();
 	
 	CircuitItemVisitor<Option<Image>> getItemImageProvider();
+	
+	Color getGridLineColor();
 }

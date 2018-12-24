@@ -1,5 +1,6 @@
 package fwcd.circuitbuilder.view.grid.theme.json;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,11 +22,12 @@ import fwcd.fructose.Option;
 public class JsonTheme implements CircuitGridTheme {
 	private static final Gson GSON = new Gson();
 	private final String name;
-	private final JsonThemeData data;
+	private final Color gridLineColor;
 	private final JsonItemImageProvider itemImageProvider;
 	
 	public JsonTheme(String name, String resourcePath) {
 		this.name = name;
+		JsonThemeData data;
 		
 		try (InputStream stream = JsonTheme.class.getResourceAsStream(resourcePath);
 			Reader reader = new BufferedReader(new InputStreamReader(stream))) {
@@ -35,6 +37,9 @@ public class JsonTheme implements CircuitGridTheme {
 		}
 		
 		itemImageProvider = new JsonItemImageProvider(findParent(resourcePath), data.getItemImages());
+		
+		double opacity = data.getGridLineOpacity();
+		gridLineColor = new Color(0, 0, 0, (float) opacity);
 	}
 	
 	private String findParent(String resourcePath) {
@@ -49,5 +54,10 @@ public class JsonTheme implements CircuitGridTheme {
 	@Override
 	public String getName() {
 		return name;
+	}
+	
+	@Override
+	public Color getGridLineColor() {
+		return gridLineColor;
 	}
 }

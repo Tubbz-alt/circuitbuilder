@@ -7,8 +7,11 @@ import java.util.Map;
  */
 public class JsonThemeData {
 	private Map<String, String> itemImages;
+	private double gridLineOpacity;
 	
 	protected JsonThemeData() {}
 	
 	public Map<String, String> getItemImages() { return itemImages; }
+	
+	public double getGridLineOpacity() { return gridLineOpacity; }
 }

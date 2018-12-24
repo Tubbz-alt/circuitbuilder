@@ -1,4 +1,5 @@
 {
+	"gridLineOpacity": 0.3,
 	"itemImages": {
 		"cable": "cable.png",
 		"input": "inIcon.png",

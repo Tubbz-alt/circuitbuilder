@@ -1,0 +1,17 @@
+{
+	"gridLineOpacity": 0,
+	"itemImages": {
+		"cable": "cable.png",
+		"input": "in.png",
+		"inverterOn": "inverter.png",
+		"inverterOff": "inverter.png",
+		"lampOn": "lampOn.png",
+		"lampOff": "lampOff.png",
+		"leverOn": "one.png",
+		"leverOff": "zero.png",
+		"output": "out.png",
+		"clockOn": "clock.png",
+		"clockOff": "clock.png",
+		"xor": "xor.png"
+	}
+}

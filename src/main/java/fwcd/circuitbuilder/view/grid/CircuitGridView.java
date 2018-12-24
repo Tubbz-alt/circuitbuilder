@@ -98,7 +98,7 @@ public class CircuitGridView implements View {
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
-		g2d.setColor(Color.GRAY);
+		g2d.setColor(context.getSelectedTheme().get().getGridLineColor());
 		
 		for (int absX = 0; absX < canvasSize.getWidth(); absX += unitSize) {
 			for (int absY = 0; absY < canvasSize.getHeight(); absY += unitSize) {
