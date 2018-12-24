@@ -1,0 +1,9 @@
+{
+	"themes": {
+		"classic": {
+			"name": "Classic",
+			"path": "classic/theme.json"
+		}
+	},
+	"defaultTheme": "classic"
+}

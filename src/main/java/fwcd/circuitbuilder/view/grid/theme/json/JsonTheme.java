@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view.grid.theme;
+package fwcd.circuitbuilder.view.grid.theme.json;
 
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -12,6 +12,7 @@ import java.io.UncheckedIOException;
 import com.google.gson.Gson;
 
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
+import fwcd.circuitbuilder.view.grid.theme.CircuitGridTheme;
 import fwcd.fructose.Option;
 
 /**
@@ -19,10 +20,13 @@ import fwcd.fructose.Option;
  */
 public class JsonTheme implements CircuitGridTheme {
 	private static final Gson GSON = new Gson();
+	private final String name;
 	private final JsonThemeData data;
 	private final JsonItemImageProvider itemImageProvider;
 	
-	public JsonTheme(String resourcePath) {
+	public JsonTheme(String name, String resourcePath) {
+		this.name = name;
+		
 		try (InputStream stream = JsonTheme.class.getResourceAsStream(resourcePath);
 			Reader reader = new BufferedReader(new InputStreamReader(stream))) {
 			data = GSON.fromJson(reader, JsonThemeData.class);
@@ -40,5 +44,10 @@ public class JsonTheme implements CircuitGridTheme {
 	@Override
 	public CircuitItemVisitor<Option<Image>> getItemImageProvider() {
 		return itemImageProvider;
+	}
+	
+	@Override
+	public String getName() {
+		return name;
 	}
 }

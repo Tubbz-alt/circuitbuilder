@@ -1,4 +1,4 @@
-package fwcd.circuitbuilder.view.grid.theme;
+package fwcd.circuitbuilder.view.grid.theme.json;
 
 import java.util.Map;
 

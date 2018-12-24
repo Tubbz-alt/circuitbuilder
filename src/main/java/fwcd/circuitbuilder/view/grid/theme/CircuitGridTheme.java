@@ -9,5 +9,7 @@ import fwcd.fructose.Option;
  * A theme containing item images for a circuit grid.
  */
 public interface CircuitGridTheme {
+	String getName();
+	
 	CircuitItemVisitor<Option<Image>> getItemImageProvider();
 }
