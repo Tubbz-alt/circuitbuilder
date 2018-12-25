@@ -25,6 +25,8 @@ public interface CircuitTool extends PositionedRenderable {
 	
 	default OptionInt getHeight() { return getImage().mapToInt(it -> it.getHeight(null)); }
 	
+	default boolean useImageButton() { return true; }
+	
 	@Override
 	default void render(Graphics2D g2d, AbsolutePos pos) {
 		getImage().ifPresent(img -> g2d.drawImage(img, pos.getX(), pos.getY(), null));

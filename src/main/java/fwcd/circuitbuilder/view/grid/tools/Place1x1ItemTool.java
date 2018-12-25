@@ -14,7 +14,7 @@ import fwcd.fructose.Option;
  */
 public class Place1x1ItemTool<T extends Circuit1x1ComponentModel> extends CreateItemTool<T> {
 	public Place1x1ItemTool(Supplier<T> factory, CircuitItemVisitor<Option<Image>> imageProvider) {
-		super(factory, imageProvider);
+		super(factory, imageProvider, /* useImage */ true);
 	}
 	
 	@Override

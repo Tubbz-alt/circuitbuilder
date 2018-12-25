@@ -67,6 +67,7 @@ public class CircuitToolsPanel implements View {
 			JButton button = tool.getImage()
 				.map(ImageIcon::new)
 				.map(JButton::new)
+				.filter(it -> tool.useImageButton())
 				.orElseGet(() -> new JButton(tool.getName()));
 			itemsPanel.add(button, () -> context.getSelectedTool().set(Option.of(tool)));
 		}
