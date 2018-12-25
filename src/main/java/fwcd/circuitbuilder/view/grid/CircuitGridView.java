@@ -1,5 +1,6 @@
 package fwcd.circuitbuilder.view.grid;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -102,11 +103,14 @@ public class CircuitGridView implements View {
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
-		g2d.setColor(context.getSelectedTheme().get().getGridLineColor());
+		Color gridLineColor = context.getSelectedTheme().get().getGridLineColor();
+		g2d.setColor(gridLineColor);
 		
-		for (int absX = 0; absX < canvasSize.getWidth(); absX += unitSize) {
-			for (int absY = 0; absY < canvasSize.getHeight(); absY += unitSize) {
-				g2d.drawRect(absX, absY, unitSize, unitSize);
+		if (gridLineColor.getAlpha() > 0) {
+			for (int absX = 0; absX < canvasSize.getWidth(); absX += unitSize) {
+				for (int absY = 0; absY < canvasSize.getHeight(); absY += unitSize) {
+					g2d.drawRect(absX, absY, unitSize, unitSize);
+				}
 			}
 		}
 		
