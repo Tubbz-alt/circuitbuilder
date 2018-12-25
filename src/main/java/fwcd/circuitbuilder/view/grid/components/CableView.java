@@ -10,27 +10,35 @@ import fwcd.circuitbuilder.view.utils.PositionedRenderable;
 public class CableView implements PositionedRenderable {
 	private final CableModel model;
 	private final int unitSize;
+	private final CableDrawOptions options;
 	
-	public CableView(CableModel model, int unitSize) {
+	public CableView(CableModel model, int unitSize, CableDrawOptions options) {
 		this.model = model;
 		this.unitSize = unitSize;
+		this.options = options;
 	}
 	
 	@Override
 	public void render(Graphics2D g2d, AbsolutePos pos) {
-		final int subSize = unitSize / 3;
-
+		int thickness = options.getThickness();
+		int halfThickness = thickness / 2;
+		int halfUnitSize = unitSize / 2;
+		
 		int colorStrength = model.isPowered() ? 255 : 50;
+		int x = pos.getX();
+		int y = pos.getY();
+		int centerX = x + halfUnitSize;
+		int centerY = y + halfUnitSize;
 		
 		g2d.setColor(model.getColor().unwrap().getColor(colorStrength).asAWTColor()); // Signal based color
-		g2d.fillRect(pos.getX() + subSize, pos.getY() + subSize, subSize, subSize);
+		g2d.fillRect(centerX - halfThickness, centerY - halfThickness, thickness, thickness);
 		
 		for (Direction connection : model.getConnections()) {
 			switch (connection) {
-				case LEFT: g2d.fillRect(pos.getX(), pos.getY() + subSize, subSize, subSize); break;
-				case RIGHT: g2d.fillRect(pos.getX() + (subSize * 2), pos.getY() + subSize, subSize, subSize); break;
-				case DOWN: g2d.fillRect(pos.getX() + subSize, pos.getY() + (subSize * 2), subSize, subSize); break;
-				case UP: g2d.fillRect(pos.getX() + subSize, pos.getY(), subSize, subSize); break;
+				case LEFT: g2d.fillRect(x, centerY - halfThickness, halfUnitSize, thickness); break;
+				case RIGHT: g2d.fillRect(centerX - halfThickness, centerY - halfThickness, halfUnitSize, thickness); break;
+				case DOWN: g2d.fillRect(centerX - halfThickness, centerY - halfThickness, thickness, halfUnitSize); break;
+				case UP: g2d.fillRect(centerX - halfThickness, y, thickness, halfUnitSize); break;
 			}
 		}
 	}

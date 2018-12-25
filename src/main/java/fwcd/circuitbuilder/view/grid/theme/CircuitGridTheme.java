@@ -15,4 +15,8 @@ public interface CircuitGridTheme {
 	CircuitItemVisitor<Option<Image>> getItemImageProvider();
 	
 	Color getGridLineColor();
+	
+	int getCableThickness();
+	
+	boolean drawCableDots();
 }

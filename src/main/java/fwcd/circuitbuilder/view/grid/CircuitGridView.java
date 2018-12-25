@@ -94,7 +94,7 @@ public class CircuitGridView implements View {
 	}
 	
 	private void renderItem(CircuitItemModel item, Graphics2D g2d, RelativePos pos) {
-		item.accept(new CircuitItemRenderer(g2d, coordMap.toAbsolutePos(pos), unitSize, context.getSelectedTheme().get().getItemImageProvider()));
+		item.accept(new CircuitItemRenderer(g2d, coordMap.toAbsolutePos(pos), unitSize, context.getSelectedTheme().get()));
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {

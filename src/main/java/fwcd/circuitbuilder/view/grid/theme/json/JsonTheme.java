@@ -24,6 +24,8 @@ public class JsonTheme implements CircuitGridTheme {
 	private final String name;
 	private final Color gridLineColor;
 	private final JsonItemImageProvider itemImageProvider;
+	private final int cableThickness;
+	private final boolean cableDots;
 	
 	public JsonTheme(String name, String resourcePath) {
 		this.name = name;
@@ -36,10 +38,11 @@ public class JsonTheme implements CircuitGridTheme {
 			throw new UncheckedIOException(e);
 		}
 		
-		itemImageProvider = new JsonItemImageProvider(findParent(resourcePath), data.getItemImages());
-		
 		double opacity = data.getGridLineOpacity();
 		gridLineColor = new Color(0, 0, 0, (float) opacity);
+		itemImageProvider = new JsonItemImageProvider(findParent(resourcePath), data.getItemImages());
+		cableThickness = data.getCableThickness();
+		cableDots = data.drawCableDots();
 	}
 	
 	private String findParent(String resourcePath) {
@@ -47,17 +50,17 @@ public class JsonTheme implements CircuitGridTheme {
 	}
 	
 	@Override
-	public CircuitItemVisitor<Option<Image>> getItemImageProvider() {
-		return itemImageProvider;
-	}
+	public CircuitItemVisitor<Option<Image>> getItemImageProvider() { return itemImageProvider; }
 	
 	@Override
-	public String getName() {
-		return name;
-	}
+	public String getName() { return name; }
 	
 	@Override
-	public Color getGridLineColor() {
-		return gridLineColor;
-	}
+	public Color getGridLineColor() { return gridLineColor; }
+	
+	@Override
+	public int getCableThickness() { return cableThickness; }
+	
+	@Override
+	public boolean drawCableDots() { return cableDots; }
 }
