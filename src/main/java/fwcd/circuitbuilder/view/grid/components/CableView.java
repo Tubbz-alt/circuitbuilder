@@ -21,6 +21,7 @@ public class CableView implements PositionedRenderable {
 	
 	@Override
 	public void render(Graphics2D g2d, AbsolutePos pos) {
+		int connectionCount = model.getConnections().size();
 		int thickness = options.getThickness();
 		int halfThickness = thickness / 2;
 		int halfUnitSize = unitSize / 2;
@@ -33,13 +34,12 @@ public class CableView implements PositionedRenderable {
 		
 		g2d.setColor(model.getColor().unwrap().getColor(colorStrength).asAWTColor()); // Signal based color
 		
-		if (model.getConnections().size() > 2) {
-			if (options.drawDots()) {
-				int dotRadius = thickness * 2;
-				g2d.fillOval(centerX - dotRadius, centerY - dotRadius, dotRadius * 2, dotRadius * 2);
-			} else {
-				g2d.fillRect(centerX - halfThickness, centerY - halfThickness, centerX + halfThickness, centerY + halfThickness);
-			}
+		if (connectionCount > 2 && options.drawDots()) {
+			int dotRadius = thickness * 2;
+			g2d.fillOval(centerX - dotRadius, centerY - dotRadius, dotRadius * 2, dotRadius * 2);
+		}
+		if (connectionCount == 0) {
+			g2d.fillRect(centerX - halfThickness, centerY - halfThickness, thickness, thickness);
 		}
 		
 		g2d.setStroke(new BasicStroke(thickness));

@@ -13,6 +13,11 @@
 		"output": "outIcon.png",
 		"clockOn": "clockOn.png",
 		"clockOff": "clockOff.png",
-		"xor": "xorImage.png"
+		"xor": "xorImage.png",
+		"eqv": "xnorImage.png",
+		"and": "andImage.png",
+		"or": "orImage.png",
+		"nand": "nandImage.png",
+		"nor": "norImage.png"
 	}
 }
