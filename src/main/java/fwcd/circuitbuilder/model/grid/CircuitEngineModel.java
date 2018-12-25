@@ -1,6 +1,5 @@
 package fwcd.circuitbuilder.model.grid;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,6 @@ import fwcd.circuitbuilder.utils.RelativePos;
 public class CircuitEngineModel {
 	private static final boolean DEBUG_NETWORKS = false;
 	private final CircuitGridModel grid;
-	private final List<CableNetwork> cableNetworks = new ArrayList<>();
 	
 	private boolean autoCleanCells = true;
 	
@@ -27,8 +25,9 @@ public class CircuitEngineModel {
 	}
 	
 	public void tick() {
-		cableNetworks.clear();
+		List<CableNetwork> networks = grid.getCableNetworks();
 		Map<CableColor, Map<RelativePos, CableNetwork>> networkCoverage = new HashMap<>();
+		networks.clear();
 		
 		// Pre ticking - Grouping of cables using networks
 		
@@ -52,19 +51,19 @@ public class CircuitEngineModel {
 						colorCoverage.put(networkPos, network);
 					}
 					
-					cableNetworks.add(network);
+					networks.add(network);
 				}
 				cable.setNetworkStatus(network.getStatus());
 			}
 		});
 		
-		for (CableNetwork network : cableNetworks) {
+		for (CableNetwork network : networks) {
 			network.updateStatus(grid);
 		}
 		
 		if (DEBUG_NETWORKS) {
 			// TODO: Logging
-			System.out.println("Networks: " + cableNetworks.stream().map(it -> "Network " + it.getPositions() + " >> " + it.getStatus().isPowered()).collect(Collectors.toList()));
+			System.out.println("Networks: " + networks.stream().map(it -> "Network " + it.getPositions() + " >> " + it.getStatus().isPowered()).collect(Collectors.toList()));
 		}
 		
 		// Main ticking

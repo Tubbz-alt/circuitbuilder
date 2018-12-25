@@ -16,6 +16,7 @@ import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.circuitbuilder.view.grid.components.CircuitItemRenderer;
+import fwcd.circuitbuilder.view.grid.components.ItemContextMenuProvider;
 import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
 import fwcd.fructose.Option;
 import fwcd.fructose.swing.MouseHandler;
@@ -62,6 +63,8 @@ public class CircuitGridView implements View {
 							tool.onLeftClick(model, cell);
 						} else if (mouseButton == MouseEvent.BUTTON3) {
 							tool.onRightClick(model, cell);
+							cell.getComponent()
+								.ifPresent(it -> it.accept(new ItemContextMenuProvider(model, pos)).show(component, e.getX(), e.getY()));
 						}
 					});
 				});

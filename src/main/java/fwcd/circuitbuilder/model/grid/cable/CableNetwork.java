@@ -13,6 +13,7 @@ import fwcd.fructose.Option;
 
 public class CableNetwork {
 	private final CableNetworkStatus status = new CableNetworkStatus();
+	private Option<String> name = Option.empty();
 	private Option<CableColor> color = Option.empty();
 	private Map<RelativePos, CableModel> cables = new HashMap<>();
 	private Set<CableModel> cableSet = new HashSet<>();
@@ -77,4 +78,10 @@ public class CableNetwork {
 	public Set<? extends RelativePos> getPositions() { return cables.keySet(); }
 	
 	public CableNetworkStatus getStatus() { return status; }
+	
+	public Option<String> getName() { return name; }
+	
+	public void setName(Option<String> name) { this.name = name; }
+	
+	public void setName(String name) { this.name = Option.of(name); }
 }

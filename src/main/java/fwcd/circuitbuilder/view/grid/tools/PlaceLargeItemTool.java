@@ -18,7 +18,8 @@ public class PlaceLargeItemTool<T extends CircuitLargeComponentModel> extends Cr
 	}
 	
 	@Override
-	public void onLeftClick(CircuitGridModel grid, CircuitCellModel cell) {
+	public boolean onLeftClick(CircuitGridModel grid, CircuitCellModel cell) {
 		grid.putLarge(createItem(), cell.getPos());
+		return true;
 	}
 }

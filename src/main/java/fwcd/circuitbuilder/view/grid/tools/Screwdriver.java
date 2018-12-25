@@ -20,7 +20,8 @@ public class Screwdriver implements CircuitTool {
 	public Option<Image> getImage() { return Option.of(IMAGE); }
 	
 	@Override
-	public void onLeftClick(CircuitGridModel grid, CircuitCellModel cell) {
+	public boolean onLeftClick(CircuitGridModel grid, CircuitCellModel cell) {
 		grid.clearCell(cell.getPos());
+		return true;
 	}
 }

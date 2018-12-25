@@ -1,11 +1,14 @@
 package fwcd.circuitbuilder.model.grid;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
+import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
@@ -22,6 +25,7 @@ import fwcd.fructose.ListenerList;
 public class CircuitGridModel {
 	private final Map<RelativePos, CircuitCellModel> cells = new ConcurrentHashMap<>();
 	private final MultiKeyMap<RelativePos, CircuitLargeComponentModel> largeComponents = new ConcurrentMultiKeyHashMap<>();
+	private final List<CableNetwork> cableNetworks = new ArrayList<>();
 	private final ListenerList changeListeners = new ListenerList();
 	
 	/**
@@ -124,6 +128,11 @@ public class CircuitGridModel {
 	 * {@code clearCell} instead.
 	 */
 	public Map<? extends RelativePos, ? extends CircuitCellModel> getCells() { return cells; }
+	
+	/**
+	 * A mutable list of cable networks.
+	 */
+	public List<CableNetwork> getCableNetworks() { return cableNetworks; }
 	
 	public void clear() {
 		cells.clear();

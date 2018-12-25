@@ -19,7 +19,7 @@ public interface CircuitTool extends PositionedRenderable {
 	
 	default Option<Image> getImage() { return Option.empty(); }
 	
-	default void onLeftClick(CircuitGridModel grid, CircuitCellModel cell) {}
+	default boolean onLeftClick(CircuitGridModel grid, CircuitCellModel cell) { return false; }
 	
 	default OptionInt getWidth() { return getImage().mapToInt(it -> it.getWidth(null)); }
 	
@@ -32,9 +32,12 @@ public interface CircuitTool extends PositionedRenderable {
 		getImage().ifPresent(img -> g2d.drawImage(img, pos.getX(), pos.getY(), null));
 	}
 	
-	default void onRightClick(CircuitGridModel grid, CircuitCellModel cell) {
+	default boolean onRightClick(CircuitGridModel grid, CircuitCellModel cell) {
+		boolean handled = false;
 		for (Circuit1x1ComponentModel component : cell.getComponents()) {
 			component.toggle();
+			handled |= true;
 		}
+		return handled;
 	}
 }
