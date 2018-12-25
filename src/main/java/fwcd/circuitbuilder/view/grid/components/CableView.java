@@ -1,5 +1,6 @@
 package fwcd.circuitbuilder.view.grid.components;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
@@ -31,18 +32,24 @@ public class CableView implements PositionedRenderable {
 		int centerY = y + halfUnitSize;
 		
 		g2d.setColor(model.getColor().unwrap().getColor(colorStrength).asAWTColor()); // Signal based color
-		g2d.fillRect(centerX - halfThickness, centerY - halfThickness, thickness, thickness);
 		
-		if (model.getConnections().size() > 0) {
-			g2d.fillOval(centerX - halfThickness, centerY - halfThickness, thickness, thickness);
+		if (model.getConnections().size() > 2) {
+			if (options.drawDots()) {
+				int dotRadius = thickness * 2;
+				g2d.fillOval(centerX - dotRadius, centerY - dotRadius, dotRadius * 2, dotRadius * 2);
+			} else {
+				g2d.fillRect(centerX - halfThickness, centerY - halfThickness, centerX + halfThickness, centerY + halfThickness);
+			}
 		}
+		
+		g2d.setStroke(new BasicStroke(thickness));
 		
 		for (Direction connection : model.getConnections()) {
 			switch (connection) {
-				case LEFT: g2d.fillRect(x, centerY - halfThickness, halfUnitSize, thickness); break;
-				case RIGHT: g2d.fillRect(centerX - halfThickness, centerY - halfThickness, halfUnitSize, thickness); break;
-				case DOWN: g2d.fillRect(centerX - halfThickness, centerY - halfThickness, thickness, halfUnitSize); break;
-				case UP: g2d.fillRect(centerX - halfThickness, y, thickness, halfUnitSize); break;
+				case LEFT: g2d.drawLine(x, centerY, centerX, centerY); break;
+				case RIGHT: g2d.drawLine(centerX, centerY, x + unitSize, centerY); break;
+				case DOWN: g2d.drawLine(centerX, centerY, centerX, y + unitSize); break;
+				case UP: g2d.drawLine(centerX, y, centerX, centerY); break;
 			}
 		}
 	}
