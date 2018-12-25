@@ -15,18 +15,23 @@ import fwcd.circuitbuilder.model.utils.BoolUtils;
  */
 public class TruthTable {
 	private final boolean[] outputs;
+	private final int inputCount;
 	
 	public TruthTable(LogicExpression expression) {
 		List<String> vars = expression.accept(new LogicVariableFinder())
 			.map(LogicVariable::getName)
 			.collect(Collectors.toList());
-		int varCount = vars.size();
-		int max = 1 << varCount;
+		inputCount = vars.size();
+		int max = 1 << inputCount;
 		outputs = new boolean[max];
 		
 		for (int i = 0; i < max; i++) {
-			outputs[i] = expression.evaluate(BoolUtils.toMap(vars, BoolUtils.binaryToBooleans(i, varCount)));
+			outputs[i] = expression.evaluate(BoolUtils.toMap(vars, BoolUtils.binaryToBooleans(i, inputCount)));
 		}
+	}
+	
+	public int getInputCount() {
+		return inputCount;
 	}
 	
 	public boolean[] getOutputs() {

@@ -20,6 +20,9 @@ public class TruthTableTest {
 			/* t, f -> */ false,
 			/* t, t -> */ true
 		}, andTable.getOutputs());
+		assertArrayEquals(new int[] {
+			0b11
+		}, andTable.getBinaryMinterms().toArray());
 		
 		LogicExpression or = new Disjunction(new LogicVariable("x1"), new LogicVariable("x0"));
 		TruthTable orTable = new TruthTable(or);
@@ -29,5 +32,10 @@ public class TruthTableTest {
 			/* t, f -> */ true,
 			/* t, t -> */ true
 		}, orTable.getOutputs());
+		assertArrayEquals(new int[] {
+			0b01,
+			0b10,
+			0b11
+		}, orTable.getBinaryMinterms().toArray());
 	}
 }

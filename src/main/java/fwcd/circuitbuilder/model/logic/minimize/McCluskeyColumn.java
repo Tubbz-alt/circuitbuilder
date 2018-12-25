@@ -3,18 +3,19 @@ package fwcd.circuitbuilder.model.logic.minimize;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import fwcd.fructose.structs.IntList;
+
 public class McCluskeyColumn {
 	private final int bitCount;
 	private final int implicantSize;
-	private final Set<int[]> implicants;
+	private final Set<IntList> implicants;
 	/** The previously found prime implicants. */
-	private final Set<int[]> primeImplicants;
+	private final Set<IntList> primeImplicants;
 	
 	public McCluskeyColumn(int bitCount, int... binaryMinterms) {
 		this(bitCount, Arrays.stream(binaryMinterms));
@@ -31,12 +32,12 @@ public class McCluskeyColumn {
 		this.bitCount = bitCount;
 		implicantSize = 1;
 		implicants = binaryMinterms
-			.mapToObj(mt -> new int[] {mt})
+			.mapToObj(mt -> new IntList(new int[] {mt}))
 			.collect(Collectors.toSet());
 		primeImplicants = Collections.emptySet();
 	}
 	
-	private McCluskeyColumn(int bitCount, int implicantSize, Set<int[]> implicants, Set<int[]> primeImplicants) {
+	private McCluskeyColumn(int bitCount, int implicantSize, Set<IntList> implicants, Set<IntList> primeImplicants) {
 		this.bitCount = bitCount;
 		this.implicantSize = implicantSize;
 		this.implicants = implicants;
@@ -44,16 +45,16 @@ public class McCluskeyColumn {
 	}
 	
 	public McCluskeyColumn next() {
-		Set<int[]> nextPrimeImplicants = Stream.concat(implicants.stream(), primeImplicants.stream())
+		Set<IntList> nextPrimeImplicants = Stream.concat(implicants.stream(), primeImplicants.stream())
 			.collect(Collectors.toSet());
-		Set<int[]> nextImplicants = new HashSet<>();
+		Set<IntList> nextImplicants = new HashSet<>();
 		
-		for (int[] implicantA : implicants) {
-			for (int[] implicantB : implicants) {
+		for (IntList implicantA : implicants) {
+			for (IntList implicantB : implicants) {
 				if (implicantA != implicantB && canBeSummarized(implicantA, implicantB)) {
 					nextPrimeImplicants.remove(implicantA);
 					nextPrimeImplicants.remove(implicantB);
-					nextImplicants.add(concat(implicantA, implicantB));
+					nextImplicants.add(new IntList(McCluskeyUtils.concat(implicantA.toArray(), implicantB.toArray())));
 				}
 			}
 		}
@@ -61,26 +62,11 @@ public class McCluskeyColumn {
 		return new McCluskeyColumn(bitCount, implicantSize * 2, nextImplicants, nextPrimeImplicants);
 	}
 	
-	private boolean canBeSummarized(int[] mintermsA, int[] mintermsB) {
-		int[] differing = differingBits(mintermsA, mintermsB)
+	boolean canBeSummarized(IntList mintermsA, IntList mintermsB) {
+		int[] differing = McCluskeyUtils.differingBits(mintermsA.toArray(), mintermsB.toArray(), bitCount)
 			.distinct()
 			.toArray();
 		return differing.length == implicantSize;
-	}
-	
-	private int[] concat(int[] a, int[] b) {
-		int[] result = new int[a.length + b.length];
-		System.arraycopy(a, 0, result, 0, a.length);
-		System.arraycopy(b, 0, result, a.length, b.length);
-		return result;
-	}
-	
-	private IntStream differingBits(int[] a, int[] b) {
-		if (a.length != b.length) {
-			throw new IllegalArgumentException("Arrays have different lengths: " + Arrays.toString(a) + ", " + Arrays.toString(b));
-		}
-		return IntStream.range(0, a.length)
-			.filter(i -> a[i] != b[i]);
 	}
 	
 	public boolean isCompletelySummarized() {
@@ -91,7 +77,7 @@ public class McCluskeyColumn {
 	
 	public int getBitCount() { return bitCount; }
 	
-	public List<int[]> getImplicants() { return implicants; }
+	public Set<IntList> getImplicants() { return implicants; }
 	
-	public List<int[]> getPrimeImplicants() { return primeImplicants; }
+	public Set<IntList> getPrimeImplicants() { return primeImplicants; }
 }
