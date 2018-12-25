@@ -1,12 +1,12 @@
 package fwcd.circuitbuilder.view.grid;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
@@ -40,7 +40,7 @@ public class CircuitGridView implements View {
 		this.context = context;
 		component = new RenderPanel(this::render);
 		setupMouseHandler();
-		model.getChangeListeners().add(component::repaint);
+		model.getChangeListeners().add(this::repaint);
 	}
 	
 	private void setupMouseHandler() {
@@ -65,7 +65,7 @@ public class CircuitGridView implements View {
 					});
 				});
 				
-				component.repaint();
+				repaint();
 			}
 			
 			@Override
@@ -82,15 +82,19 @@ public class CircuitGridView implements View {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				mousePos = Option.of(new AbsolutePos(e.getX(), e.getY()));
-				component.repaint();
+				repaint();
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				mousePos = Option.empty();
-				component.repaint();
+				repaint();
 			}
 		}.connect(component);
+	}
+	
+	private void repaint() {
+		SwingUtilities.invokeLater(component::repaint);
 	}
 	
 	private void renderItem(CircuitItemModel item, Graphics2D g2d, RelativePos pos) {

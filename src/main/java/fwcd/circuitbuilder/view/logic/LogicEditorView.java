@@ -11,7 +11,6 @@ import fwcd.circuitbuilder.model.logic.karnaugh.KarnaughMapModel;
 import fwcd.circuitbuilder.view.CircuitBuilderAppContext;
 import fwcd.circuitbuilder.view.logic.formula.FormulaEditorView;
 import fwcd.circuitbuilder.view.logic.karnaugh.KarnaughMapView;
-import fwcd.fructose.swing.TreePlotter;
 import fwcd.fructose.swing.View;
 
 public class LogicEditorView implements View {
