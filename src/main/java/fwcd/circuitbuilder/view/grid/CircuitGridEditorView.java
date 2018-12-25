@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
-import fwcd.circuitbuilder.utils.BackgroundLooper;
+import fwcd.circuitbuilder.view.utils.BackgroundLooper;
 import fwcd.fructose.swing.View;
 
 public class CircuitGridEditorView implements View, AutoCloseable {
@@ -16,7 +16,7 @@ public class CircuitGridEditorView implements View, AutoCloseable {
 	private final BackgroundLooper engineLooper;
 	
 	public CircuitGridEditorView(CircuitGridModel model, CircuitGridContext context) {
-		engineLooper = new BackgroundLooper("Circuit engine", TICK_DELAY, new CircuitEngineModel(model)::tick);
+		engineLooper = new BackgroundLooper(TICK_DELAY, new CircuitEngineModel(model)::tick);
 		
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
