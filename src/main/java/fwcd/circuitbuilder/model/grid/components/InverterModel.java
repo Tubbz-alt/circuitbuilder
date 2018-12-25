@@ -27,8 +27,9 @@ public class InverterModel implements Circuit1x1ComponentModel {
 	}
 	
 	@Override
-	public void toggle() {
+	public boolean toggle() {
 		facing = facing.next();
+		return true;
 	}
 	
 	@Override

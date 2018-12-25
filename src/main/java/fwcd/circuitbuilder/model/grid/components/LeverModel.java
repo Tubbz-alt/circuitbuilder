@@ -4,8 +4,9 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 
 public class LeverModel extends BasicEmitter {
 	@Override
-	public void toggle() {
+	public boolean toggle() {
 		setPowered(!isPowered());
+		return true;
 	}
 		
 	@Override

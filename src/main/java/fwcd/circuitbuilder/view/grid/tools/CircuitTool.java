@@ -35,8 +35,7 @@ public interface CircuitTool extends PositionedRenderable {
 	default boolean onRightClick(CircuitGridModel grid, CircuitCellModel cell) {
 		boolean handled = false;
 		for (Circuit1x1ComponentModel component : cell.getComponents()) {
-			component.toggle();
-			handled |= true;
+			handled |= component.toggle();
 		}
 		return handled;
 	}

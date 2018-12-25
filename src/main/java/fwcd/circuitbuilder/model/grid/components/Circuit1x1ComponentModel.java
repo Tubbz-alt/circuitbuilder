@@ -31,8 +31,10 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	/**
 	 * "Toggles" this component in some way. The precise meaning
 	 * may depend on the implementation.
+	 * 
+	 * @return Whether the component could be toggled
 	 */
-	default void toggle() {}
+	default boolean toggle() { return false; }
 	
 	/**
 	 * Fetches a color associated with this component.

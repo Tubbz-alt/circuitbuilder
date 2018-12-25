@@ -62,9 +62,11 @@ public class CircuitGridView implements View {
 						if (mouseButton == MouseEvent.BUTTON1) {
 							tool.onLeftClick(model, cell);
 						} else if (mouseButton == MouseEvent.BUTTON3) {
-							tool.onRightClick(model, cell);
-							cell.getComponent()
-								.ifPresent(it -> it.accept(new ItemContextMenuProvider(model, pos)).show(component, e.getX(), e.getY()));
+							boolean handled = tool.onRightClick(model, cell);
+							if (!handled) {
+								cell.getComponent()
+									.ifPresent(it -> it.accept(new ItemContextMenuProvider(model, pos)).show(component, e.getX(), e.getY()));
+							}
 						}
 					});
 				});
