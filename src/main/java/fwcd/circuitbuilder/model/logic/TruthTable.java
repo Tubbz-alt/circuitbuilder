@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.model.logic;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
 import fwcd.circuitbuilder.model.logic.expression.LogicVariable;
@@ -30,5 +31,10 @@ public class TruthTable {
 	
 	public boolean[] getOutputs() {
 		return outputs;
+	}
+	
+	public IntStream getBinaryMinterms() {
+		return IntStream.range(0, outputs.length)
+			.filter(i -> outputs[i]);
 	}
 }
