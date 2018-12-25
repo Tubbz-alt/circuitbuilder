@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -32,6 +33,7 @@ import fwcd.fructose.Option;
 public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> {
 	private final String baseResourcePath;
 	private final Map<String, String> fileMap;
+	private final Map<String, Image> cachedImages = new HashMap<>();
 	
 	public JsonItemImageProvider(String baseResourcePath, Map<String, String> fileMap) {
 		this.baseResourcePath = baseResourcePath;
@@ -39,14 +41,19 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	}
 	
 	private Image imageFromJsonKey(String key) {
-		try {
-			String path = baseResourcePath + File.separator + fileMap.get(key);
-			try (InputStream stream = JsonItemImageProvider.class.getResourceAsStream(path)) {
-				return ImageIO.read(stream);
+		Image image = cachedImages.get(key);
+		if (image == null) {
+			try {
+				String path = baseResourcePath + File.separator + fileMap.get(key);
+				try (InputStream stream = JsonItemImageProvider.class.getResourceAsStream(path)) {
+					image = ImageIO.read(stream);
+					cachedImages.put(key, image);
+				}
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
 			}
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
 		}
+		return image;
 	}
 	
 	@Override

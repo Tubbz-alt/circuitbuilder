@@ -82,8 +82,25 @@ public class CircuitGridView implements View {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				mousePos = Option.of(new AbsolutePos(e.getX(), e.getY()));
-				repaint();
+				int oldX = mousePos.mapToInt(AbsolutePos::getX).orElse(0);
+				int oldY = mousePos.mapToInt(AbsolutePos::getY).orElse(0);
+				int newX = e.getX();
+				int newY = e.getY();
+				Option<CircuitTool> tool = context.getSelectedTool().get();
+				int width = tool.flatMapToInt(CircuitTool::getWidth).orElse(0);
+				int height = tool.flatMapToInt(CircuitTool::getHeight).orElse(0);
+				int topLeftX = Math.min(oldX, newX) - width;
+				int topLeftY = Math.min(oldY, newY) - height;
+				int bottomRightX = Math.max(oldX, newX) + width;
+				int bottomRightY = Math.max(oldY, newY) + height;
+				
+				mousePos = Option.of(new AbsolutePos(newX, newY));
+				repaint(
+					topLeftX,
+					topLeftY,
+					bottomRightX - topLeftX,
+					bottomRightY - topLeftY
+				);
 			}
 
 			@Override
@@ -96,6 +113,10 @@ public class CircuitGridView implements View {
 	
 	private void repaint() {
 		SwingUtilities.invokeLater(component::repaint);
+	}
+	
+	private void repaint(int x, int y, int width, int height) {
+		SwingUtilities.invokeLater(() -> component.repaint(x, y, width, height));
 	}
 	
 	private void renderItem(CircuitItemModel item, Graphics2D g2d, RelativePos pos) {
