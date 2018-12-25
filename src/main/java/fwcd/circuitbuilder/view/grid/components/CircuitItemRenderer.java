@@ -46,7 +46,7 @@ public class CircuitItemRenderer implements CircuitItemVisitor<Unit> {
 	
 	@Override
 	public Unit visitInverter(InverterModel inverter) {
-		g2d.drawImage(imageOf(inverter), getTransform(pos, inverter.getFacing()), null);
+		g2d.drawImage(imageOf(inverter), getTransform(pos, inverter.getImageFacing()), null);
 		return Unit.UNIT;
 	}
 	

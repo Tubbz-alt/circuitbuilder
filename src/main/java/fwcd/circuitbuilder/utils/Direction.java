@@ -22,7 +22,7 @@ public enum Direction {
 		}
 	}
 	
-	public Direction cycle() {
+	public Direction next() {
 		return values()[(ordinal() + 1) % values().length];
 	}
 	

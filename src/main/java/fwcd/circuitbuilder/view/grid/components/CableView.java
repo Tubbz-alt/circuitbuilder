@@ -33,6 +33,10 @@ public class CableView implements PositionedRenderable {
 		g2d.setColor(model.getColor().unwrap().getColor(colorStrength).asAWTColor()); // Signal based color
 		g2d.fillRect(centerX - halfThickness, centerY - halfThickness, thickness, thickness);
 		
+		if (model.getConnections().size() > 0) {
+			g2d.fillOval(centerX - halfThickness, centerY - halfThickness, thickness, thickness);
+		}
+		
 		for (Direction connection : model.getConnections()) {
 			switch (connection) {
 				case LEFT: g2d.fillRect(x, centerY - halfThickness, halfUnitSize, thickness); break;
