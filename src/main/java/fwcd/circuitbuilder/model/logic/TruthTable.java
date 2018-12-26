@@ -20,6 +20,7 @@ public class TruthTable {
 	public TruthTable(LogicExpression expression) {
 		List<String> vars = expression.accept(new LogicVariableFinder())
 			.map(LogicVariable::getName)
+			.distinct()
 			.collect(Collectors.toList());
 		inputCount = vars.size();
 		int max = 1 << inputCount;

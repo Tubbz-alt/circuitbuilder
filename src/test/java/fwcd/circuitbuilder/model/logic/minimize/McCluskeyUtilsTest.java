@@ -1,6 +1,10 @@
 package fwcd.circuitbuilder.model.logic.minimize;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -35,5 +39,21 @@ public class McCluskeyUtilsTest {
 			0b00111,
 			0b01111
 		}, 4).toArray());
+	}
+	
+	@Test
+	public void testTernaryRepresentation() {
+		assertEquals("--111", McCluskeyUtils.toTernaryRepresentation(Stream.of(
+			0b10111,
+			0b11111,
+			0b00111,
+			0b01111
+		).collect(Collectors.toSet()), 5));
+		assertEquals("0-110", McCluskeyUtils.toTernaryRepresentation(Stream.of(
+			0b00110,
+			0b01110,
+			0b00110,
+			0b01110
+		).collect(Collectors.toSet()), 5));
 	}
 }
