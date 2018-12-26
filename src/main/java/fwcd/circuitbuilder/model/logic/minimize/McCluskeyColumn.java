@@ -49,7 +49,7 @@ public class McCluskeyColumn {
 		
 		for (Set<Integer> implicantA : implicants) {
 			for (Set<Integer> implicantB : implicants) {
-				if (Collections.disjoint(implicantA, implicantB) && canBeSummarized(implicantA, implicantB)) {
+				if (canBeSummarized(implicantA, implicantB)) {
 					nextPrimeImplicants.remove(implicantA);
 					nextPrimeImplicants.remove(implicantB);
 					
