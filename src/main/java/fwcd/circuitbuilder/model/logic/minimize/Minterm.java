@@ -1,8 +1,13 @@
 package fwcd.circuitbuilder.model.logic.minimize;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 import fwcd.circuitbuilder.model.logic.expression.Conjunction;
 import fwcd.circuitbuilder.model.logic.expression.LogicBoolean;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
+import fwcd.circuitbuilder.model.logic.expression.LogicVariable;
+import fwcd.circuitbuilder.model.logic.expression.Negation;
 import fwcd.circuitbuilder.model.utils.BoolUtils;
 
 /**
@@ -24,9 +29,11 @@ public class Minterm implements Comparable<Minterm> {
 	
 	public String toBinaryString() { return BoolUtils.toBinaryString(binary, bitCount); }
 	
-	public LogicExpression toExpression() {
-		return BoolUtils.binaryToBitStream(binary)
-			.<LogicExpression>mapToObj(LogicBoolean::of)
+	public LogicExpression toExpression(List<String> variables) {
+		return IntStream.range(0, bitCount)
+			.mapToObj(i -> (BoolUtils.bitFromLeft(binary, i, bitCount) == 1)
+				? new LogicVariable(variables.get(i))
+				: new Negation(new LogicVariable(variables.get(i))))
 			.reduce(Conjunction::new)
 			.orElse(LogicBoolean.FALSE);
 	}

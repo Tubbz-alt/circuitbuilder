@@ -1,22 +1,19 @@
 package fwcd.circuitbuilder.model.logic.minimize;
 
+import static fwcd.circuitbuilder.model.logic.ExpressionTestUtils.fromDNF;
 import static fwcd.circuitbuilder.model.logic.minimize.MinimizeTestUtils.assertSetEquals;
 import static fwcd.circuitbuilder.model.logic.minimize.MinimizeTestUtils.implicantsOf;
 import static fwcd.circuitbuilder.model.logic.minimize.MinimizeTestUtils.setOf;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
 import fwcd.circuitbuilder.model.logic.TruthTable;
 import fwcd.circuitbuilder.model.logic.expression.Conjunction;
 import fwcd.circuitbuilder.model.logic.expression.Disjunction;
-import fwcd.circuitbuilder.model.logic.expression.LogicBoolean;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
 import fwcd.circuitbuilder.model.logic.expression.LogicVariable;
-import fwcd.circuitbuilder.model.logic.expression.Negation;
 
 public class McCluskeyColumnTest {
 	@Test
@@ -39,7 +36,7 @@ public class McCluskeyColumnTest {
 			0b111
 		), minterms.getImplicants());
 		
-		LogicExpression kdnf = fromKDNF(
+		LogicExpression kdnf = fromDNF(
 			"nx3 nx2 nx1 nx0",
 			"nx3 nx2 nx1 x0",
 			"nx3 x2 nx1 nx0",
@@ -114,20 +111,5 @@ public class McCluskeyColumnTest {
 			{0, 1, 8, 9},
 			{4, 6, 5, 7}
 		}), minimized.getPrimeImplicants());
-	}
-	
-	private LogicExpression fromKDNF(String... minterms) {
-		return Arrays.stream(minterms)
-			.<LogicExpression>map(conj -> Arrays.stream(conj.split(" "))
-				.<LogicExpression>map(v -> {
-					if (v.startsWith("n")) {
-						return new Negation(new LogicVariable(v.substring(1)));
-					} else {
-						return new LogicVariable(v);
-					}
-				}).reduce(Conjunction::new)
-				.orElse(LogicBoolean.FALSE))
-			.reduce((LogicExpression a, LogicExpression b) -> new Disjunction(a, b))
-			.orElse(LogicBoolean.TRUE);
 	}
 }

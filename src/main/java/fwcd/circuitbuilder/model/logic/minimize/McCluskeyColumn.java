@@ -31,7 +31,7 @@ public class McCluskeyColumn {
 		implicantSize = 1;
 		implicants = binaryMinterms
 			.mapToObj(it -> new Minterm(it, bitCount))
-			.map(Implicant::new)
+			.map(Implicant::ofMinterm)
 			.collect(Collectors.toSet());
 		primeImplicants = Collections.emptySet();
 	}
