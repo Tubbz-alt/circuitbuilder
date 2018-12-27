@@ -1,10 +1,7 @@
 package fwcd.circuitbuilder.model.logic.minimize;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
+import static fwcd.circuitbuilder.model.logic.minimize.MinimizeTestUtils.implicantOf;
 
 import org.junit.Test;
 
@@ -23,11 +20,5 @@ public class ImplicantTest {
 			0b00110,
 			0b01110
 		).toTernaryRepresentation());
-	}
-	
-	private Implicant implicantOf(int bitCount, int... minterms) {
-		return new Implicant(Arrays.stream(minterms)
-			.mapToObj(it -> new Minterm(it, bitCount))
-			.collect(Collectors.toCollection(TreeSet::new)));
 	}
 }

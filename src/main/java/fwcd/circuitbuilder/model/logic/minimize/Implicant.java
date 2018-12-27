@@ -72,6 +72,10 @@ public class Implicant {
 		return str.toString();
 	}
 	
+	public SortedSet<Minterm> getMinterms() {
+		return minterms;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;

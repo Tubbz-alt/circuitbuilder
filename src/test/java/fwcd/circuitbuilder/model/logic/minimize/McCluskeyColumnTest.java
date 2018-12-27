@@ -1,15 +1,12 @@
 package fwcd.circuitbuilder.model.logic.minimize;
 
+import static fwcd.circuitbuilder.model.logic.minimize.MinimizeTestUtils.assertSetEquals;
+import static fwcd.circuitbuilder.model.logic.minimize.MinimizeTestUtils.implicantsOf;
+import static fwcd.circuitbuilder.model.logic.minimize.MinimizeTestUtils.setOf;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -25,23 +22,18 @@ public class McCluskeyColumnTest {
 	@Test
 	public void testMcCluskeyColumn() {
 		// x2 v (x1 ^ x0)
-		LogicExpression expr = new Disjunction(new LogicVariable("x2"), new Conjunction(new LogicVariable("x1"), new LogicVariable("x0")));
+		LogicExpression expr = new Disjunction(new LogicVariable("x2"),
+				new Conjunction(new LogicVariable("x1"), new LogicVariable("x0")));
 		TruthTable table = new TruthTable(expr);
 		McCluskeyColumn minterms = new McCluskeyColumn(table.getInputCount(), table.getBinaryMinterms());
-		
+
 		assertSetEquals(implicantsOf(3,
-			// x2 - x1 - x0
-			0b011,
-			0b100,
-			0b101,
-			0b110,
-			0b111
-		), minterms.getImplicants());
-		
+				// x2 - x1 - x0
+				0b011, 0b100, 0b101, 0b110, 0b111), minterms.getImplicants());
+
 		assertSetEquals(implicantsOf(3,
-			// x2 - x1 - x0
-			0b011,
-			0b100,
+				// x2 - x1 - x0
+				0b011, 0b100,
 			0b101,
 			0b110,
 			0b111
@@ -122,46 +114,6 @@ public class McCluskeyColumnTest {
 			{0, 1, 8, 9},
 			{4, 6, 5, 7}
 		}), minimized.getPrimeImplicants());
-	}
-	
-	private Set<Implicant> implicantsOf(int bitCount, int... implicants) {
-		return implicantsOf(bitCount, Arrays.stream(implicants)
-			.mapToObj(it -> new int[] {it})
-			.toArray(int[][]::new));
-	}
-	
-	private Set<Implicant> implicantsOf(int bitCount, int[][] implicants) {
-		return Arrays.stream(implicants)
-			.map(minterms -> Arrays.stream(minterms)
-				.mapToObj(minterm -> new Minterm(minterm, bitCount))
-				.collect(Collectors.toCollection(TreeSet::new)))
-			.map(Implicant::new)
-			.collect(Collectors.toSet());
-	}
-	
-	@SafeVarargs
-	private final <T> Set<T> setOf(T... values) {
-		return Stream.of(values).collect(Collectors.toSet());
-	}
-	
-	private <T> void assertSetEquals(Set<T> expected, Set<T> actual) {
-		Set<T> additionallyExpected = new HashSet<>();
-		Set<T> unexpectedlyActual = new HashSet<>();
-		
-		for (T item : expected) {
-			if (!actual.contains(item)) {
-				additionallyExpected.add(item);
-			}
-		}
-		for (T item : actual) {
-			if (!expected.contains(item)) {
-				unexpectedlyActual.add(item);
-			}
-		}
-		
-		if (!additionallyExpected.isEmpty() || !unexpectedlyActual.isEmpty()) {
-			fail("Expected: " + expected + " but was: " + actual + " - expected but not actual: " + additionallyExpected + ", actual but not expected: " + unexpectedlyActual);
-		}
 	}
 	
 	private LogicExpression fromKDNF(String... minterms) {
