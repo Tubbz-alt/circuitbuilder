@@ -1,9 +1,10 @@
 package fwcd.circuitbuilder.model.grid.cable;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
@@ -16,9 +17,15 @@ public class CableNetwork {
 	private Option<String> name = Option.empty();
 	private Option<CableColor> color = Option.empty();
 	private Map<RelativePos, CableModel> cables = new HashMap<>();
-	private Set<CableModel> cableSet = new HashSet<>();
+	private Set<CableModel> cableSet = new LinkedHashSet<>();
 	
-	private boolean add(RelativePos pos, CableModel cable) {
+	public void merge(CableNetwork other) {
+		name = name.or(other::getName);
+		cables.putAll(other.cables);
+		cableSet.addAll(other.cableSet);
+	}
+	
+	public boolean add(RelativePos pos, CableModel cable) {
 		Option<CableColor> cableColor = cable.getColor();
 		
 		if (!color.isPresent()) {
@@ -40,7 +47,10 @@ public class CableNetwork {
 	
 	public boolean canBeExtendedTo(RelativePos pos) {
 		return cables.keySet().stream()
-			.anyMatch(it -> Math.abs(pos.getX() - it.getX()) <= 1 && Math.abs(pos.getY() - it.getY()) <= 1);
+			.anyMatch(it ->
+				(Math.abs(pos.getX() - it.getX()) <= 1 && pos.getY() == it.getY())
+				|| (Math.abs(pos.getY() - it.getY()) <= 1 && pos.getX() == it.getX())
+			);
 	}
 	
 	private boolean contains(Circuit1x1ComponentModel cable) {
@@ -82,9 +92,13 @@ public class CableNetwork {
 	
 	public Set<? extends RelativePos> getPositions() { return cables.keySet(); }
 	
+	public Stream<RelativePos> streamPositions() { return cables.keySet().stream(); }
+	
 	public CableNetworkStatus getStatus() { return status; }
 	
 	public Option<String> getName() { return name; }
+	
+	public Option<CableColor> getColor() { return color; }
 	
 	public void setName(Option<String> name) { this.name = name; }
 	

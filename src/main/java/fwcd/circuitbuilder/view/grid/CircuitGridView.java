@@ -2,9 +2,9 @@ package fwcd.circuitbuilder.view.grid;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+import java.util.Comparator;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -165,13 +165,14 @@ public class CircuitGridView implements View {
 		
 		// Draw cable labels
 		
-		g2d.setColor(Color.DARK_GRAY);
-		g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+		g2d.setColor(Color.BLACK);
+		g2d.setFont(g2d.getFont().deriveFont(14F));
+		
 		for (CableNetwork network : model.getCableNetworks()) {
 			String name = network.getName().orElse("");
-			network.getPositions().stream()
-				.map(pos -> new RelativePos(pos.getX(), pos.getY() - 1))
-				.filter(model::isCellEmpty)
+			network.streamPositions()
+				.filter(pos -> model.isCellEmpty(new RelativePos(pos.getX(), pos.getY() - 1)))
+				.sorted(Comparator.comparing(pos -> pos.getX() + pos.getY()))
 				.findAny()
 				.map(coordMap::toAbsolutePos)
 				.ifPresent(pos -> g2d.drawString(name, pos.getX(), pos.getY()));

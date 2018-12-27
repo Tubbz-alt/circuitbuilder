@@ -1,8 +1,9 @@
 package fwcd.circuitbuilder.model.grid;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import fwcd.circuitbuilder.model.grid.cable.CableColor;
@@ -11,8 +12,7 @@ import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**
- * An engine that ticks and updates components
- * on a circuit grid.
+ * An engine that ticks and updates components on a circuit grid.
  */
 public class CircuitEngineModel {
 	private static final boolean DEBUG_NETWORKS = false;
@@ -25,9 +25,8 @@ public class CircuitEngineModel {
 	}
 	
 	public void tick() {
-		List<CableNetwork> networks = grid.getCableNetworks();
+		Set<CableNetwork> networks = grid.getCableNetworks();
 		Map<CableColor, Map<RelativePos, CableNetwork>> networkCoverage = new HashMap<>();
-		networks.clear();
 		
 		// Pre ticking - Grouping of cables using networks
 		
@@ -44,8 +43,29 @@ public class CircuitEngineModel {
 				if (colorCoverage.containsKey(pos)) {
 					network = colorCoverage.get(pos);
 				} else {
-					network = new CableNetwork();
-					network.build(pos, grid);
+					Set<CableNetwork> extendables = networks.stream()
+						.filter(it -> it.canBeExtendedTo(pos) && it.getColor().filter(color::equals).isPresent())
+						.collect(Collectors.toSet());
+					
+					if (!extendables.isEmpty()) {
+						// Merge extendable networks into one
+						while (extendables.size() > 1) {
+							Iterator<CableNetwork> iterator = extendables.iterator();
+							CableNetwork a = iterator.next();
+							CableNetwork b = iterator.next();
+							
+							a.merge(b);
+							networks.remove(b);
+							iterator.remove();
+						}
+						
+						network = extendables.iterator().next();
+						network.add(pos, cable);
+					} else {
+						// Otherwise create a new network
+						network = new CableNetwork();
+						network.build(pos, grid);
+					}
 					
 					for (RelativePos networkPos : network.getPositions()) {
 						colorCoverage.put(networkPos, network);
@@ -63,7 +83,7 @@ public class CircuitEngineModel {
 		
 		if (DEBUG_NETWORKS) {
 			// TODO: Logging
-			System.out.println("Networks: " + networks.stream().map(it -> "Network " + it.getPositions() + " >> " + it.getStatus().isPowered()).collect(Collectors.toList()));
+			System.out.println("Networks: [\n" + networks.stream().map(it -> "  Network " + it.getPositions() + " >> " + it.getStatus().isPowered()).reduce((a, b) -> a + "\n" + b).orElse("") + "\n]");
 		}
 		
 		// Main ticking
