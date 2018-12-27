@@ -51,7 +51,8 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 		
 		if (confirmed && networks.size() > 0) {
 			CableNetwork first = networks.iterator().next();
-			JOptionPane.showInputDialog("Enter the new cable network name:", first.getName().orElse(""));
+			String newName = JOptionPane.showInputDialog("Enter the new cable network name:", first.getName().orElse(""));
+			first.setName(newName);
 		}
 	}
 	

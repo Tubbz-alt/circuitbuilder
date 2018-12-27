@@ -2,6 +2,7 @@ package fwcd.circuitbuilder.view.grid;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
@@ -12,6 +13,7 @@ import javax.swing.SwingUtilities;
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemModel;
+import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.circuitbuilder.utils.RelativePos;
@@ -129,6 +131,8 @@ public class CircuitGridView implements View {
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
+		// Draw background
+		
 		Color gridLineColor = context.getSelectedTheme().get().getGridLineColor();
 		g2d.setColor(gridLineColor);
 		
@@ -139,6 +143,8 @@ public class CircuitGridView implements View {
 				}
 			}
 		}
+		
+		// Draw 1x1 components
 		
 		for (RelativePos cellPos : model.getCells().keySet()) {
 			CircuitCellModel cell = model.getCells().get(cellPos);
@@ -151,9 +157,25 @@ public class CircuitGridView implements View {
 			}
 		}
 		
+		// Draw large components
+		
 		model.getLargeComponents().forEachMainKey((pos, largeComponent) -> {
 			renderItem(largeComponent, g2d, pos);
 		});
+		
+		// Draw cable labels
+		
+		g2d.setColor(Color.DARK_GRAY);
+		g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+		for (CableNetwork network : model.getCableNetworks()) {
+			String name = network.getName().orElse("");
+			network.getPositions().stream()
+				.map(pos -> new RelativePos(pos.getX(), pos.getY() - 1))
+				.filter(model::isCellEmpty)
+				.findAny()
+				.map(coordMap::toAbsolutePos)
+				.ifPresent(pos -> g2d.drawString(name, pos.getX(), pos.getY()));
+		}
 		
 		Option<CircuitTool> selectedTool = context.getSelectedTool().get();
 		Option<AbsolutePos> itemPos = mousePos.map(it -> new AbsolutePos(it.sub(unitSize / 2, unitSize / 2)));

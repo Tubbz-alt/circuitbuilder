@@ -38,6 +38,11 @@ public class CableNetwork {
 		}
 	}
 	
+	public boolean canBeExtendedTo(RelativePos pos) {
+		return cables.keySet().stream()
+			.anyMatch(it -> Math.abs(pos.getX() - it.getX()) <= 1 && Math.abs(pos.getY() - it.getY()) <= 1);
+	}
+	
 	private boolean contains(Circuit1x1ComponentModel cable) {
 		return cableSet.contains(cable);
 	}
