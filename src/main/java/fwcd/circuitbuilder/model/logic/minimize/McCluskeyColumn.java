@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 public class McCluskeyColumn {
 	private final int bitCount;
 	private final int implicantSize;
-	private final Set<Set<Integer>> implicants;
+	private final Set<Implicant> implicants;
 	/** The previously found prime implicants. */
-	private final Set<Set<Integer>> primeImplicants;
+	private final Set<Implicant> primeImplicants;
 	
 	public McCluskeyColumn(int bitCount, int... binaryMinterms) {
 		this(bitCount, Arrays.stream(binaryMinterms));
@@ -30,12 +30,13 @@ public class McCluskeyColumn {
 		this.bitCount = bitCount;
 		implicantSize = 1;
 		implicants = binaryMinterms
-			.mapToObj(Collections::singleton)
+			.mapToObj(it -> new Minterm(it, bitCount))
+			.map(Implicant::new)
 			.collect(Collectors.toSet());
 		primeImplicants = Collections.emptySet();
 	}
 	
-	private McCluskeyColumn(int bitCount, int implicantSize, Set<Set<Integer>> implicants, Set<Set<Integer>> primeImplicants) {
+	private McCluskeyColumn(int bitCount, int implicantSize, Set<Implicant> implicants, Set<Implicant> primeImplicants) {
 		this.bitCount = bitCount;
 		this.implicantSize = implicantSize;
 		this.implicants = implicants;
@@ -43,21 +44,16 @@ public class McCluskeyColumn {
 	}
 	
 	public McCluskeyColumn next() {
-		Set<Set<Integer>> nextPrimeImplicants = Stream.concat(implicants.stream(), primeImplicants.stream())
+		Set<Implicant> nextPrimeImplicants = Stream.concat(implicants.stream(), primeImplicants.stream())
 			.collect(Collectors.toSet());
-		Set<Set<Integer>> nextImplicants = new HashSet<>();
+		Set<Implicant> nextImplicants = new HashSet<>();
 		
-		for (Set<Integer> implicantA : implicants) {
-			for (Set<Integer> implicantB : implicants) {
+		for (Implicant implicantA : implicants) {
+			for (Implicant implicantB : implicants) {
 				if (canBeSummarized(implicantA, implicantB)) {
 					nextPrimeImplicants.remove(implicantA);
 					nextPrimeImplicants.remove(implicantB);
-					
-					Set<Integer> concat = new HashSet<>();
-					concat.addAll(implicantA);
-					concat.addAll(implicantB);
-					
-					nextImplicants.add(concat);
+					nextImplicants.add(implicantA.concat(implicantB));
 				}
 			}
 		}
@@ -69,14 +65,9 @@ public class McCluskeyColumn {
 		return isCompletelySummarized() ? this : next().minimize();
 	}
 	
-	boolean canBeSummarized(Set<Integer> mintermsA, Set<Integer> mintermsB) {
-		if (mintermsA.size() != mintermsB.size()) {
-			return false;
-		}
-		int[] differing = McCluskeyUtils.differingBits(mintermsA, mintermsB, bitCount)
-			.distinct()
-			.toArray();
-		return differing.length == 1;
+	boolean canBeSummarized(Implicant mintermsA, Implicant mintermsB) {
+		return mintermsA.getMintermCount() == mintermsB.getMintermCount()
+			&& mintermsA.differingBits(mintermsB).count() == 1;
 	}
 	
 	public boolean isCompletelySummarized() {
@@ -87,9 +78,9 @@ public class McCluskeyColumn {
 	
 	public int getBitCount() { return bitCount; }
 	
-	public Set<Set<Integer>> getImplicants() { return implicants; }
+	public Set<Implicant> getImplicants() { return implicants; }
 	
-	public Set<Set<Integer>> getPrimeImplicants() { return primeImplicants; }
+	public Set<Implicant> getPrimeImplicants() { return primeImplicants; }
 	
 	public Set<String> getTernaryImplicants() { return McCluskeyUtils.toTernaryRepresentations(implicants, bitCount); }
 	
