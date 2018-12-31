@@ -35,4 +35,19 @@ public class Implication implements LogicExpression {
 	public String toString() {
 		return "=>";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (this == obj) return true;
+		if (!getClass().equals(obj.getClass())) return false;
+		Implication other = (Implication) obj;
+		return other.left.equals(left)
+			&& other.right.equals(right);
+	}
+	
+	@Override
+	public int hashCode() {
+		return left.hashCode() * right.hashCode() * 7;
+	}
 }

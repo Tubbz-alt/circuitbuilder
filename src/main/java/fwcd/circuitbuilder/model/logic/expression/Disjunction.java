@@ -35,4 +35,19 @@ public class Disjunction implements LogicExpression {
 	public String toString() {
 		return "OR";
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (this == obj) return true;
+		if (!getClass().equals(obj.getClass())) return false;
+		Disjunction other = (Disjunction) obj;
+		return other.left.equals(left)
+			&& other.right.equals(right);
+	}
+	
+	@Override
+	public int hashCode() {
+		return left.hashCode() * right.hashCode() * 7;
+	}
 }

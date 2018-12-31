@@ -38,4 +38,18 @@ public class LogicVariable implements LogicExpression {
 	public String toString() {
 		return name;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (this == obj) return true;
+		if (!getClass().equals(obj.getClass())) return false;
+		LogicVariable other = (LogicVariable) obj;
+		return other.name.equals(name);
+	}
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode() * 7;
+	}
 }

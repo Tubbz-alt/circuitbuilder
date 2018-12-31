@@ -33,4 +33,18 @@ public class Negation implements LogicExpression {
 	public String toString() {
 		return "NOT";
 	}
+	
+	@Override
+	public int hashCode() {
+		return value.hashCode() * 7;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (this == obj) return true;
+		if (!getClass().equals(obj.getClass())) return false;
+		Negation other = (Negation) obj;
+		return other.value.equals(value);
+	}
 }
