@@ -8,24 +8,15 @@ import fwcd.circuitbuilder.model.logic.expression.Disjunction;
 import fwcd.circuitbuilder.model.logic.expression.ExpressionUtils;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
 import fwcd.circuitbuilder.model.logic.expression.LogicVariable;
-import fwcd.circuitbuilder.model.logic.expression.Negation;
 
-public class CDNFProviderTest {
+public class CCNFProviderTest {
 	@Test
-	public void testCDNF() {
+	public void testCCNF() {
 		LogicExpression or = new Disjunction(new LogicVariable("x1"), new LogicVariable("x0"));
-		ExpressionTransformer provider = new CDNFProvider();
+		ExpressionTransformer provider = new CCNFProvider();
 		
-		assertEquals(ExpressionUtils.or(
-			ExpressionUtils.and(
-				new Negation(new LogicVariable("x1")),
-				new LogicVariable("x0")
-			),
-			ExpressionUtils.and(
-				new LogicVariable("x1"),
-				new Negation(new LogicVariable("x0"))
-			),
-			ExpressionUtils.and(
+		assertEquals(ExpressionUtils.and(
+			ExpressionUtils.or(
 				new LogicVariable("x1"),
 				new LogicVariable("x0")
 			)
