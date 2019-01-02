@@ -2,7 +2,10 @@ package fwcd.circuitbuilder.view.grid;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -66,6 +69,7 @@ public class CircuitToolsPanel implements View {
 		
 		for (CircuitTool tool : tools) {
 			JButton button = tool.getImage()
+				.map(this::scaleImageToButtonSize)
 				.map(ImageIcon::new)
 				.map(JButton::new)
 				.filter(it -> tool.useImageButton())
@@ -93,6 +97,26 @@ public class CircuitToolsPanel implements View {
 		}
 		
 		view.add(colorsPanel.getComponent());
+	}
+	
+	private Image scaleImageToButtonSize(Image image) {
+		int oldWidth = image.getWidth(null);
+		int oldHeight = image.getHeight(null);
+		int newWidth = (int) BUTTON_SIZE.getWidth();
+		int newHeight = (oldHeight * newWidth) / oldWidth;
+		
+		if (oldWidth == newWidth) {
+			return image;
+		} else {
+			BufferedImage result = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = result.createGraphics();
+			
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2d.drawImage(image, 0, 0, newWidth, newHeight, null);
+			g2d.dispose();
+			
+			return result;
+		}
 	}
 	
 	@Override

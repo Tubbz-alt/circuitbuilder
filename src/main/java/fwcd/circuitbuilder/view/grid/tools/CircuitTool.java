@@ -17,7 +17,7 @@ import fwcd.fructose.OptionInt;
 public interface CircuitTool extends PositionedRenderable {
 	String getSymbol();
 	
-	default Option<Image> getImage() { return Option.empty(); }
+	default Option<? extends Image> getImage() { return Option.empty(); }
 	
 	default boolean onLeftClick(CircuitGridModel grid, CircuitCellModel cell) { return false; }
 	

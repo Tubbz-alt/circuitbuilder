@@ -14,7 +14,7 @@ import fwcd.fructose.Option;
  */
 public class PlaceLargeItemTool<T extends CircuitLargeComponentModel> extends CreateItemTool<T> {
 	public PlaceLargeItemTool(Supplier<T> factory, CircuitItemVisitor<Option<Image>> imageProvider) {
-		super(factory, imageProvider, /* useImage */ false);
+		super(factory, imageProvider, /* useImage */ true);
 	}
 	
 	@Override
