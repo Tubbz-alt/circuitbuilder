@@ -24,7 +24,7 @@ public class CircuitBuilderView implements View {
 	public CircuitBuilderView(CircuitBuilderModel model, CircuitBuilderAppContext context) {
 		component = new JTabbedPane();
 		
-		gridEditor = new CircuitGridEditorView(model.getGrid(), new CircuitGridContext());
+		gridEditor = new CircuitGridEditorView(model.getGrid(), model.getEngine(), new CircuitGridContext());
 		component.addTab("Grid Editor", gridEditor.getComponent());
 		
 		logicEditor = new LogicEditorView(model.getLogicEditor(), context);

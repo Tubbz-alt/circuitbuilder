@@ -7,6 +7,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
@@ -16,10 +17,12 @@ import fwcd.circuitbuilder.utils.RelativePos;
 
 public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 	private final CircuitGridModel grid;
+	private final CircuitEngineModel engine;
 	private final RelativePos pos;
 	
-	public ItemContextMenuProvider(CircuitGridModel grid, RelativePos pos) {
+	public ItemContextMenuProvider(CircuitGridModel grid, CircuitEngineModel engine, RelativePos pos) {
 		this.grid = grid;
+		this.engine = engine;
 		this.pos = pos;
 	}
 	
@@ -38,7 +41,7 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 	}
 	
 	private void performCableRename() {
-		Set<CableNetwork> networks = grid.getCableNetworks().stream()
+		Set<CableNetwork> networks = engine.getCableNetworks().stream()
 			.filter(it -> it.getPositions().contains(pos))
 			.collect(Collectors.toSet());
 		boolean confirmed = true;

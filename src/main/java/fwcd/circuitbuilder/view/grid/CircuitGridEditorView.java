@@ -15,13 +15,13 @@ public class CircuitGridEditorView implements View, AutoCloseable {
 	private final JComponent component;
 	private final BackgroundLooper engineLooper;
 	
-	public CircuitGridEditorView(CircuitGridModel model, CircuitGridContext context) {
+	public CircuitGridEditorView(CircuitGridModel model, CircuitEngineModel engine, CircuitGridContext context) {
 		engineLooper = new BackgroundLooper(TICK_DELAY, new CircuitEngineModel(model)::tick);
 		
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
-		component.add(new CircuitGridView(model, context).getComponent(), BorderLayout.CENTER);
+		component.add(new CircuitGridView(model, engine, context).getComponent(), BorderLayout.CENTER);
 		component.add(new CircuitToolsPanel(model, context).getComponent(), BorderLayout.WEST);
 		
 		engineLooper.start();

@@ -1,9 +1,11 @@
 package fwcd.circuitbuilder.model.grid.cable;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
@@ -19,10 +21,43 @@ public class CableNetwork {
 	private Map<RelativePos, CableModel> cables = new HashMap<>();
 	private Set<CableModel> cableSet = new LinkedHashSet<>();
 	
+	/**
+	 * Merges the cables and metadata from the other network
+	 * into this one.
+	 */
 	public void merge(CableNetwork other) {
 		name = name.or(other::getName);
 		cables.putAll(other.cables);
 		cableSet.addAll(other.cableSet);
+	}
+	
+	/**
+	 * Extracts cables that are not directly connected to
+	 * this network into new, continuous networks.
+	 */
+	public Set<CableNetwork> splitOffDisconnectedCables(CircuitGridModel grid) {
+		// Stream.Builder<CableNetwork> stream = Stream.builder();
+		// Set<RelativePos> positions = cables.keySet();
+		// Set<RelativePos> retained = new HashSet<>();
+		
+		// aggregateConnectedSegment(grid.getCell(positions.iterator().next()), grid, retained, positions);
+		// splitOffDisconnectedCablesInto(stream, grid, positions);
+		
+		// positions.retainAll(retained);
+		// return stream.build().collect(Collectors.toSet());
+	}
+	
+	private void splitOffDisconnectedCablesInto(Stream.Builder<CableNetwork> stream, CircuitGridModel grid, Set<RelativePos> remaining) {
+		// TODO
+	}
+	
+	private void aggregateConnectedSegment(CircuitCellModel cell, CircuitGridModel grid, Set<RelativePos> visited, Set<RelativePos> positions) {
+		RelativePos pos = cell.getPos();
+		if (!visited.contains(pos) && positions.contains(pos)) {
+			for (CircuitCellModel neighborCell : grid.getNeighbors(cell.getPos()).values()) {
+				aggregateConnectedSegment(neighborCell, grid, visited, positions);
+			}
+		}
 	}
 	
 	public boolean add(RelativePos pos, CableModel cable) {

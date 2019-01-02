@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
+import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
@@ -31,6 +32,7 @@ import fwcd.fructose.swing.View;
 public class CircuitGridView implements View {
 	private final JPanel component;
 	private final CircuitGridModel model;
+	private final CircuitEngineModel engine;
 	private final CircuitGridContext context;
 	
 	private final int unitSize = 24;
@@ -39,8 +41,9 @@ public class CircuitGridView implements View {
 	private Option<AbsolutePos> mousePos = Option.empty();
 	private int mouseButton = 0;
 	
-	public CircuitGridView(CircuitGridModel model, CircuitGridContext context) {
+	public CircuitGridView(CircuitGridModel model, CircuitEngineModel engine, CircuitGridContext context) {
 		this.model = model;
+		this.engine = engine;
 		this.context = context;
 		component = new RenderPanel(this::render);
 		setupMouseHandler();
@@ -67,7 +70,7 @@ public class CircuitGridView implements View {
 							boolean handled = tool.onRightClick(model, cell);
 							if (!handled) {
 								cell.getComponent()
-									.ifPresent(it -> it.accept(new ItemContextMenuProvider(model, pos)).show(component, e.getX(), e.getY()));
+									.ifPresent(it -> it.accept(new ItemContextMenuProvider(model, engine, pos)).show(component, e.getX(), e.getY()));
 							}
 						}
 					});
@@ -168,7 +171,7 @@ public class CircuitGridView implements View {
 		g2d.setColor(Color.BLACK);
 		g2d.setFont(g2d.getFont().deriveFont(14F));
 		
-		for (CableNetwork network : model.getCableNetworks()) {
+		for (CableNetwork network : engine.getCableNetworks()) {
 			String name = network.getName().orElse("");
 			network.streamPositions()
 				.filter(pos -> model.isCellEmpty(new RelativePos(pos.getX(), pos.getY() - 1)))

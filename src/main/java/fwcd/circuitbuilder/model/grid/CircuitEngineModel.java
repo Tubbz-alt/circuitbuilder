@@ -1,6 +1,7 @@
 package fwcd.circuitbuilder.model.grid;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +18,7 @@ import fwcd.circuitbuilder.utils.RelativePos;
 public class CircuitEngineModel {
 	private static final boolean DEBUG_NETWORKS = false;
 	private final CircuitGridModel grid;
+	private final Set<CableNetwork> networks = new HashSet<>();
 	
 	private boolean autoCleanCells = true;
 	
@@ -25,7 +27,6 @@ public class CircuitEngineModel {
 	}
 	
 	public void tick() {
-		Set<CableNetwork> networks = grid.getCableNetworks();
 		Map<CableColor, Map<RelativePos, CableNetwork>> networkCoverage = new HashMap<>();
 		
 		// Pre ticking - Grouping of cables using networks
@@ -102,5 +103,12 @@ public class CircuitEngineModel {
 		}
 		
 		grid.getChangeListeners().fire();
+	}
+	
+	/**
+	 * A set of cable networks.
+	 */
+	public Set<? extends CableNetwork> getCableNetworks() {
+		return networks;
 	}
 }

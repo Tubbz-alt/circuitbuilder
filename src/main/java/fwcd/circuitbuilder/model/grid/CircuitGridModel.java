@@ -25,7 +25,6 @@ import fwcd.fructose.ListenerList;
 public class CircuitGridModel {
 	private final Map<RelativePos, CircuitCellModel> cells = new ConcurrentHashMap<>();
 	private final MultiKeyMap<RelativePos, CircuitLargeComponentModel> largeComponents = new ConcurrentMultiKeyHashMap<>();
-	private final Set<CableNetwork> cableNetworks = new HashSet<>();
 	private final ListenerList changeListeners = new ListenerList();
 	
 	/**
@@ -128,11 +127,6 @@ public class CircuitGridModel {
 	 * {@code clearCell} instead.
 	 */
 	public Map<? extends RelativePos, ? extends CircuitCellModel> getCells() { return cells; }
-	
-	/**
-	 * A mutable set of cable networks.
-	 */
-	public Set<CableNetwork> getCableNetworks() { return cableNetworks; }
 	
 	public void clear() {
 		cells.clear();
