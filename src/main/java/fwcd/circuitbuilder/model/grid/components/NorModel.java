@@ -15,6 +15,9 @@ public class NorModel extends BasicLargeComponent {
 		
 	@Override
 	public String getName() { return "NOR"; }
+		
+	@Override
+	public String getSymbol() { return "!>=1"; }
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitNor(this); }

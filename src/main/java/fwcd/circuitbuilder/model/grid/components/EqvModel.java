@@ -15,6 +15,9 @@ public class EqvModel extends BasicLargeComponent {
 		
 	@Override
 	public String getName() { return "EQV"; }
+		
+	@Override
+	public String getSymbol() { return "="; }
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitEqv(this); }

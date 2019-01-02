@@ -15,7 +15,7 @@ import fwcd.fructose.OptionInt;
  * A visual tool used to modify the circuit.
  */
 public interface CircuitTool extends PositionedRenderable {
-	String getName();
+	String getSymbol();
 	
 	default Option<Image> getImage() { return Option.empty(); }
 	

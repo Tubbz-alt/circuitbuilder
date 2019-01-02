@@ -7,4 +7,6 @@ public interface CircuitItemModel {
 	String getName();
 	
 	<T> T accept(CircuitItemVisitor<T> visitor);
+	
+	default String getSymbol() { return getName(); }
 }

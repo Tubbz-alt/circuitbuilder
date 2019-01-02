@@ -15,6 +15,9 @@ public class AndModel extends BasicLargeComponent {
 		
 	@Override
 	public String getName() { return "AND"; }
+		
+	@Override
+	public String getSymbol() { return "&"; }
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitAnd(this); }

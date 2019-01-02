@@ -15,6 +15,9 @@ public class NandModel extends BasicLargeComponent {
 		
 	@Override
 	public String getName() { return "NAND"; }
+		
+	@Override
+	public String getSymbol() { return "!&"; }
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitNand(this); }

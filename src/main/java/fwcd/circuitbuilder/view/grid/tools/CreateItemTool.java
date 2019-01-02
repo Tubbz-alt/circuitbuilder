@@ -25,7 +25,7 @@ public class CreateItemTool<T extends CircuitItemModel> implements CircuitTool {
 	}
 	
 	@Override
-	public String getName() { return sample.getName(); }
+	public String getSymbol() { return sample.getSymbol(); }
 	
 	@Override
 	public Option<Image> getImage() { return image; }

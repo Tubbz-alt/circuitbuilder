@@ -14,7 +14,7 @@ public class Screwdriver implements CircuitTool {
 	private static final Image IMAGE = new ResourceImage("/screwdriver.png").get();
 	
 	@Override
-	public String getName() { return "Screwdriver"; }
+	public String getSymbol() { return "<>"; }
 	
 	@Override
 	public Option<Image> getImage() { return Option.of(IMAGE); }

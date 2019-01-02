@@ -15,6 +15,9 @@ public class OrModel extends BasicLargeComponent {
 		
 	@Override
 	public String getName() { return "OR"; }
+		
+	@Override
+	public String getSymbol() { return ">=1"; }
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitOr(this); }
