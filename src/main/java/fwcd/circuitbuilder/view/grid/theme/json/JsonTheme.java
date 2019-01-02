@@ -46,7 +46,7 @@ public class JsonTheme implements CircuitGridTheme {
 	}
 	
 	private String findParent(String resourcePath) {
-		return resourcePath.substring(0, resourcePath.lastIndexOf(File.separator));
+		return resourcePath.substring(0, resourcePath.lastIndexOf("/"));
 	}
 	
 	@Override

@@ -46,6 +46,9 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 			try {
 				String path = baseResourcePath + File.separator + fileMap.get(key);
 				try (InputStream stream = JsonItemImageProvider.class.getResourceAsStream(path)) {
+					if (stream == null) {
+						throw new IllegalStateException("Missing image resource: " + path);
+					}
 					image = ImageIO.read(stream);
 					cachedImages.put(key, image);
 				}

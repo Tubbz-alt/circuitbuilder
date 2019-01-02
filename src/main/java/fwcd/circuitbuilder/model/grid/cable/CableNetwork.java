@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,19 +37,28 @@ public class CableNetwork {
 	 * this network into new, continuous networks.
 	 */
 	public Set<CableNetwork> splitOffDisconnectedCables(CircuitGridModel grid) {
-		// Stream.Builder<CableNetwork> stream = Stream.builder();
-		// Set<RelativePos> positions = cables.keySet();
-		// Set<RelativePos> retained = new HashSet<>();
+		Stream.Builder<CableNetwork> stream = Stream.builder();
 		
-		// aggregateConnectedSegment(grid.getCell(positions.iterator().next()), grid, retained, positions);
-		// splitOffDisconnectedCablesInto(stream, grid, positions);
+		splitOffDisconnectedCablesInto(stream, grid, cables.keySet());
 		
-		// positions.retainAll(retained);
-		// return stream.build().collect(Collectors.toSet());
+		return stream.build().collect(Collectors.toSet());
 	}
 	
-	private void splitOffDisconnectedCablesInto(Stream.Builder<CableNetwork> stream, CircuitGridModel grid, Set<RelativePos> remaining) {
-		// TODO
+	private void splitOffDisconnectedCablesInto(Stream.Builder<CableNetwork> stream, CircuitGridModel grid, Set<RelativePos> positions) {
+		Set<RelativePos> visited = new HashSet<>();
+		aggregateConnectedSegment(grid.getCell(positions.iterator().next()), grid, visited, positions);
+		
+		CableNetwork splitted = new CableNetwork();
+		splitted.name = name;
+		splitted.color = color;
+		
+		for (RelativePos pos : visited) {
+			CableModel cable = Objects.requireNonNull(splitted.cables.remove(pos));
+			splitted.add(pos, cable);
+		}
+		
+		splitted.splitOffDisconnectedCablesInto(stream, grid, splitted.cables.keySet());
+		stream.accept(splitted);
 	}
 	
 	private void aggregateConnectedSegment(CircuitCellModel cell, CircuitGridModel grid, Set<RelativePos> visited, Set<RelativePos> positions) {
