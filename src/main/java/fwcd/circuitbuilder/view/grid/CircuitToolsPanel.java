@@ -37,7 +37,8 @@ import fwcd.fructose.swing.View;
  * A view where the user can select a circuit tool.
  */
 public class CircuitToolsPanel implements View {
-	private JToolBar view;
+	private static final Dimension BUTTON_SIZE = new Dimension(24, 24);
+	private final JToolBar view;
 	private final CircuitTool[] tools;
 
 	public CircuitToolsPanel(CircuitGridModel model, CircuitGridContext context) {
@@ -87,7 +88,7 @@ public class CircuitToolsPanel implements View {
 				g2d.fillOval((w / 2) - (iconSize / 2), (h / 2) - (iconSize / 2), iconSize, iconSize);
 			};
 			
-			JButton button = new DrawGraphicsButton(new Dimension(24, 24), circle);
+			JButton button = new DrawGraphicsButton(BUTTON_SIZE, circle);
 			colorsPanel.add(button, () -> context.getSelectedColor().set(color));
 		}
 		
