@@ -1,17 +1,13 @@
 package fwcd.circuitbuilder.view.grid.components;
 
-import java.lang.reflect.Field;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
@@ -48,64 +44,31 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 	}
 	
 	private void showItemInspector(CircuitItemModel item) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		
-		Class<? extends CircuitItemModel> itemClass = item.getClass();
-		Field[] fields = itemClass.getDeclaredFields();
-		
-		panel.add(new JLabel("hashCode: " + Integer.toHexString(item.hashCode())));
-		
-		if (itemClass.equals(CableModel.class)) {
-			panel.add(new JLabel("Cable Networks: " + engine.getCableNetworks().stream()
-				.filter(net -> net.getPositions().contains(pos))
-				.map(net -> {
-					CableModel other = net.cableAt(pos);
-					if (other.equals(item)) {
-						return net.toString();
-					} else {
-						return net.toString() + " (not matching item: " + Integer.toHexString(other.hashCode()) + ")";
-					}
-				})
-				.collect(Collectors.toList())));
-		}
-		
-		panel.add(new JSeparator(SwingConstants.HORIZONTAL));
-		
-		for (Field field : fields) {
-			field.setAccessible(true);
-			
-			String text;
-			try {
-				Object value = field.get(item);
-				text = field.getName() + ":  " + value.toString() + " (@" + Integer.toHexString(value.hashCode()) + ")";
-			} catch (ReflectiveOperationException e) {
-				text = "Error: " + e.getMessage();
-			}
-			
-			panel.add(new JLabel(text));
-		}
-		
-		JOptionPane.showMessageDialog(null, panel, itemClass.getSimpleName(), JOptionPane.PLAIN_MESSAGE);
+		SwingUtilities.invokeLater(() -> {
+			JComponent component = new DebugItemInspector(item, pos, engine).getComponent();
+			JOptionPane.showMessageDialog(null, component, "Inspector", JOptionPane.PLAIN_MESSAGE);
+		});
 	}
 	
 	private void performCableRename() {
-		Set<CableNetwork> networks = engine.getCableNetworks().stream()
-			.filter(it -> it.getPositions().contains(pos))
-			.collect(Collectors.toSet());
-		boolean confirmed = true;
-		
-		if (networks.size() > 1) {
-			confirmed = JOptionPane.showConfirmDialog(
-				null, "Are you sure you want to modify multiple cable networks at once?"
-			) == JOptionPane.OK_OPTION;
-		}
-		
-		if (confirmed && networks.size() > 0) {
-			CableNetwork first = networks.iterator().next();
-			String newName = JOptionPane.showInputDialog("Enter the new cable network name:", first.getName().orElse(""));
-			first.setName(newName);
-		}
+		SwingUtilities.invokeLater(() -> {
+			Set<CableNetwork> networks = engine.getCableNetworks().stream()
+				.filter(it -> it.getPositions().contains(pos))
+				.collect(Collectors.toSet());
+			boolean confirmed = true;
+			
+			if (networks.size() > 1) {
+				confirmed = JOptionPane.showConfirmDialog(
+					null, "Are you sure you want to modify multiple cable networks at once?"
+				) == JOptionPane.OK_OPTION;
+			}
+			
+			if (confirmed && networks.size() > 0) {
+				CableNetwork first = networks.iterator().next();
+				String newName = JOptionPane.showInputDialog("Enter the new cable network name:", first.getName().orElse(""));
+				first.setName(newName);
+			}
+		});
 	}
 	
 	private JMenuItem menuItemOf(String name, Runnable action) {
