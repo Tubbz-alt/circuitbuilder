@@ -1,6 +1,9 @@
 package fwcd.circuitbuilder.model.utils;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -59,6 +62,22 @@ public class BoolUtils {
 		return result;
 	}
 	
+	public static String toBinaryString(int binary, int bitCount) {
+		StringBuilder str = new StringBuilder();
+		for (int i = bitCount - 1; i >= 0; i--) {
+			str.append((binary >> i) & 1);
+		}
+		return str.toString();
+	}
+	
+	public static int bitFromRight(int binary, int i) {
+		return (binary >> i) & 1;
+	}
+	
+	public static int bitFromLeft(int binary, int i, int bitCount) {
+		return (binary >> ((bitCount - 1) - i)) & 1;
+	}
+	
 	public static int toBinary(int... bits) {
 		return toBinary(toBooleans(bits));
 	}
@@ -66,7 +85,7 @@ public class BoolUtils {
 	public static int[] binaryToBits(int binary, int bitCount) {
 		int[] bits = new int[bitCount];
 		for (int i = 0; i < bits.length; i++) {
-			bits[(bits.length - 1) - i] = (binary >> i) & 1;
+			bits[(bits.length - 1) - i] = bitFromRight(binary, i);
 		}
 		return bits;
 	}
@@ -121,5 +140,16 @@ public class BoolUtils {
 	
 	public static int toBit(boolean value) {
 		return value ? 1 : 0;
+	}
+	
+	public static <T> Map<T, Boolean> toMap(List<? extends T> names, boolean... bools) {
+		Map<T, Boolean> result = new HashMap<>();
+		if (bools.length != names.size()) {
+			throw new IllegalArgumentException("Length of names list (" + names.size() + ") does not match length of bools (" + bools.length + ")");
+		}
+		for (int i = 0; i < bools.length; i++) {
+			result.put(names.get(i), bools[i]);
+		}
+		return result;
 	}
 }

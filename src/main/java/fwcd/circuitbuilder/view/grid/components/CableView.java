@@ -1,5 +1,6 @@
 package fwcd.circuitbuilder.view.grid.components;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
@@ -10,27 +11,45 @@ import fwcd.circuitbuilder.view.utils.PositionedRenderable;
 public class CableView implements PositionedRenderable {
 	private final CableModel model;
 	private final int unitSize;
+	private final CableDrawOptions options;
 	
-	public CableView(CableModel model, int unitSize) {
+	public CableView(CableModel model, int unitSize, CableDrawOptions options) {
 		this.model = model;
 		this.unitSize = unitSize;
+		this.options = options;
 	}
 	
 	@Override
 	public void render(Graphics2D g2d, AbsolutePos pos) {
-		final int subSize = unitSize / 3;
-
+		int connectionCount = model.getConnections().size();
+		int thickness = options.getThickness();
+		int halfThickness = thickness / 2;
+		int halfUnitSize = unitSize / 2;
+		
 		int colorStrength = model.isPowered() ? 255 : 50;
+		int x = pos.getX();
+		int y = pos.getY();
+		int centerX = x + halfUnitSize;
+		int centerY = y + halfUnitSize;
 		
 		g2d.setColor(model.getColor().unwrap().getColor(colorStrength).asAWTColor()); // Signal based color
-		g2d.fillRect(pos.getX() + subSize, pos.getY() + subSize, subSize, subSize);
+		
+		if (connectionCount > 2 && options.drawDots()) {
+			int dotRadius = thickness * 2;
+			g2d.fillOval(centerX - dotRadius, centerY - dotRadius, dotRadius * 2, dotRadius * 2);
+		}
+		if (connectionCount == 0) {
+			g2d.fillRect(centerX - halfThickness, centerY - halfThickness, thickness, thickness);
+		}
+		
+		g2d.setStroke(new BasicStroke(thickness));
 		
 		for (Direction connection : model.getConnections()) {
 			switch (connection) {
-				case LEFT: g2d.fillRect(pos.getX(), pos.getY() + subSize, subSize, subSize); break;
-				case RIGHT: g2d.fillRect(pos.getX() + (subSize * 2), pos.getY() + subSize, subSize, subSize); break;
-				case DOWN: g2d.fillRect(pos.getX() + subSize, pos.getY() + (subSize * 2), subSize, subSize); break;
-				case UP: g2d.fillRect(pos.getX() + subSize, pos.getY(), subSize, subSize); break;
+				case LEFT: g2d.drawLine(x, centerY, centerX, centerY); break;
+				case RIGHT: g2d.drawLine(centerX, centerY, x + unitSize, centerY); break;
+				case DOWN: g2d.drawLine(centerX, centerY, centerX, y + unitSize); break;
+				case UP: g2d.drawLine(centerX, y, centerX, centerY); break;
 			}
 		}
 	}

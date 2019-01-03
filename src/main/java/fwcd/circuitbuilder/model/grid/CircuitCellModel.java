@@ -21,12 +21,20 @@ public class CircuitCellModel {
 		this.pos = pos;
 	}
 	
-	public void place(Circuit1x1ComponentModel component) {
-		if (component.isStackable()) {
-			components.push(component);
+	boolean place(Circuit1x1ComponentModel component) {
+		if (!isEmpty()) {
+			if (component.canBeStackedOnTopOf(components.peek())) {
+				components.push(component);
+				return true;
+			} else if (component.canReplaceOtherComponent()) {
+				components.rebase(component);
+				return true;
+			}
 		} else {
 			components.rebase(component);
+			return true;
 		}
+		return false;
 	}
 	
 	public Option<Circuit1x1ComponentModel> getComponent() { return components.optionalPeek(); }

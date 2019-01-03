@@ -5,10 +5,13 @@ import java.util.Queue;
 
 import javax.swing.SwingUtilities;
 
+import fwcd.circuitbuilder.view.grid.CircuitGridContext;
+
 /**
  * Maintains window-level "global" UI state.
  */
 public class CircuitBuilderAppContext {
+	private final CircuitGridContext gridContext = new CircuitGridContext();
 	private final Queue<Runnable> queue = new ArrayDeque<>();
 	private boolean launched = false;
 	
@@ -28,5 +31,9 @@ public class CircuitBuilderAppContext {
 	
 	private void runTask(Runnable task) {
 		SwingUtilities.invokeLater(task);
+	}
+	
+	public CircuitGridContext getGridContext() {
+		return gridContext;
 	}
 }

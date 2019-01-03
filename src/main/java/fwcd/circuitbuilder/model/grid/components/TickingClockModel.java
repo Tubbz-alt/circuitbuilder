@@ -14,9 +14,10 @@ public class TickingClockModel extends BasicEmitter {
 	private int tickDelay = 0;
 	
 	@Override
-	public void toggle() {
+	public boolean toggle() {
 		tickDelayModeIndex = (tickDelayModeIndex + 1) % tickDelayModes.length;
 		maxTickDelay = tickDelayModes[tickDelayModeIndex];
+		return true;
 	}
 		
 	@Override

@@ -5,6 +5,6 @@ import fwcd.circuitbuilder.view.CircuitBuilderFrame;
 public class CircuitBuilderMain {
 	public static void main(String[] args) {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
-		new CircuitBuilderFrame("CircuitBuilder", 800, 600);
+		new CircuitBuilderFrame("CircuitBuilder", 900, 700);
 	}
 }

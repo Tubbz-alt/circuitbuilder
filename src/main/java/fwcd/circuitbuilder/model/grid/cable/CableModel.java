@@ -28,6 +28,10 @@ public class CableModel implements Circuit1x1ComponentModel {
 		this.networkStatus = Option.of(networkStatus);
 	}
 	
+	public void clearNetworkStatus() {
+		networkStatus = Option.empty();
+	}
+	
 	private boolean canConnectTo(CircuitCellModel cell) {
 		return StreamUtils.stream(cell.getComponents())
 			.anyMatch(it -> it.getColor().map(c -> c.equals(color)).orElse(true));
@@ -65,7 +69,16 @@ public class CableModel implements Circuit1x1ComponentModel {
 	public boolean isEmitter() { return false; }
 	
 	@Override
-	public boolean isStackable() { return true; }
+	public boolean canReplaceOtherComponent() { return false; }
+	
+	@Override
+	public boolean canBeStackedOnTopOf(Circuit1x1ComponentModel other) {
+		if (other instanceof CableModel) {
+			CableModel cable = (CableModel) other;
+			return !cable.color.equals(color);
+		}
+		return false;
+	}
 	
 	@Override
 	public void tick(Map<Direction, CircuitCellModel> neighbors) {
@@ -101,4 +114,15 @@ public class CableModel implements Circuit1x1ComponentModel {
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitCable(this); }
+	
+	@Override
+	public String toString() {
+		return "Cable [color=" + color
+			+ ", connections=" + connections
+			+ ", soonPowered=" + soonPowered
+			+ ", nowPowered=" + nowPowered
+			+ ", connectedToEmitter=" + connectedToEmitter
+			+ ", networkStatus=" + networkStatus
+			+ "]";
+	}
 }

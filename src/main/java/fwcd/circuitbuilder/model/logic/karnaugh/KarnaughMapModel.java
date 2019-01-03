@@ -1,8 +1,6 @@
 package fwcd.circuitbuilder.model.logic.karnaugh;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -61,11 +59,7 @@ public class KarnaughMapModel {
 	
 	private boolean computeCell(int x, int y) {
 		boolean[] inputs = BoolUtils.binaryToBooleans(getCode(x, y), inputVariables.size());
-		Map<String, Boolean> inputMap = new HashMap<>();
-		for (int i = 0; i < inputs.length; i++) {
-			inputMap.put(inputVariables.get(i), inputs[i]);
-		}
-		return expression.evaluate(inputMap);
+		return expression.evaluate(BoolUtils.toMap(inputVariables, inputs));
 	}
 	
 	public boolean getCell(int x, int y) {

@@ -7,7 +7,7 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.Direction;
 
 public class InverterModel implements Circuit1x1ComponentModel {
-	private Direction facing = Direction.UP;
+	private Direction facing = Direction.RIGHT;
 	private boolean nowEmitting = true;
 	private boolean soonEmitting = nowEmitting;
 	
@@ -27,8 +27,9 @@ public class InverterModel implements Circuit1x1ComponentModel {
 	}
 	
 	@Override
-	public void toggle() {
-		facing = facing.cycle();
+	public boolean toggle() {
+		facing = facing.next();
+		return true;
 	}
 	
 	@Override
@@ -46,6 +47,8 @@ public class InverterModel implements Circuit1x1ComponentModel {
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitInverter(this); }
 	
 	public Direction getFacing() { return facing; }
+	
+	public Direction getImageFacing() { return facing.invert().next(); }
 	
 	@Override
 	public boolean outputsTowards(Direction outputDir) { return outputDir.equals(facing); }

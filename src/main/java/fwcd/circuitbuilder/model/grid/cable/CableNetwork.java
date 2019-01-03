@@ -1,23 +1,42 @@
 package fwcd.circuitbuilder.model.grid.cable;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
 
 public class CableNetwork {
 	private final CableNetworkStatus status = new CableNetworkStatus();
+	private Option<String> name = Option.empty();
 	private Option<CableColor> color = Option.empty();
 	private Map<RelativePos, CableModel> cables = new HashMap<>();
-	private Set<CableModel> cableSet = new HashSet<>();
 	
-	private boolean add(RelativePos pos, CableModel cable) {
+	/**
+	 * Merges the cables and metadata from the other network
+	 * into this one.
+	 */
+	public void merge(CableNetwork other) {
+		name = name.or(other::getName);
+		cables.putAll(other.cables);
+		
+		for (CableModel cable : cables.values()) {
+			cable.setNetworkStatus(status);
+		}
+	}
+	
+	public boolean add(RelativePos pos, CableModel cable) {
 		Option<CableColor> cableColor = cable.getColor();
 		
 		if (!color.isPresent()) {
@@ -29,16 +48,80 @@ public class CableNetwork {
 			.orElse(false);
 		
 		if (colorMatches) {
+			cable.setNetworkStatus(status);
 			cables.put(pos, cable);
-			cableSet.add(cable);
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	private boolean contains(Circuit1x1ComponentModel cable) {
-		return cableSet.contains(cable);
+	private Set<RelativePos> getConnectedSegment(RelativePos pos, Set<RelativePos> ignored) {
+		if (ignored.contains(pos)) {
+			return Collections.emptySet();
+		} else {
+			Set<RelativePos> positions = new HashSet<>();
+			findConnectedSegment(pos, positions, ignored);
+			return positions;
+		}
+	}
+	
+	private void findConnectedSegment(RelativePos pos, Set<RelativePos> visited, Set<RelativePos> ignored) {
+		visited.add(pos);
+		for (Direction direction : cables.get(pos).getConnections()) {
+			RelativePos neighbor = new RelativePos(pos.add(direction.getVector()));
+			if (!visited.contains(neighbor) && !ignored.contains(neighbor) && cables.keySet().contains(neighbor)) {
+				findConnectedSegment(neighbor, visited, ignored);
+			}
+		}
+	}
+
+	public Set<CableNetwork> splitAt(RelativePos splitPos) {
+		CableModel cable = cables.remove(splitPos);
+		
+		if (cable == null) {
+			return Collections.singleton(this);
+		} else {
+			Set<RelativePos> startPositions = cable.getConnections().stream()
+				.map(Direction::getVector)
+				.map(splitPos::add)
+				.map(RelativePos::new)
+				.filter(cables.keySet()::contains)
+				.collect(Collectors.toSet());
+			Set<CableNetwork> networks = new HashSet<>(4);	
+			Set<RelativePos> visited = new HashSet<>();
+			
+			for (RelativePos startPos : startPositions) {
+				Set<RelativePos> connectedSegment = getConnectedSegment(startPos, visited);
+				
+				if (!connectedSegment.isEmpty()) {
+					CableNetwork network = new CableNetwork();
+					network.setName(name);
+					network.color = color;
+					
+					for (RelativePos connectedPos : connectedSegment) {
+						network.add(connectedPos, cables.get(connectedPos));
+						visited.add(connectedPos);
+					}
+					
+					networks.add(network);
+				}
+			}
+			
+			return networks;
+		}
+	}
+	
+	public boolean canBeExtendedTo(RelativePos pos) {
+		return cables.keySet().stream()
+			.anyMatch(it ->
+				(Math.abs(pos.getX() - it.getX()) <= 1 && pos.getY() == it.getY())
+				|| (Math.abs(pos.getY() - it.getY()) <= 1 && pos.getX() == it.getX())
+			);
+	}
+	
+	private boolean contains(RelativePos pos) {
+		return cables.keySet().contains(pos);
 	}
 	
 	public void updateStatus(CircuitGridModel grid) {
@@ -62,19 +145,56 @@ public class CableNetwork {
 	}
 	
 	private void buildRecursively(CircuitCellModel cell, CircuitGridModel grid) {
+		RelativePos pos = cell.getPos();
 		for (Circuit1x1ComponentModel component : cell.getComponents()) {
-			if (component instanceof CableModel && !contains(component)) {
-				CableModel cable = (CableModel) component;
-				if (add(cell.getPos(), cable)) {
-					for (CircuitCellModel neighborCell : grid.getNeighbors(cell.getPos()).values()) {
-						buildRecursively(neighborCell, grid);
+			component.accept(CableMatcher.INSTANCE)
+				.filter(it -> !contains(pos))
+				.ifPresent(cable -> {
+					if (add(pos, cable)) {
+						for (Direction connection : cable.getConnections()) {
+							buildRecursively(grid.getCell(new RelativePos(pos.add(connection.getVector()))), grid);
+						}
 					}
-				}
-			}
+				});
 		}
 	}
 	
+	public boolean remove(RelativePos pos) {
+		CableModel cable = cables.remove(pos);
+		if (cable == null) {
+			return false;
+		} else {
+			cable.clearNetworkStatus();
+			return true;
+		}
+	}
+	
+	public boolean colorMatches(CableModel cable) {
+		return color.flatMap(it -> cable.getColor().map(it::equals)).orElse(false);
+	}
+	
+	public CableModel cableAt(RelativePos pos) { return cables.get(pos); }
+	
+	public Collection<? extends CableModel> getCables() { return cables.values(); }
+	
 	public Set<? extends RelativePos> getPositions() { return cables.keySet(); }
 	
+	public Stream<RelativePos> streamPositions() { return cables.keySet().stream(); }
+	
 	public CableNetworkStatus getStatus() { return status; }
+	
+	public Option<String> getName() { return name; }
+	
+	public Option<CableColor> getColor() { return color; }
+	
+	public void setName(Option<String> name) { this.name = name; }
+	
+	public void setName(String name) { this.name = Option.of(name); }
+
+	public boolean isEmpty() { return cables.isEmpty(); }
+	
+	public String toDebugString() { return name.orElse("<Network>") + " " + getPositions() + " >> " + getStatus().isPowered(); }
+	
+	@Override
+	public String toString() { return name.orElse("<Network>"); }
 }

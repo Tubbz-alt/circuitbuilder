@@ -4,7 +4,6 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
-import fwcd.circuitbuilder.view.grid.CircuitGridContext;
 import fwcd.circuitbuilder.view.grid.CircuitGridEditorView;
 import fwcd.circuitbuilder.view.logic.LogicEditorView;
 import fwcd.fructose.swing.View;
@@ -24,7 +23,7 @@ public class CircuitBuilderView implements View {
 	public CircuitBuilderView(CircuitBuilderModel model, CircuitBuilderAppContext context) {
 		component = new JTabbedPane();
 		
-		gridEditor = new CircuitGridEditorView(model.getGrid(), new CircuitGridContext());
+		gridEditor = new CircuitGridEditorView(model.getGrid(), model.getEngine(), context.getGridContext());
 		component.addTab("Grid Editor", gridEditor.getComponent());
 		
 		logicEditor = new LogicEditorView(model.getLogicEditor(), context);

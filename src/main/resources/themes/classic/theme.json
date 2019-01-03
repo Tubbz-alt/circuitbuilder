@@ -1,0 +1,23 @@
+{
+	"gridLineOpacity": 0.3,
+	"cableThickness": 4,
+	"itemImages": {
+		"cable": "cable.png",
+		"input": "inIcon.png",
+		"inverterOn": "inverterOn.png",
+		"inverterOff": "inverterOff.png",
+		"lampOn": "lampOn.png",
+		"lampOff": "lampOff.png",
+		"leverOn": "leverOn.png",
+		"leverOff": "leverOff.png",
+		"output": "outIcon.png",
+		"clockOn": "clockOn.png",
+		"clockOff": "clockOff.png",
+		"xor": "xorImage.png",
+		"eqv": "xnorImage.png",
+		"and": "andImage.png",
+		"or": "orImage.png",
+		"nand": "nandImage.png",
+		"nor": "norImage.png"
+	}
+}
