@@ -2,7 +2,6 @@ package fwcd.circuitbuilder.model.grid.cable;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -28,12 +27,9 @@ public class CableNetwork {
 		name = name.or(other::getName);
 		
 		for (Map.Entry<RelativePos, CableModel> entry : other.cables.entrySet()) {
-			RelativePos pos = entry.getKey();
-			if (!cables.keySet().contains(pos)) {
-				CableModel cable = entry.getValue();
-				cable.setNetworkStatus(status);
-				cables.put(pos, cable);
-			}
+			CableModel cable = entry.getValue();
+			cable.setNetworkStatus(status);
+			cables.put(entry.getKey(), cable);
 		}
 	}
 	
