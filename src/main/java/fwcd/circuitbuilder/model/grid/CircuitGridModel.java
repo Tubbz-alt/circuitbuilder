@@ -8,6 +8,7 @@ import java.util.function.BiConsumer;
 
 import fwcd.circuitbuilder.model.grid.cable.CableEvent;
 import fwcd.circuitbuilder.model.grid.cable.CableMatcher;
+import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
@@ -18,6 +19,8 @@ import fwcd.circuitbuilder.utils.MultiKeyMap;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.EventListenerList;
 import fwcd.fructose.ListenerList;
+import fwcd.fructose.Option;
+import fwcd.fructose.StreamUtils;
 
 /**
  * A 2D-grid of circuit components.
@@ -104,19 +107,24 @@ public class CircuitGridModel {
 	}
 	
 	public void put(Circuit1x1ComponentModel component, RelativePos pos) {
-		if (getCell(pos).place(component)) {
+		CircuitCellModel cell = getCell(pos);
+		Option<CableModel> removedCable = Option.of(StreamUtils.stream(cell.getComponents()).flatMap(it -> it.accept(CableMatcher.INSTANCE).stream()).findAny());
+		
+		if (cell.place(component)) {
 			Map<Direction, CircuitCellModel> neighbors = getNeighbors(pos);
 			component.onPlace(neighbors);
 			
-			for (CircuitCellModel cell : neighbors.values()) {
-				if (!cell.isEmpty()) {
-					for (Circuit1x1ComponentModel neighborComponent : cell.getComponents()) {
-						neighborComponent.onPlace(getNeighbors(cell.getPos()));
+			for (CircuitCellModel neighborCell : neighbors.values()) {
+				if (!neighborCell.isEmpty()) {
+					for (Circuit1x1ComponentModel neighborComponent : neighborCell.getComponents()) {
+						neighborComponent.onPlace(getNeighbors(neighborCell.getPos()));
 					}
 				}
 			}
 			
-			component.accept(CableMatcher.INSTANCE).ifPresent(cable -> addCableListeners.fire(new CableEvent(cable, pos)));
+			Option<CableModel> addedCable = component.accept(CableMatcher.INSTANCE);
+			removedCable.filter(it -> !addedCable.isPresent()).ifPresent(removed -> removeCableListeners.fire(new CableEvent(removed, pos)));
+			addedCable.ifPresent(added -> addCableListeners.fire(new CableEvent(added, pos)));
 			changeListeners.fire();
 		}
 	}
