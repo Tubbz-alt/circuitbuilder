@@ -69,7 +69,7 @@ public class CableModel implements Circuit1x1ComponentModel {
 	public boolean isEmitter() { return false; }
 	
 	@Override
-	public boolean canReplaceOtherComponent() { return true; }
+	public boolean canReplaceOtherComponent() { return false; }
 	
 	@Override
 	public boolean canBeStackedOnTopOf(Circuit1x1ComponentModel other) {
@@ -114,4 +114,15 @@ public class CableModel implements Circuit1x1ComponentModel {
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitCable(this); }
+	
+	@Override
+	public String toString() {
+		return "Cable [color=" + color
+			+ ", connections=" + connections
+			+ ", soonPowered=" + soonPowered
+			+ ", nowPowered=" + nowPowered
+			+ ", connectedToEmitter=" + connectedToEmitter
+			+ ", networkStatus=" + networkStatus
+			+ "]";
+	}
 }
