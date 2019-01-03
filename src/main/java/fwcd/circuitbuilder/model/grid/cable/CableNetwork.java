@@ -26,8 +26,16 @@ public class CableNetwork {
 	 */
 	public void merge(CableNetwork other) {
 		name = name.or(other::getName);
-		cables.putAll(other.cables);
-		cableSet.addAll(other.cableSet);
+		
+		for (Map.Entry<RelativePos, CableModel> entry : other.cables.entrySet()) {
+			RelativePos pos = entry.getKey();
+			if (!cables.keySet().contains(pos)) {
+				CableModel cable = entry.getValue();
+				cable.setNetworkStatus(status);
+				cables.put(pos, cable);
+				cableSet.add(cable);
+			}
+		}
 	}
 	
 	public boolean add(RelativePos pos, CableModel cable) {
@@ -123,6 +131,12 @@ public class CableNetwork {
 		return cableSet.hashCode() * 7;
 	}
 	
+	public boolean colorMatches(CableModel cable) {
+		return color.flatMap(it -> cable.getColor().map(it::equals)).orElse(false);
+	}
+	
+	public Set<? extends CableModel> getCableSet() { return cableSet; }
+	
 	public Set<? extends RelativePos> getPositions() { return cables.keySet(); }
 	
 	public Stream<RelativePos> streamPositions() { return cables.keySet().stream(); }
@@ -136,4 +150,6 @@ public class CableNetwork {
 	public void setName(Option<String> name) { this.name = name; }
 	
 	public void setName(String name) { this.name = Option.of(name); }
+
+	public boolean isEmpty() { return cableSet.isEmpty(); }
 }
