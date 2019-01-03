@@ -57,9 +57,13 @@ public class CableNetwork {
 	}
 	
 	private Set<RelativePos> getConnectedSegment(RelativePos pos, Set<RelativePos> ignored) {
-		Set<RelativePos> positions = new HashSet<>();
-		findConnectedSegment(pos, positions, ignored);
-		return positions;
+		if (ignored.contains(pos)) {
+			return Collections.emptySet();
+		} else {
+			Set<RelativePos> positions = new HashSet<>();
+			findConnectedSegment(pos, positions, ignored);
+			return positions;
+		}
 	}
 	
 	private void findConnectedSegment(RelativePos pos, Set<RelativePos> visited, Set<RelativePos> ignored) {
@@ -73,28 +77,38 @@ public class CableNetwork {
 	}
 
 	public Set<CableNetwork> splitAt(RelativePos splitPos) {
-		CableModel cable = cables.get(splitPos);
+		CableModel cable = cables.remove(splitPos);
 		
 		if (cable == null) {
 			return Collections.singleton(this);
 		} else {
-			return cable.getConnections().stream()
+			Set<RelativePos> startPositions = cable.getConnections().stream()
 				.map(Direction::getVector)
 				.map(splitPos::add)
 				.map(RelativePos::new)
 				.filter(cables.keySet()::contains)
-				.map(startPos -> {
+				.collect(Collectors.toSet());
+			Set<CableNetwork> networks = new HashSet<>(4);	
+			Set<RelativePos> visited = new HashSet<>();
+			
+			for (RelativePos startPos : startPositions) {
+				Set<RelativePos> connectedSegment = getConnectedSegment(startPos, visited);
+				
+				if (!connectedSegment.isEmpty()) {
 					CableNetwork network = new CableNetwork();
 					network.setName(name);
 					network.color = color;
 					
-					for (RelativePos connectedPos : getConnectedSegment(startPos, Collections.singleton(splitPos))) {
+					for (RelativePos connectedPos : connectedSegment) {
 						network.add(connectedPos, cables.get(connectedPos));
+						visited.add(connectedPos);
 					}
 					
-					return network;
-				})
-				.collect(Collectors.toSet());
+					networks.add(network);
+				}
+			}
+			
+			return networks;
 		}
 	}
 	
