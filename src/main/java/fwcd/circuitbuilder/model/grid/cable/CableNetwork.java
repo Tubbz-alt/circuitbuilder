@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
 
@@ -36,7 +37,7 @@ public class CableNetwork {
 	 * Extracts cables that are not directly connected to
 	 * this network into new, continuous networks.
 	 */
-	public Set<CableNetwork> splitOffDisconnectedCables(CircuitGridModel grid) {
+	public Set<CableNetwork> splitIntoContinousNetworks(CircuitGridModel grid) {
 		Stream.Builder<CableNetwork> stream = Stream.builder();
 		
 		splitOffDisconnectedCablesInto(stream, grid, cables.keySet());
@@ -48,24 +49,34 @@ public class CableNetwork {
 		Set<RelativePos> visited = new HashSet<>();
 		aggregateConnectedSegment(grid.getCell(positions.iterator().next()), grid, visited, positions);
 		
-		CableNetwork splitted = new CableNetwork();
-		splitted.name = name;
-		splitted.color = color;
-		
-		for (RelativePos pos : visited) {
-			CableModel cable = Objects.requireNonNull(splitted.cables.remove(pos));
-			splitted.add(pos, cable);
+		if (visited.equals(positions)) {
+			stream.accept(this);
+		} else if (!visited.isEmpty()) {
+			CableNetwork splitted = new CableNetwork();
+			splitted.name = name;
+			splitted.color = color;
+			
+			for (RelativePos pos : visited) {
+				CableModel cable = Objects.requireNonNull(cables.get(pos));
+				splitted.add(pos, cable);
+			}
+			
+			splitted.splitOffDisconnectedCablesInto(stream, grid, splitted.cables.keySet());
+			stream.accept(splitted);
 		}
-		
-		splitted.splitOffDisconnectedCablesInto(stream, grid, splitted.cables.keySet());
-		stream.accept(splitted);
 	}
 	
 	private void aggregateConnectedSegment(CircuitCellModel cell, CircuitGridModel grid, Set<RelativePos> visited, Set<RelativePos> positions) {
 		RelativePos pos = cell.getPos();
-		if (!visited.contains(pos) && positions.contains(pos)) {
-			for (CircuitCellModel neighborCell : grid.getNeighbors(cell.getPos()).values()) {
-				aggregateConnectedSegment(neighborCell, grid, visited, positions);
+		if (positions.contains(pos) && !visited.contains(pos)) {
+			visited.add(pos);
+			for (Circuit1x1ComponentModel component : cell.getComponents()) {
+				if (component instanceof CableModel) {
+					CableModel cable = (CableModel) component;
+					for (Direction connection : cable.getConnections()) {
+						aggregateConnectedSegment(grid.getCell(new RelativePos(pos.add(connection.getVector()))), grid, visited, positions);
+					}
+				}
 			}
 		}
 	}
@@ -126,13 +137,28 @@ public class CableNetwork {
 		for (Circuit1x1ComponentModel component : cell.getComponents()) {
 			if (component instanceof CableModel && !contains(component)) {
 				CableModel cable = (CableModel) component;
-				if (add(cell.getPos(), cable)) {
-					for (CircuitCellModel neighborCell : grid.getNeighbors(cell.getPos()).values()) {
-						buildRecursively(neighborCell, grid);
+				RelativePos pos = cell.getPos();
+				if (add(pos, cable)) {
+					for (Direction connection : cable.getConnections()) {
+						buildRecursively(grid.getCell(new RelativePos(pos.add(connection.getVector()))), grid);
 					}
 				}
 			}
 		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (this == obj) return true;
+		if (!getClass().equals(obj.getClass())) return false;
+		CableNetwork other = (CableNetwork) obj;
+		return cableSet.equals(other.cableSet);
+	}
+	
+	@Override
+	public int hashCode() {
+		return cableSet.hashCode() * 7;
 	}
 	
 	public Set<? extends RelativePos> getPositions() { return cables.keySet(); }

@@ -29,7 +29,13 @@ public class CircuitEngineModel {
 	public void tick() {
 		Map<CableColor, Map<RelativePos, CableNetwork>> networkCoverage = new HashMap<>();
 		
-		// Pre ticking - Grouping of cables using networks
+		// Pre ticking - Updating networks
+		
+		Set<CableNetwork> newNetworks = networks.stream()
+			.flatMap(net -> net.splitIntoContinousNetworks(grid).stream())
+			.collect(Collectors.toSet());
+		networks.clear();
+		networks.addAll(newNetworks);
 		
 		grid.forEach1x1((cell, component) -> {
 			if (component instanceof CableModel) {
