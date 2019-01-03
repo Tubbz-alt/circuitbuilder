@@ -16,7 +16,7 @@ import fwcd.circuitbuilder.utils.RelativePos;
  * An engine that ticks and updates components on a circuit grid.
  */
 public class CircuitEngineModel {
-	private static final boolean DEBUG_NETWORKS = false;
+	private static final boolean DEBUG_NETWORKS = true;
 	private final CircuitGridModel grid;
 	private final Set<CableNetwork> networks = new HashSet<>();
 	
