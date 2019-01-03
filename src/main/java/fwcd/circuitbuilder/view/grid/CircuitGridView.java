@@ -171,11 +171,12 @@ public class CircuitGridView implements View {
 		// Draw cable networks
 		
 		boolean showNetworks = context.getShowNetworks().get();
-		g2d.setColor(Color.BLACK);
 		g2d.setFont(g2d.getFont().deriveFont(14F));
 		
 		for (CableNetwork network : engine.getCableNetworks()) {
 			String name = network.getName().orElse("");
+			
+			g2d.setColor(Color.BLACK);
 			network.streamPositions()
 				.filter(pos -> model.isCellEmpty(new RelativePos(pos.getX(), pos.getY() - 1)))
 				.sorted(Comparator.comparing(pos -> pos.getX() + pos.getY()))

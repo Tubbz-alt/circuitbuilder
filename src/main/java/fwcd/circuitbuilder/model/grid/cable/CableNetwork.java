@@ -1,5 +1,6 @@
 package fwcd.circuitbuilder.model.grid.cable;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -18,7 +19,6 @@ public class CableNetwork {
 	private Option<String> name = Option.empty();
 	private Option<CableColor> color = Option.empty();
 	private Map<RelativePos, CableModel> cables = new HashMap<>();
-	private Set<CableModel> cableSet = new LinkedHashSet<>();
 	
 	/**
 	 * Merges the cables and metadata from the other network
@@ -33,7 +33,6 @@ public class CableNetwork {
 				CableModel cable = entry.getValue();
 				cable.setNetworkStatus(status);
 				cables.put(pos, cable);
-				cableSet.add(cable);
 			}
 		}
 	}
@@ -52,7 +51,6 @@ public class CableNetwork {
 		if (colorMatches) {
 			cable.setNetworkStatus(status);
 			cables.put(pos, cable);
-			cableSet.add(cable);
 			return true;
 		} else {
 			return false;
@@ -67,8 +65,8 @@ public class CableNetwork {
 			);
 	}
 	
-	private boolean contains(Circuit1x1ComponentModel cable) {
-		return cableSet.contains(cable);
+	private boolean contains(RelativePos pos) {
+		return cables.keySet().contains(pos);
 	}
 	
 	public void updateStatus(CircuitGridModel grid) {
@@ -92,11 +90,11 @@ public class CableNetwork {
 	}
 	
 	private void buildRecursively(CircuitCellModel cell, CircuitGridModel grid) {
+		RelativePos pos = cell.getPos();
 		for (Circuit1x1ComponentModel component : cell.getComponents()) {
 			component.accept(CableMatcher.INSTANCE)
-				.filter(it -> !contains(it))
+				.filter(it -> !contains(pos))
 				.ifPresent(cable -> {
-					RelativePos pos = cell.getPos();
 					if (add(pos, cable)) {
 						for (Direction connection : cable.getConnections()) {
 							buildRecursively(grid.getCell(new RelativePos(pos.add(connection.getVector()))), grid);
@@ -112,30 +110,15 @@ public class CableNetwork {
 			return false;
 		} else {
 			cable.clearNetworkStatus();
-			cableSet.remove(cable);
 			return true;
 		}
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (this == obj) return true;
-		if (!getClass().equals(obj.getClass())) return false;
-		CableNetwork other = (CableNetwork) obj;
-		return cableSet.equals(other.cableSet);
-	}
-	
-	@Override
-	public int hashCode() {
-		return cableSet.hashCode() * 7;
 	}
 	
 	public boolean colorMatches(CableModel cable) {
 		return color.flatMap(it -> cable.getColor().map(it::equals)).orElse(false);
 	}
 	
-	public Set<? extends CableModel> getCableSet() { return cableSet; }
+	public Collection<? extends CableModel> getCables() { return cables.values(); }
 	
 	public Set<? extends RelativePos> getPositions() { return cables.keySet(); }
 	
@@ -151,10 +134,10 @@ public class CableNetwork {
 	
 	public void setName(String name) { this.name = Option.of(name); }
 
-	public boolean isEmpty() { return cableSet.isEmpty(); }
+	public boolean isEmpty() { return cables.isEmpty(); }
+	
+	public String toDebugString() { return name.orElse("<Network>") + " " + getPositions() + " >> " + getStatus().isPowered(); }
 	
 	@Override
-	public String toString() {
-		return "Network " + getPositions() + " >> " + getStatus().isPowered();
-	}
+	public String toString() { return name.orElse("<Network>"); }
 }

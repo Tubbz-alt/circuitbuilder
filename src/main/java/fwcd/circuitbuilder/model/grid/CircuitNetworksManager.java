@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import fwcd.circuitbuilder.model.grid.cable.CableEvent;
+import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 
 public class CircuitNetworksManager {
@@ -24,12 +25,14 @@ public class CircuitNetworksManager {
 			network.add(event.getPos(), event.getCable());
 			networks.add(network);
 		} else {
-			Iterator<CableNetwork> iterator = networks.iterator();
+			Iterator<CableNetwork> iterator = extendableNetworks.iterator();
 			CableNetwork first = iterator.next();
+			first.add(event.getPos(), event.getCable());
 			
 			while (iterator.hasNext()) {
-				first.merge(iterator.next());
-				iterator.remove();
+				CableNetwork network = iterator.next();
+				first.merge(network);
+				networks.remove(network);
 			}
 		}
 	}
@@ -50,8 +53,8 @@ public class CircuitNetworksManager {
 	
 	public void onClear() {
 		networks.stream()
-			.map(it -> it.getCableSet().stream())
-			.collect(Collectors.toSet());
+			.flatMap(it -> it.getCables().stream())
+			.forEach(CableModel::clearNetworkStatus);
 		networks.clear();
 	}
 }
