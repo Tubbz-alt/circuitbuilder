@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import fwcd.circuitbuilder.model.grid.cable.CableEvent;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
+import fwcd.circuitbuilder.utils.RelativePos;
 
 public class CircuitNetworksManager {
 	private final Set<CableNetwork> networks;
@@ -38,14 +39,25 @@ public class CircuitNetworksManager {
 	}
 	
 	public void onRemoveCable(CableEvent event) {
-		for (CableNetwork network : networks) {
+		RelativePos pos = event.getPos();
+		Iterator<CableNetwork> iterator = networks.iterator();
+		boolean removedCable = false;
+		
+		while (!removedCable && iterator.hasNext()) {
+			CableNetwork network = iterator.next();
+			
 			if (network.colorMatches(event.getCable())) {
-				network.remove(event.getPos());
+				removedCable = network.getPositions().contains(pos);
 				
-				// TODO: Splitting
-				
-				if (network.isEmpty()) {
+				if (removedCable) {
 					networks.remove(network);
+					
+					if (!network.isEmpty()) {
+						Set<CableNetwork> splitted = network.splitAt(pos);
+						networks.addAll(splitted);
+					}
+					
+					network.remove(pos);
 				}
 			}
 		}

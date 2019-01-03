@@ -1,9 +1,13 @@
 package fwcd.circuitbuilder.model.grid.cable;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
@@ -49,6 +53,48 @@ public class CableNetwork {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	private Set<RelativePos> getConnectedSegment(RelativePos pos, Set<RelativePos> ignored) {
+		Set<RelativePos> positions = new HashSet<>();
+		findConnectedSegment(pos, positions, ignored);
+		return positions;
+	}
+	
+	private void findConnectedSegment(RelativePos pos, Set<RelativePos> visited, Set<RelativePos> ignored) {
+		visited.add(pos);
+		for (Direction direction : cables.get(pos).getConnections()) {
+			RelativePos neighbor = new RelativePos(pos.add(direction.getVector()));
+			if (!visited.contains(neighbor) && !ignored.contains(neighbor) && cables.keySet().contains(neighbor)) {
+				findConnectedSegment(neighbor, visited, ignored);
+			}
+		}
+	}
+
+	public Set<CableNetwork> splitAt(RelativePos splitPos) {
+		CableModel cable = cables.get(splitPos);
+		
+		if (cable == null) {
+			return Collections.singleton(this);
+		} else {
+			return cable.getConnections().stream()
+				.map(Direction::getVector)
+				.map(splitPos::add)
+				.map(RelativePos::new)
+				.filter(cables.keySet()::contains)
+				.map(startPos -> {
+					CableNetwork network = new CableNetwork();
+					network.setName(name);
+					network.color = color;
+					
+					for (RelativePos connectedPos : getConnectedSegment(startPos, Collections.singleton(splitPos))) {
+						network.add(connectedPos, cables.get(connectedPos));
+					}
+					
+					return network;
+				})
+				.collect(Collectors.toSet());
 		}
 	}
 	
