@@ -66,6 +66,8 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	 */
 	default void tick(Map<Direction, CircuitCellModel> neighbors) {}
 	
+	default boolean canConnectFrom(Direction direction) { return true; }
+	
 	default boolean canReplaceOtherComponent() { return true; }
 	
 	default boolean isEmitter() { return true; }

@@ -32,8 +32,9 @@ public class CableModel implements Circuit1x1ComponentModel {
 		networkStatus = Option.empty();
 	}
 	
-	private boolean canConnectTo(CircuitCellModel cell) {
+	private boolean canConnectTo(CircuitCellModel cell, Direction direction) {
 		return StreamUtils.stream(cell.getComponents())
+			.filter(it -> it.canConnectFrom(direction.invert()))
 			.anyMatch(it -> it.getColor().map(c -> c.equals(color)).orElse(true));
 	}
 	
@@ -43,7 +44,7 @@ public class CableModel implements Circuit1x1ComponentModel {
 	@Override
 	public void onPlace(Map<Direction, CircuitCellModel> neighbors) {
 		for (Direction dir : neighbors.keySet()) {
-			if (!neighbors.get(dir).isEmpty() && canConnectTo(neighbors.get(dir))) {
+			if (!neighbors.get(dir).isEmpty() && canConnectTo(neighbors.get(dir), dir)) {
 				connections.add(dir);
 			}
 		}

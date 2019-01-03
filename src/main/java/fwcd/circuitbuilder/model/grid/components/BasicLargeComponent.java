@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**
@@ -25,7 +26,7 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 		int outputYOffset = (rows / 2) - (outputCount / 2);
 		
 		inputs = IntStream.range(0, inputCount)
-			.mapToObj(i -> new InputComponentModel(new RelativePos(0, i * 2)))
+			.mapToObj(i -> new InputComponentModel(new RelativePos(0, i * 2), Direction.LEFT))
 			.collect(Collectors.toList());
 		
 		outputs = IntStream.range(0, outputCount)
