@@ -33,7 +33,7 @@ public class CircuitEngineModel {
 		
 		if (DEBUG_NETWORKS) {
 			// TODO: Logging
-			System.out.println("Networks: [\n" + networks.stream().map(it -> "  Network " + it.getPositions() + " >> " + it.getStatus().isPowered()).reduce((a, b) -> a + "\n" + b).orElse("") + "\n]");
+			System.out.println("Networks: [\n" + networks.stream().map(Object::toString).reduce((a, b) -> a + "\n" + b).orElse("") + "\n]");
 		}
 		
 		// Main ticking

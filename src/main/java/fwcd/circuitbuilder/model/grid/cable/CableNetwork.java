@@ -152,4 +152,9 @@ public class CableNetwork {
 	public void setName(String name) { this.name = Option.of(name); }
 
 	public boolean isEmpty() { return cableSet.isEmpty(); }
+	
+	@Override
+	public String toString() {
+		return "Network " + getPositions() + " >> " + getStatus().isPowered();
+	}
 }
