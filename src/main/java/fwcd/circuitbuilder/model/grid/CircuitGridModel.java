@@ -104,21 +104,21 @@ public class CircuitGridModel {
 	}
 	
 	public void put(Circuit1x1ComponentModel component, RelativePos pos) {
-		getCell(pos).place(component);
-		
-		Map<Direction, CircuitCellModel> neighbors = getNeighbors(pos);
-		component.onPlace(neighbors);
-		
-		for (CircuitCellModel cell : neighbors.values()) {
-			if (!cell.isEmpty()) {
-				for (Circuit1x1ComponentModel neighborComponent : cell.getComponents()) {
-					neighborComponent.onPlace(getNeighbors(cell.getPos()));
+		if (getCell(pos).place(component)) {
+			Map<Direction, CircuitCellModel> neighbors = getNeighbors(pos);
+			component.onPlace(neighbors);
+			
+			for (CircuitCellModel cell : neighbors.values()) {
+				if (!cell.isEmpty()) {
+					for (Circuit1x1ComponentModel neighborComponent : cell.getComponents()) {
+						neighborComponent.onPlace(getNeighbors(cell.getPos()));
+					}
 				}
 			}
+			
+			component.accept(CableMatcher.INSTANCE).ifPresent(cable -> addCableListeners.fire(new CableEvent(cable, pos)));
+			changeListeners.fire();
 		}
-		
-		component.accept(CableMatcher.INSTANCE).ifPresent(cable -> addCableListeners.fire(new CableEvent(cable, pos)));
-		changeListeners.fire();
 	}
 	
 	public void forEach1x1(BiConsumer<CircuitCellModel, Circuit1x1ComponentModel> consumer) {

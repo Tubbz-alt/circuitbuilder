@@ -24,9 +24,9 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	
 	/**
 	 * Whether this component can be "stacked" on
-	 * top of other components on the grid.
+	 * top of another component.
 	 */
-	default boolean isStackable() { return false; }
+	default boolean canBeStackedOnTopOf(Circuit1x1ComponentModel other) { return false; }
 	
 	/**
 	 * "Toggles" this component in some way. The precise meaning
@@ -65,6 +65,8 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	 * that will ONLY be applied when update() is called!!</b>
 	 */
 	default void tick(Map<Direction, CircuitCellModel> neighbors) {}
+	
+	default boolean canReplaceOtherComponent() { return true; }
 	
 	default boolean isEmitter() { return true; }
 	

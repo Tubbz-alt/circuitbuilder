@@ -69,7 +69,16 @@ public class CableModel implements Circuit1x1ComponentModel {
 	public boolean isEmitter() { return false; }
 	
 	@Override
-	public boolean isStackable() { return true; }
+	public boolean canReplaceOtherComponent() { return true; }
+	
+	@Override
+	public boolean canBeStackedOnTopOf(Circuit1x1ComponentModel other) {
+		if (other instanceof CableModel) {
+			CableModel cable = (CableModel) other;
+			return !cable.color.equals(color);
+		}
+		return false;
+	}
 	
 	@Override
 	public void tick(Map<Direction, CircuitCellModel> neighbors) {
