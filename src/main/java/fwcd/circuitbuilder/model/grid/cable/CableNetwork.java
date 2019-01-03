@@ -49,20 +49,22 @@ public class CableNetwork {
 		Set<RelativePos> visited = new HashSet<>();
 		aggregateConnectedSegment(grid.getCell(positions.iterator().next()), grid, visited, positions);
 		
-		if (visited.equals(positions)) {
-			stream.accept(this);
-		} else if (!visited.isEmpty()) {
-			CableNetwork splitted = new CableNetwork();
-			splitted.name = name;
-			splitted.color = color;
-			
-			for (RelativePos pos : visited) {
-				CableModel cable = Objects.requireNonNull(cables.get(pos));
-				splitted.add(pos, cable);
+		if (!visited.isEmpty()) {
+			if (visited.equals(positions)) {
+				stream.accept(this);
+			} else {
+				CableNetwork splitted = new CableNetwork();
+				splitted.name = name;
+				splitted.color = color;
+				
+				for (RelativePos pos : visited) {
+					CableModel cable = Objects.requireNonNull(cables.get(pos));
+					splitted.add(pos, cable);
+				}
+				
+				splitted.splitOffDisconnectedCablesInto(stream, grid, splitted.cables.keySet());
+				stream.accept(splitted);
 			}
-			
-			splitted.splitOffDisconnectedCablesInto(stream, grid, splitted.cables.keySet());
-			stream.accept(splitted);
 		}
 	}
 	
