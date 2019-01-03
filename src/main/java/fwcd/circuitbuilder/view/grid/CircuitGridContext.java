@@ -31,6 +31,7 @@ public class CircuitGridContext {
 
 	private final Map<String, CircuitGridTheme> availableThemes;
 	private final Observable<CircuitGridTheme> selectedTheme;
+	private final Observable<Boolean> showNetworks = new Observable<>(false);
 
 	public CircuitGridContext() {
 		JsonThemesData rawThemes;
@@ -55,6 +56,8 @@ public class CircuitGridContext {
 	public Observable<Option<CircuitTool>> getSelectedTool() { return selectedTool; }
 	
 	public Observable<CircuitGridTheme> getSelectedTheme() { return selectedTheme; }
+	
+	public Observable<Boolean> getShowNetworks() { return showNetworks; }
 	
 	public Map<String, CircuitGridTheme> getAvailableThemes() { return availableThemes; }
 }

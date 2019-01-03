@@ -21,7 +21,7 @@ public class CircuitBuilderFrame {
 		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		frame.setJMenuBar(new CircuitBuilderMenuBar(view, model).getComponent());
+		frame.setJMenuBar(new CircuitBuilderMenuBar(view, model, context).getComponent());
 		frame.add(view.getComponent(), BorderLayout.CENTER);
 		frame.setVisible(true);
 		

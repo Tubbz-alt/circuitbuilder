@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.Comparator;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -166,8 +168,9 @@ public class CircuitGridView implements View {
 			renderItem(largeComponent, g2d, pos);
 		});
 		
-		// Draw cable labels
+		// Draw cable networks
 		
+		boolean showNetworks = context.getShowNetworks().get();
 		g2d.setColor(Color.BLACK);
 		g2d.setFont(g2d.getFont().deriveFont(14F));
 		
@@ -179,7 +182,17 @@ public class CircuitGridView implements View {
 				.findAny()
 				.map(coordMap::toAbsolutePos)
 				.ifPresent(pos -> g2d.drawString(name, pos.getX(), pos.getY()));
+			
+			if (showNetworks) {
+				int hash = network.hashCode();
+				g2d.setColor(new Color(Math.abs(hash * 74878) % 255, Math.abs(hash * 91828) % 255, Math.abs(hash * 412341) % 255, 128));
+				network.streamPositions()
+					.map(coordMap::toAbsolutePos)
+					.forEach(pos -> g2d.fillRect(pos.getX(), pos.getY(), unitSize, unitSize));
+			}
 		}
+		
+		// Draw tool cursor
 		
 		Option<CircuitTool> selectedTool = context.getSelectedTool().get();
 		Option<AbsolutePos> itemPos = mousePos.map(it -> new AbsolutePos(it.sub(unitSize / 2, unitSize / 2)));
