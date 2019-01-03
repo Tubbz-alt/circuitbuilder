@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
@@ -25,11 +26,10 @@ public class CableNetwork {
 	 */
 	public void merge(CableNetwork other) {
 		name = name.or(other::getName);
+		cables.putAll(other.cables);
 		
-		for (Map.Entry<RelativePos, CableModel> entry : other.cables.entrySet()) {
-			CableModel cable = entry.getValue();
+		for (CableModel cable : cables.values()) {
 			cable.setNetworkStatus(status);
-			cables.put(entry.getKey(), cable);
 		}
 	}
 	
@@ -113,6 +113,8 @@ public class CableNetwork {
 	public boolean colorMatches(CableModel cable) {
 		return color.flatMap(it -> cable.getColor().map(it::equals)).orElse(false);
 	}
+	
+	public CableModel cableAt(RelativePos pos) { return cables.get(pos); }
 	
 	public Collection<? extends CableModel> getCables() { return cables.values(); }
 	

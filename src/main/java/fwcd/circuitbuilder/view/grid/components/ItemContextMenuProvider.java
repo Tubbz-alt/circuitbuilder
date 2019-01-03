@@ -1,6 +1,5 @@
 package fwcd.circuitbuilder.view.grid.components;
 
-import java.awt.GridLayout;
 import java.lang.reflect.Field;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,6 +10,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
@@ -52,6 +53,24 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 		
 		Class<? extends CircuitItemModel> itemClass = item.getClass();
 		Field[] fields = itemClass.getDeclaredFields();
+		
+		panel.add(new JLabel("hashCode: " + Integer.toHexString(item.hashCode())));
+		
+		if (itemClass.equals(CableModel.class)) {
+			panel.add(new JLabel("Cable Networks: " + engine.getCableNetworks().stream()
+				.filter(net -> net.getPositions().contains(pos))
+				.map(net -> {
+					CableModel other = net.cableAt(pos);
+					if (other.equals(item)) {
+						return net.toString();
+					} else {
+						return net.toString() + " (not matching item: " + Integer.toHexString(other.hashCode()) + ")";
+					}
+				})
+				.collect(Collectors.toList())));
+		}
+		
+		panel.add(new JSeparator(SwingConstants.HORIZONTAL));
 		
 		for (Field field : fields) {
 			field.setAccessible(true);
