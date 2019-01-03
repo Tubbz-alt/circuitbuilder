@@ -3,7 +3,6 @@ package fwcd.circuitbuilder.view.grid.theme.json;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

@@ -4,7 +4,6 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
-import fwcd.circuitbuilder.view.grid.CircuitGridContext;
 import fwcd.circuitbuilder.view.grid.CircuitGridEditorView;
 import fwcd.circuitbuilder.view.logic.LogicEditorView;
 import fwcd.fructose.swing.View;
