@@ -1,10 +1,15 @@
 package fwcd.circuitbuilder.view.grid.components;
 
+import java.awt.GridLayout;
+import java.lang.reflect.Field;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
@@ -29,7 +34,8 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 	@Override
 	public JPopupMenu visitItem(CircuitItemModel item) {
 		return menuOf(
-			menuItemOf("Delete", () -> grid.clearCell(pos))
+			menuItemOf("Delete", () -> grid.clearCell(pos)),
+			menuItemOf("Inspect", () -> showItemInspector(item))
 		);
 	}
 	
@@ -38,6 +44,30 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 		return extend(visitItem(cable),
 			menuItemOf("Rename", this::performCableRename)
 		);
+	}
+	
+	private void showItemInspector(CircuitItemModel item) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		Class<? extends CircuitItemModel> itemClass = item.getClass();
+		Field[] fields = itemClass.getDeclaredFields();
+		
+		for (Field field : fields) {
+			field.setAccessible(true);
+			
+			String text;
+			try {
+				Object value = field.get(item);
+				text = field.getName() + ":  " + value.toString() + " (@" + Integer.toHexString(value.hashCode()) + ")";
+			} catch (ReflectiveOperationException e) {
+				text = "Error: " + e.getMessage();
+			}
+			
+			panel.add(new JLabel(text));
+		}
+		
+		JOptionPane.showMessageDialog(null, panel, itemClass.getSimpleName(), JOptionPane.PLAIN_MESSAGE);
 	}
 	
 	private void performCableRename() {
