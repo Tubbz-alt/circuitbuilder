@@ -21,7 +21,7 @@ public class CircuitCellModel {
 		this.pos = pos;
 	}
 	
-	public void place(Circuit1x1ComponentModel component) {
+	void place(Circuit1x1ComponentModel component) {
 		if (component.isStackable()) {
 			components.push(component);
 		} else {

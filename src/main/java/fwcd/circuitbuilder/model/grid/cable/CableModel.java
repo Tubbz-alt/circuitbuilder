@@ -28,6 +28,10 @@ public class CableModel implements Circuit1x1ComponentModel {
 		this.networkStatus = Option.of(networkStatus);
 	}
 	
+	public void clearNetworkStatus() {
+		networkStatus = Option.empty();
+	}
+	
 	private boolean canConnectTo(CircuitCellModel cell) {
 		return StreamUtils.stream(cell.getComponents())
 			.anyMatch(it -> it.getColor().map(c -> c.equals(color)).orElse(true));

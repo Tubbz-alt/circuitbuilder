@@ -1,22 +1,15 @@
 package fwcd.circuitbuilder.model.grid;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import fwcd.circuitbuilder.model.grid.cable.CableColor;
-import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
-import fwcd.circuitbuilder.utils.RelativePos;
 
 /**
  * An engine that ticks and updates components on a circuit grid.
  */
 public class CircuitEngineModel {
-	private static final boolean DEBUG_NETWORKS = true;
+	private static final boolean DEBUG_NETWORKS = false;
 	private final CircuitGridModel grid;
 	private final Set<CableNetwork> networks = new HashSet<>();
 	
@@ -24,65 +17,15 @@ public class CircuitEngineModel {
 	
 	public CircuitEngineModel(CircuitGridModel grid) {
 		this.grid = grid;
+		
+		CircuitNetworksManager networkBuilder = new CircuitNetworksManager(networks);
+		grid.getAddCableListeners().add(networkBuilder::onAddCable);
+		grid.getRemoveCableListeners().add(networkBuilder::onRemoveCable);
+		grid.getClearListeners().add(networkBuilder::onClear);
 	}
 	
 	public void tick() {
-		Map<CableColor, Map<RelativePos, CableNetwork>> networkCoverage = new HashMap<>();
-		
 		// Pre ticking - Updating networks
-		
-		Set<CableNetwork> newNetworks = networks.stream()
-			.flatMap(net -> net.splitIntoContinousNetworks(grid).stream())
-			.collect(Collectors.toSet());
-		networks.clear();
-		networks.addAll(newNetworks);
-		
-		grid.forEach1x1((cell, component) -> {
-			if (component instanceof CableModel) {
-				CableModel cable = (CableModel) component;
-				RelativePos pos = cell.getPos();
-				CableColor color = cable.getColor().unwrap();
-				
-				networkCoverage.putIfAbsent(color, new HashMap<>());
-				Map<RelativePos, CableNetwork> colorCoverage = networkCoverage.get(color);
-				CableNetwork network;
-				
-				if (colorCoverage.containsKey(pos)) {
-					network = colorCoverage.get(pos);
-				} else {
-					Set<CableNetwork> extendables = networks.stream()
-						.filter(it -> it.canBeExtendedTo(pos) && it.getColor().filter(color::equals).isPresent())
-						.collect(Collectors.toSet());
-					
-					if (!extendables.isEmpty()) {
-						// Merge extendable networks into one
-						while (extendables.size() > 1) {
-							Iterator<CableNetwork> iterator = extendables.iterator();
-							CableNetwork a = iterator.next();
-							CableNetwork b = iterator.next();
-							
-							a.merge(b);
-							networks.remove(b);
-							iterator.remove();
-						}
-						
-						network = extendables.iterator().next();
-						network.add(pos, cable);
-					} else {
-						// Otherwise create a new network
-						network = new CableNetwork();
-						network.build(pos, grid);
-					}
-					
-					for (RelativePos networkPos : network.getPositions()) {
-						colorCoverage.put(networkPos, network);
-					}
-					
-					networks.add(network);
-				}
-				cable.setNetworkStatus(network.getStatus());
-			}
-		});
 		
 		for (CableNetwork network : networks) {
 			network.updateStatus(grid);
