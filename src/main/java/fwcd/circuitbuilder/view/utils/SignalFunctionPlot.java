@@ -7,17 +7,22 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.model.utils.SignalFunctionSegment;
 import fwcd.circuitbuilder.utils.AbsolutePos;
+import fwcd.fructose.OptionInt;
+import fwcd.fructose.swing.DashedStroke;
 import fwcd.fructose.swing.RenderPanel;
 import fwcd.fructose.swing.View;
 
 public class SignalFunctionPlot implements View {
 	private final JPanel component;
 	private final SignalFunctionSegment functionSegment;
-	private final int height = 80;
-	private final int padding = 10;
+	private int height = 80;
+	private int padding = 10;
+	private OptionInt valueCount = OptionInt.empty();
+	private boolean showGridLines = true;
 	
 	public SignalFunctionPlot(SignalFunctionSegment functionSegment) {
 		this.functionSegment = functionSegment;
@@ -27,15 +32,31 @@ public class SignalFunctionPlot implements View {
 		component.setMaximumSize(new Dimension(Integer.MAX_VALUE, height));
 	}
 	
+	private void repaint() {
+		SwingUtilities.invokeLater(component::repaint);
+	}
+	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		boolean[] values = functionSegment.getValues();
-		int dx = ((int) canvasSize.getWidth() - (padding * 2)) / values.length;
+		int total = valueCount.orElse(values.length);
+		int dx = ((int) canvasSize.getWidth() - (padding * 2)) / total;
 		int height = (int) canvasSize.getHeight() - (padding * 2);
+		int count = Math.min(total, values.length);
+		
+		if (showGridLines) {
+			g2d.setStroke(new DashedStroke(1, 2));
+			g2d.setColor(Color.GRAY);
+			
+			for (int i = 0; i < total; i++) {
+				int x = padding + (i * dx);
+				g2d.drawLine(x, padding, x, height - padding);
+			}
+		}
 		
 		g2d.setStroke(new BasicStroke(2F));
 		g2d.setColor(Color.BLUE);
 		
-		for (int i = 0; i < values.length; i++) {
+		for (int i = 0; i < count; i++) {
 			AbsolutePos pos = toAbsolutePos(values, dx, height, i);
 			AbsolutePos next = toAbsolutePos(values, dx, height, i + 1);
 			
@@ -50,4 +71,26 @@ public class SignalFunctionPlot implements View {
 	
 	@Override
 	public JComponent getComponent() { return component; }
+	
+	public void setValueCount(int valueCount) { setValueCount(OptionInt.of(valueCount)); }
+	
+	public void setValueCount(OptionInt valueCount) {
+		this.valueCount = valueCount;
+		repaint();
+	}
+	
+	public void setShowGridLines(boolean showGridLines) {
+		this.showGridLines = showGridLines;
+		repaint();
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
+		repaint();
+	}
+	
+	public void setPadding(int padding) {
+		this.padding = padding;
+		repaint();
+	}
 }
