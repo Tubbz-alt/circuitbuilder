@@ -1,20 +1,20 @@
 package fwcd.circuitbuilder.model.grid;
 
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
-import fwcd.circuitbuilder.model.grid.components.AndModel;
+import fwcd.circuitbuilder.model.grid.components.AndGateModel;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
-import fwcd.circuitbuilder.model.grid.components.EqvModel;
+import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
-import fwcd.circuitbuilder.model.grid.components.NandModel;
-import fwcd.circuitbuilder.model.grid.components.NorModel;
-import fwcd.circuitbuilder.model.grid.components.OrModel;
+import fwcd.circuitbuilder.model.grid.components.NandGateModel;
+import fwcd.circuitbuilder.model.grid.components.NorGateModel;
+import fwcd.circuitbuilder.model.grid.components.OrGateModel;
 import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
-import fwcd.circuitbuilder.model.grid.components.TickingClockModel;
-import fwcd.circuitbuilder.model.grid.components.XorModel;
+import fwcd.circuitbuilder.model.grid.components.ClockModel;
+import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 
 public interface CircuitItemVisitor<T> {
 	T visitItem(CircuitItemModel item);
@@ -29,7 +29,7 @@ public interface CircuitItemVisitor<T> {
 	
 	default T visitLever(LeverModel lever) { return visit1x1Component(lever); }
 	
-	default T visitTickingClock(TickingClockModel clock) { return visit1x1Component(clock); }
+	default T visitTickingClock(ClockModel clock) { return visit1x1Component(clock); }
 	
 	default T visitCable(CableModel cable) { return visit1x1Component(cable); }
 	
@@ -37,15 +37,15 @@ public interface CircuitItemVisitor<T> {
 	
 	default T visitOutputComponent(OutputComponentModel output) { return visit1x1Component(output); }
 	
-	default T visitXor(XorModel xor) { return visitLargeComponent(xor); }
+	default T visitXor(XorGateModel xor) { return visitLargeComponent(xor); }
 	
-	default T visitEqv(EqvModel eqv) { return visitLargeComponent(eqv); }
+	default T visitEqv(EqvGateModel eqv) { return visitLargeComponent(eqv); }
 	
-	default T visitAnd(AndModel and) { return visitLargeComponent(and); }
+	default T visitAnd(AndGateModel and) { return visitLargeComponent(and); }
 	
-	default T visitOr(OrModel or) { return visitLargeComponent(or); }
+	default T visitOr(OrGateModel or) { return visitLargeComponent(or); }
 	
-	default T visitNand(NandModel nand) { return visitLargeComponent(nand); }
+	default T visitNand(NandGateModel nand) { return visitLargeComponent(nand); }
 	
-	default T visitNor(NorModel nor) { return visitLargeComponent(nor); }
+	default T visitNor(NorGateModel nor) { return visitLargeComponent(nor); }
 }

@@ -16,16 +16,16 @@ import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableColor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
-import fwcd.circuitbuilder.model.grid.components.AndModel;
-import fwcd.circuitbuilder.model.grid.components.EqvModel;
+import fwcd.circuitbuilder.model.grid.components.AndGateModel;
+import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
-import fwcd.circuitbuilder.model.grid.components.NandModel;
-import fwcd.circuitbuilder.model.grid.components.NorModel;
-import fwcd.circuitbuilder.model.grid.components.OrModel;
-import fwcd.circuitbuilder.model.grid.components.TickingClockModel;
-import fwcd.circuitbuilder.model.grid.components.XorModel;
+import fwcd.circuitbuilder.model.grid.components.NandGateModel;
+import fwcd.circuitbuilder.model.grid.components.NorGateModel;
+import fwcd.circuitbuilder.model.grid.components.OrGateModel;
+import fwcd.circuitbuilder.model.grid.components.ClockModel;
+import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
 import fwcd.circuitbuilder.view.grid.tools.Place1x1ItemTool;
 import fwcd.circuitbuilder.view.grid.tools.PlaceLargeItemTool;
@@ -51,13 +51,13 @@ public class CircuitToolsPanel implements View {
 			new Place1x1ItemTool<>(InverterModel::new, imageProvider),
 			new Place1x1ItemTool<>(LampModel::new, imageProvider),
 			new Place1x1ItemTool<>(LeverModel::new, imageProvider),
-			new Place1x1ItemTool<>(TickingClockModel::new, imageProvider),
-			new PlaceLargeItemTool<>(OrModel::new, imageProvider),
-			new PlaceLargeItemTool<>(AndModel::new, imageProvider),
-			new PlaceLargeItemTool<>(XorModel::new, imageProvider),
-			new PlaceLargeItemTool<>(EqvModel::new, imageProvider),
-			new PlaceLargeItemTool<>(NandModel::new, imageProvider),
-			new PlaceLargeItemTool<>(NorModel::new, imageProvider),
+			new Place1x1ItemTool<>(ClockModel::new, imageProvider),
+			new PlaceLargeItemTool<>(OrGateModel::new, imageProvider),
+			new PlaceLargeItemTool<>(AndGateModel::new, imageProvider),
+			new PlaceLargeItemTool<>(XorGateModel::new, imageProvider),
+			new PlaceLargeItemTool<>(EqvGateModel::new, imageProvider),
+			new PlaceLargeItemTool<>(NandGateModel::new, imageProvider),
+			new PlaceLargeItemTool<>(NorGateModel::new, imageProvider),
 			new Screwdriver()
 		};
 		

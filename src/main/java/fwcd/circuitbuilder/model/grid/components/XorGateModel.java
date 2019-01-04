@@ -3,27 +3,27 @@ package fwcd.circuitbuilder.model.grid.components;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 
 /**
- * An OR logic gate.
+ * An XOR logic gate.
  */
-public class OrModel extends BasicLargeComponent {
+public class XorGateModel extends BasicLargeComponent {
 	private static final int INPUTS_COUNT = 2;
 	private static final int OUTPUTS_COUNT = 1;
 	
-	public OrModel() {
+	public XorGateModel() {
 		super(INPUTS_COUNT, OUTPUTS_COUNT);
 	}
 		
 	@Override
-	public String getName() { return "OR"; }
+	public String getName() { return "XOR"; }
 		
 	@Override
-	public String getSymbol() { return ">=1"; }
+	public String getSymbol() { return "/="; }
 	
 	@Override
-	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitOr(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitXor(this); }
 	
 	@Override
 	protected boolean[] compute(boolean[] inputs) {
-		return new boolean[] {inputs[0] || inputs[1]};
+		return new boolean[] {inputs[0] ^ inputs[1]};
 	}
 }

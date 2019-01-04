@@ -13,18 +13,18 @@ import javax.imageio.ImageIO;
 import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
-import fwcd.circuitbuilder.model.grid.components.AndModel;
-import fwcd.circuitbuilder.model.grid.components.EqvModel;
+import fwcd.circuitbuilder.model.grid.components.AndGateModel;
+import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
-import fwcd.circuitbuilder.model.grid.components.NandModel;
-import fwcd.circuitbuilder.model.grid.components.NorModel;
-import fwcd.circuitbuilder.model.grid.components.OrModel;
+import fwcd.circuitbuilder.model.grid.components.NandGateModel;
+import fwcd.circuitbuilder.model.grid.components.NorGateModel;
+import fwcd.circuitbuilder.model.grid.components.OrGateModel;
 import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
-import fwcd.circuitbuilder.model.grid.components.TickingClockModel;
-import fwcd.circuitbuilder.model.grid.components.XorModel;
+import fwcd.circuitbuilder.model.grid.components.ClockModel;
+import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.fructose.Option;
 
 /**
@@ -90,37 +90,37 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	}
 	
 	@Override
-	public Option<Image> visitTickingClock(TickingClockModel clock) {
+	public Option<Image> visitTickingClock(ClockModel clock) {
 		return Option.of(imageFromJsonKey(clock.isPowered() ? "clockOn" : "clockOff"));
 	}
 	
 	@Override
-	public Option<Image> visitXor(XorModel xor) {
+	public Option<Image> visitXor(XorGateModel xor) {
 		return Option.of(imageFromJsonKey("xor"));
 	}
 	
 	@Override
-	public Option<Image> visitAnd(AndModel and) {
+	public Option<Image> visitAnd(AndGateModel and) {
 		return Option.of(imageFromJsonKey("and"));
 	}
 	
 	@Override
-	public Option<Image> visitEqv(EqvModel eqv) {
+	public Option<Image> visitEqv(EqvGateModel eqv) {
 		return Option.of(imageFromJsonKey("eqv"));
 	}
 	
 	@Override
-	public Option<Image> visitNand(NandModel nand) {
+	public Option<Image> visitNand(NandGateModel nand) {
 		return Option.of(imageFromJsonKey("nand"));
 	}
 	
 	@Override
-	public Option<Image> visitNor(NorModel nor) {
+	public Option<Image> visitNor(NorGateModel nor) {
 		return Option.of(imageFromJsonKey("nor"));
 	}
 	
 	@Override
-	public Option<Image> visitOr(OrModel or) {
+	public Option<Image> visitOr(OrGateModel or) {
 		return Option.of(imageFromJsonKey("or"));
 	}
 	
