@@ -43,6 +43,11 @@ public class CableModel implements Circuit1x1ComponentModel {
 	
 	@Override
 	public void onPlace(Map<Direction, CircuitCellModel> neighbors) {
+		updateConnections(neighbors);
+	}
+	
+	public void updateConnections(Map<Direction, CircuitCellModel> neighbors) {
+		connections.clear();
 		for (Direction dir : neighbors.keySet()) {
 			if (!neighbors.get(dir).isEmpty() && canConnectTo(neighbors.get(dir), dir)) {
 				connections.add(dir);
