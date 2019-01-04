@@ -13,6 +13,8 @@ import javax.swing.SwingUtilities;
 import fwcd.fructose.swing.View;
 
 public class CollapsibleView implements View {
+	private static final String EXPAND_SYMBOL = "<";
+	private static final String COLLAPSE_SYMBOL = ">";
 	private final JPanel component;
 	private boolean collapsed = true;
 	
@@ -27,7 +29,7 @@ public class CollapsibleView implements View {
 		JPanel expanderPanel = new JPanel();
 		expanderPanel.setLayout(new GridBagLayout());
 		
-		JButton expander = new CollapserButton("<");
+		JButton expander = new CollapserButton(EXPAND_SYMBOL);
 		expander.setBackground(Color.DARK_GRAY);
 		expander.setForeground(Color.WHITE);
 		expander.setBorder(BorderFactory.createEmptyBorder());
@@ -37,10 +39,10 @@ public class CollapsibleView implements View {
 			SwingUtilities.invokeLater(() -> {
 				collapsed = !collapsed;
 				if (collapsed) {
-					expander.setText("<");
+					expander.setText(EXPAND_SYMBOL);
 					component.remove(wrapped);
 				} else {
-					expander.setText(">");
+					expander.setText(COLLAPSE_SYMBOL);
 					component.add(wrapped, BorderLayout.CENTER);
 				}
 			});
