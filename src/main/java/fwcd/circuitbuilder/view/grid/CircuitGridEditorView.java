@@ -1,6 +1,7 @@
 package fwcd.circuitbuilder.view.grid;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -24,7 +25,10 @@ public class CircuitGridEditorView implements View, AutoCloseable {
 		
 		component.add(new CircuitGridView(model, engine, context).getComponent(), BorderLayout.CENTER);
 		component.add(new CircuitToolsPanel(model, context).getComponent(), BorderLayout.WEST);
-		component.add(new CollapsibleView(new CircuitGridSidebarView(model, engine)).getComponent(), BorderLayout.EAST);
+		
+		CircuitGridSidebarView sideBar = new CircuitGridSidebarView(model, engine);
+		sideBar.getComponent().setPreferredSize(new Dimension(350, 1));
+		component.add(new CollapsibleView(sideBar).getComponent(), BorderLayout.EAST);
 		
 		engineLooper.start();
 	}
