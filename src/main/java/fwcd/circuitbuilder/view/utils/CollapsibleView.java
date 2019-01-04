@@ -1,8 +1,10 @@
 package fwcd.circuitbuilder.view.utils;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -25,7 +27,12 @@ public class CollapsibleView implements View {
 		JPanel expanderPanel = new JPanel();
 		expanderPanel.setLayout(new GridBagLayout());
 		
-		JButton expander = new JButton("<");
+		JButton expander = new CollapserButton("<");
+		expander.setBackground(Color.DARK_GRAY);
+		expander.setForeground(Color.WHITE);
+		expander.setBorder(BorderFactory.createEmptyBorder());
+		expander.setContentAreaFilled(false);
+		expander.setOpaque(true);
 		expander.addActionListener(l -> {
 			SwingUtilities.invokeLater(() -> {
 				collapsed = !collapsed;
