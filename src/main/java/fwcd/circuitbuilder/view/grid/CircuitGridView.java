@@ -66,33 +66,32 @@ public class CircuitGridView implements View {
 				gridPos.ifPresent(pos -> {
 					selectedTool.ifPresent(tool -> {
 						CircuitCellModel cell = model.getCell(pos);
+						boolean handled = false;
+						
 						if (mouseButton == MouseEvent.BUTTON1) {
 							// Delegate left click to tool
-							tool.onLeftClick(model, cell);
+							handled = tool.onLeftClick(model, cell);
 						} else if (mouseButton == MouseEvent.BUTTON3) {
 							// Delegate right click to tool
-							boolean handled = tool.onRightClick(model, cell);
+							handled = tool.onRightClick(model, cell);
 							
-							if (handled) {
-								// Notify neighbor cells about change
-								Map<Direction, CircuitCellModel> neighbors = model.getNeighbors(pos);
-								for (CircuitCellModel neighborCell : neighbors.values()) {
-									for (Circuit1x1ComponentModel neighborComponent : neighborCell.getComponents()) {
-										neighborComponent.onPlace(model.getNeighbors(neighborCell.getPos()));
-									}
-								}
-							} else {
+							if (!handled) {
 								// Display content menu if the tool did not handle the request
 								cell.getComponent()
 									.ifPresent(it -> it.accept(new ItemContextMenuProvider(model, engine, pos)).show(component, e.getX(), e.getY()));
 							}
+						}
+						
+						if (handled) {
+							// Notify neighbor cells about change
+							notifyNeighborsAround(pos);
 						}
 					});
 				});
 				
 				repaint();
 			}
-			
+
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				mouseMoved(e);
@@ -133,6 +132,15 @@ public class CircuitGridView implements View {
 				repaint();
 			}
 		}.connect(component);
+	}
+
+	private void notifyNeighborsAround(RelativePos pos) {
+		Map<Direction, CircuitCellModel> neighbors = model.getNeighbors(pos);
+		for (CircuitCellModel neighborCell : neighbors.values()) {
+			for (Circuit1x1ComponentModel neighborComponent : neighborCell.getComponents()) {
+				neighborComponent.onPlace(model.getNeighbors(neighborCell.getPos()));
+			}
+		}
 	}
 	
 	private void repaint() {
