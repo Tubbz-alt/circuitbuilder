@@ -18,11 +18,13 @@ import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
+	private final JComponent baseComponent;
 	private final CircuitGridModel grid;
 	private final CircuitEngineModel engine;
 	private final RelativePos pos;
 	
-	public ItemContextMenuProvider(CircuitGridModel grid, CircuitEngineModel engine, RelativePos pos) {
+	public ItemContextMenuProvider(JComponent baseComponent, CircuitGridModel grid, CircuitEngineModel engine, RelativePos pos) {
+		this.baseComponent = baseComponent;
 		this.grid = grid;
 		this.engine = engine;
 		this.pos = pos;
@@ -46,7 +48,7 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 	private void showItemInspector(CircuitItemModel item) {
 		SwingUtilities.invokeLater(() -> {
 			JComponent component = new DebugItemInspector(item, pos, engine).getComponent();
-			JOptionPane.showMessageDialog(null, component, "Inspector", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(baseComponent, component, "Inspector", JOptionPane.PLAIN_MESSAGE);
 		});
 	}
 	
@@ -59,13 +61,13 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 			
 			if (networks.size() > 1) {
 				confirmed = JOptionPane.showConfirmDialog(
-					null, "Are you sure you want to modify multiple cable networks at once?"
+					baseComponent, "Are you sure you want to modify multiple cable networks at once?"
 				) == JOptionPane.OK_OPTION;
 			}
 			
 			if (confirmed && networks.size() > 0) {
 				CableNetwork first = networks.iterator().next();
-				String newName = JOptionPane.showInputDialog("Enter the new cable network name:", first.getName().orElse(""));
+				String newName = JOptionPane.showInputDialog(baseComponent, "Enter the new cable network name:", first.getName().orElse(""));
 				first.setName(newName);
 			}
 		});
