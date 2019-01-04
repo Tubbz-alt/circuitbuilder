@@ -27,6 +27,11 @@ public class InverterModel implements Circuit1x1ComponentModel {
 	}
 	
 	@Override
+	public boolean canConnectFrom(Direction direction) {
+		return direction.isAlongAxisOf(facing);
+	}
+	
+	@Override
 	public boolean toggle() {
 		facing = facing.next();
 		return true;
