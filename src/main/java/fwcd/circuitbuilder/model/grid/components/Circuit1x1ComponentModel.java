@@ -42,8 +42,8 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	default Option<CableColor> getColor() { return Option.empty(); }
 	
 	/**
-	 * Will be called once when this item
-	 * is placed and once when a neighbor cell item
+	 * Will be called when this item
+	 * is placed or when a neighbor cell item
 	 * in one of the four directions is
 	 * placed/removed/changed.
 	 * 

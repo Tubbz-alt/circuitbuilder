@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.Comparator;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
+import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.circuitbuilder.view.grid.components.CircuitItemRenderer;
 import fwcd.circuitbuilder.view.grid.components.ItemContextMenuProvider;
@@ -65,10 +67,22 @@ public class CircuitGridView implements View {
 					selectedTool.ifPresent(tool -> {
 						CircuitCellModel cell = model.getCell(pos);
 						if (mouseButton == MouseEvent.BUTTON1) {
+							// Delegate left click to tool
 							tool.onLeftClick(model, cell);
 						} else if (mouseButton == MouseEvent.BUTTON3) {
+							// Delegate right click to tool
 							boolean handled = tool.onRightClick(model, cell);
-							if (!handled) {
+							
+							if (handled) {
+								// Notify neighbor cells about change
+								Map<Direction, CircuitCellModel> neighbors = model.getNeighbors(pos);
+								for (CircuitCellModel neighborCell : neighbors.values()) {
+									for (Circuit1x1ComponentModel neighborComponent : neighborCell.getComponents()) {
+										neighborComponent.onPlace(model.getNeighbors(neighborCell.getPos()));
+									}
+								}
+							} else {
+								// Display content menu if the tool did not handle the request
 								cell.getComponent()
 									.ifPresent(it -> it.accept(new ItemContextMenuProvider(model, engine, pos)).show(component, e.getX(), e.getY()));
 							}
