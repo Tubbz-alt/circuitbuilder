@@ -19,12 +19,15 @@ import fwcd.fructose.swing.View;
 public class SignalFunctionPlot implements View {
 	private final JPanel component;
 	private final SignalFunctionSegment functionSegment;
-	private int height = 80;
-	private int padding = 10;
+	private final String name;
+	private int height = 100;
+	private int padding = 12;
+	private int nameYOffset = 10;
 	private OptionInt valueCount = OptionInt.empty();
 	private boolean showGridLines = true;
 	
-	public SignalFunctionPlot(SignalFunctionSegment functionSegment) {
+	public SignalFunctionPlot(String name, SignalFunctionSegment functionSegment) {
+		this.name = name;
 		this.functionSegment = functionSegment;
 		
 		component = new RenderPanel(this::render);
@@ -43,13 +46,16 @@ public class SignalFunctionPlot implements View {
 		int height = (int) canvasSize.getHeight() - (padding * 2);
 		int count = Math.min(total, values.length);
 		
+		g2d.setColor(Color.DARK_GRAY);
+		g2d.drawString(name, padding, padding);
+		
 		if (showGridLines) {
 			g2d.setStroke(new DashedStroke(1, 2));
 			g2d.setColor(Color.GRAY);
 			
 			for (int i = 0; i < total; i++) {
 				int x = padding + (i * dx);
-				g2d.drawLine(x, padding, x, height - padding);
+				g2d.drawLine(x, padding + nameYOffset, x, (height - padding) - nameYOffset);
 			}
 		}
 		
@@ -66,7 +72,7 @@ public class SignalFunctionPlot implements View {
 	}
 	
 	private AbsolutePos toAbsolutePos(boolean[] values, int dx, int height, int i) {
-		return new AbsolutePos(padding + (i * dx), values[Math.min(i, values.length - 1)] ? padding : (height - padding));
+		return new AbsolutePos(padding + (i * dx), (values[Math.min(i, values.length - 1)] ? padding + nameYOffset : (height - padding) - nameYOffset));
 	}
 	
 	@Override

@@ -15,7 +15,7 @@ public class TimeDiagramView implements View {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
-		SignalFunctionPlot signalFunctionPlot = new SignalFunctionPlot(new DemoFunctionSegment());
+		SignalFunctionPlot signalFunctionPlot = new SignalFunctionPlot("Test", new DemoFunctionSegment());
 		signalFunctionPlot.setValueCount(20);
 		signalFunctionPlot.setHeight(40);
 		component.add(signalFunctionPlot.getComponent());
