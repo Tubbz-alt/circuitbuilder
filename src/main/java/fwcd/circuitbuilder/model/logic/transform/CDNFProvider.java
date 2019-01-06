@@ -19,7 +19,7 @@ public class CDNFProvider implements ExpressionTransformer {
 	@Override
 	public LogicExpression transform(LogicExpression expression) {
 		TruthTable table = new TruthTable(expression);
-		List<String> inputNames = table.getInputNames();
+		List<String> inputNames = table.getInputs();
 		int bitCount = inputNames.size();
 		boolean[] outputs = table.getOutputs();
 		Stream.Builder<LogicExpression> disjunction = Stream.builder();
