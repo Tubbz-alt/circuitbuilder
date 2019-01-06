@@ -62,6 +62,22 @@ public class BoolUtils {
 		return result;
 	}
 	
+	public static String toBinaryString(int binary, int bitCount) {
+		StringBuilder str = new StringBuilder();
+		for (int i = bitCount - 1; i >= 0; i--) {
+			str.append((binary >> i) & 1);
+		}
+		return str.toString();
+	}
+	
+	public static int bitFromRight(int binary, int i) {
+		return (binary >> i) & 1;
+	}
+	
+	public static int bitFromLeft(int binary, int i, int bitCount) {
+		return (binary >> ((bitCount - 1) - i)) & 1;
+	}
+	
 	public static int toBinary(int... bits) {
 		return toBinary(toBooleans(bits));
 	}
@@ -69,7 +85,7 @@ public class BoolUtils {
 	public static int[] binaryToBits(int binary, int bitCount) {
 		int[] bits = new int[bitCount];
 		for (int i = 0; i < bits.length; i++) {
-			bits[(bits.length - 1) - i] = (binary >> i) & 1;
+			bits[(bits.length - 1) - i] = bitFromRight(binary, i);
 		}
 		return bits;
 	}

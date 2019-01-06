@@ -8,16 +8,20 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
+import fwcd.circuitbuilder.utils.ObservableUtils;
 import fwcd.circuitbuilder.view.utils.KeyUtils;
 import fwcd.fructose.swing.View;
 
 public class CircuitBuilderMenuBar implements View {
 	private final JMenuBar component;
 	
-	public CircuitBuilderMenuBar(CircuitBuilderView view, CircuitBuilderModel model) {
+	public CircuitBuilderMenuBar(CircuitBuilderView view, CircuitBuilderModel model, CircuitBuilderAppContext context) {
 		component = new JMenuBar();
 		component.add(menuOf("File",
-			itemOf("New Grid", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyUtils.CTRL_OR_META_DOWN_MASK), () -> model.getGrid().clear())
+			itemOf("New Grid", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyUtils.CTRL_OR_META_DOWN_MASK), model.getGrid()::clear)
+		));
+		component.add(menuOf("Debug",
+			itemOf("Show/Hide Cable Networks", () -> ObservableUtils.toggle(context.getGridContext().getShowNetworks()))
 		));
 	}
 	

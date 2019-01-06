@@ -24,15 +24,17 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	
 	/**
 	 * Whether this component can be "stacked" on
-	 * top of other components on the grid.
+	 * top of another component.
 	 */
-	default boolean isStackable() { return false; }
+	default boolean canBeStackedOnTopOf(Circuit1x1ComponentModel other) { return false; }
 	
 	/**
 	 * "Toggles" this component in some way. The precise meaning
 	 * may depend on the implementation.
+	 * 
+	 * @return Whether the component could be toggled
 	 */
-	default void toggle() {}
+	default boolean toggle() { return false; }
 	
 	/**
 	 * Fetches a color associated with this component.
@@ -40,8 +42,8 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	default Option<CableColor> getColor() { return Option.empty(); }
 	
 	/**
-	 * Will be called once when this item
-	 * is placed and once when a neighbor cell item
+	 * Will be called when this item
+	 * is placed or when a neighbor cell item
 	 * in one of the four directions is
 	 * placed/removed/changed.
 	 * 
@@ -63,6 +65,10 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	 * that will ONLY be applied when update() is called!!</b>
 	 */
 	default void tick(Map<Direction, CircuitCellModel> neighbors) {}
+	
+	default boolean canConnectFrom(Direction direction) { return true; }
+	
+	default boolean canReplaceOtherComponent() { return true; }
 	
 	default boolean isEmitter() { return true; }
 	

@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import fwcd.circuitbuilder.model.logic.LogicEditorModel;
+import fwcd.circuitbuilder.model.logic.notation.MathematicalNotation;
 import fwcd.circuitbuilder.view.utils.DocumentChangeListener;
 import fwcd.fructose.swing.StatusBar;
 import fwcd.fructose.swing.View;
@@ -27,6 +28,7 @@ public class FormulaEditorView implements View {
 		// editor.getController().getCompletionController().setHideOnSpace(false);
 		editor.getView().setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 		editor.getView().setShowLineHighlight(false);
+		editor.getModel().getSyntaxHighlighter().set(new FormulaSyntaxHighlighter(new MathematicalNotation()));
 		
 		PalmDocument document = editor.getView().getModel().getDocument();
 		document.addDocumentListener((DocumentChangeListener) e -> model.getRawFormula().set(document.getText()));

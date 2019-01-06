@@ -14,6 +14,10 @@ public class Negation implements LogicExpression {
 		this.value = value;
 	}
 	
+	public LogicExpression getValue() {
+		return value;
+	}
+	
 	@Override
 	public List<? extends LogicExpression> getOperands() {
 		return Collections.singletonList(value);

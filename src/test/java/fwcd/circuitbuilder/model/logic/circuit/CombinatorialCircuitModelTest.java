@@ -1,5 +1,11 @@
 package fwcd.circuitbuilder.model.logic.circuit;
 
+import static fwcd.circuitbuilder.model.logic.ExpressionTestUtils.and;
+import static fwcd.circuitbuilder.model.logic.ExpressionTestUtils.eqv;
+import static fwcd.circuitbuilder.model.logic.ExpressionTestUtils.in;
+import static fwcd.circuitbuilder.model.logic.ExpressionTestUtils.not;
+import static fwcd.circuitbuilder.model.logic.ExpressionTestUtils.or;
+import static fwcd.circuitbuilder.model.logic.ExpressionTestUtils.xor;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
@@ -7,13 +13,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import fwcd.circuitbuilder.model.logic.expression.Conjunction;
-import fwcd.circuitbuilder.model.logic.expression.Disjunction;
-import fwcd.circuitbuilder.model.logic.expression.Equivalence;
-import fwcd.circuitbuilder.model.logic.expression.ExclusiveDisjunction;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
-import fwcd.circuitbuilder.model.logic.expression.LogicVariable;
-import fwcd.circuitbuilder.model.logic.expression.Negation;
 import fwcd.circuitbuilder.model.utils.BoolUtils;
 
 public class CombinatorialCircuitModelTest {
@@ -45,16 +45,4 @@ public class CombinatorialCircuitModelTest {
 		Map<String, Boolean> output = circuit.evaluation().with("A", a).with("B", b).with("Cin", c).run();
 		return BoolUtils.toBit(output.get("S")) + (2 * BoolUtils.toBit(output.get("Cout")));
 	}
-	
-	private LogicExpression and(LogicExpression a, LogicExpression b) { return new Conjunction(a, b); }
-	
-	private LogicExpression or(LogicExpression a, LogicExpression b) { return new Disjunction(a, b); }
-	
-	private LogicExpression xor(LogicExpression a, LogicExpression b) { return new ExclusiveDisjunction(a, b); }
-	
-	private LogicExpression eqv(LogicExpression a, LogicExpression b) { return new Equivalence(a, b); }
-	
-	private LogicExpression not(LogicExpression x) { return new Negation(x); }
-	
-	private LogicExpression in(String variableName) { return new LogicVariable(variableName); }
 }

@@ -28,8 +28,13 @@ public class CableModel implements Circuit1x1ComponentModel {
 		this.networkStatus = Option.of(networkStatus);
 	}
 	
-	private boolean canConnectTo(CircuitCellModel cell) {
+	public void clearNetworkStatus() {
+		networkStatus = Option.empty();
+	}
+	
+	private boolean canConnectTo(CircuitCellModel cell, Direction direction) {
 		return StreamUtils.stream(cell.getComponents())
+			.filter(it -> it.canConnectFrom(direction.invert()))
 			.anyMatch(it -> it.getColor().map(c -> c.equals(color)).orElse(true));
 	}
 	
@@ -37,9 +42,12 @@ public class CableModel implements Circuit1x1ComponentModel {
 	public String getName() { return "Cable"; }
 	
 	@Override
-	public void onPlace(Map<Direction, CircuitCellModel> neighbors) {
+	public void onPlace(Map<Direction, CircuitCellModel> neighbors) { updateConnections(neighbors); }
+	
+	private void updateConnections(Map<Direction, CircuitCellModel> neighbors) {
+		connections.clear();
 		for (Direction dir : neighbors.keySet()) {
-			if (!neighbors.get(dir).isEmpty() && canConnectTo(neighbors.get(dir))) {
+			if (!neighbors.get(dir).isEmpty() && canConnectTo(neighbors.get(dir), dir)) {
 				connections.add(dir);
 			}
 		}
@@ -65,7 +73,16 @@ public class CableModel implements Circuit1x1ComponentModel {
 	public boolean isEmitter() { return false; }
 	
 	@Override
-	public boolean isStackable() { return true; }
+	public boolean canReplaceOtherComponent() { return false; }
+	
+	@Override
+	public boolean canBeStackedOnTopOf(Circuit1x1ComponentModel other) {
+		if (other instanceof CableModel) {
+			CableModel cable = (CableModel) other;
+			return !cable.color.equals(color);
+		}
+		return false;
+	}
 	
 	@Override
 	public void tick(Map<Direction, CircuitCellModel> neighbors) {
@@ -101,4 +118,15 @@ public class CableModel implements Circuit1x1ComponentModel {
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitCable(this); }
+	
+	@Override
+	public String toString() {
+		return "Cable [color=" + color
+			+ ", connections=" + connections
+			+ ", soonPowered=" + soonPowered
+			+ ", nowPowered=" + nowPowered
+			+ ", connectedToEmitter=" + connectedToEmitter
+			+ ", networkStatus=" + networkStatus
+			+ "]";
+	}
 }

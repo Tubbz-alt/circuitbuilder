@@ -6,6 +6,9 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
+import fwcd.circuitbuilder.model.grid.cable.CableEvent;
+import fwcd.circuitbuilder.model.grid.cable.CableMatcher;
+import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
@@ -14,7 +17,10 @@ import fwcd.circuitbuilder.utils.ConcurrentMultiKeyHashMap;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.MultiKeyMap;
 import fwcd.circuitbuilder.utils.RelativePos;
+import fwcd.fructose.EventListenerList;
 import fwcd.fructose.ListenerList;
+import fwcd.fructose.Option;
+import fwcd.fructose.StreamUtils;
 
 /**
  * A 2D-grid of circuit components.
@@ -22,7 +28,11 @@ import fwcd.fructose.ListenerList;
 public class CircuitGridModel {
 	private final Map<RelativePos, CircuitCellModel> cells = new ConcurrentHashMap<>();
 	private final MultiKeyMap<RelativePos, CircuitLargeComponentModel> largeComponents = new ConcurrentMultiKeyHashMap<>();
+	
 	private final ListenerList changeListeners = new ListenerList();
+	private final ListenerList clearListeners = new ListenerList();
+	private final EventListenerList<CableEvent> addCableListeners = new EventListenerList<>();
+	private final EventListenerList<CableEvent> removeCableListeners = new EventListenerList<>();
 	
 	/**
 	 * Removes empty cells from the registered cells.<br><br>
@@ -30,10 +40,17 @@ public class CircuitGridModel {
 	 * (They will be re-initialized once they are needed again)
 	 */
 	public void cleanCells() {
+		boolean cleaned = false;
+		
 		for (RelativePos key : cells.keySet()) {
 			if (cells.containsKey(key) && cells.get(key).isEmpty()) {
 				cells.remove(key);
+				cleaned = true;
 			}
+		}
+		
+		if (cleaned) {
+			changeListeners.fire();
 		}
 	}
 	
@@ -58,7 +75,10 @@ public class CircuitGridModel {
 	
 	public void clearCell(RelativePos pos) {
 		if (!isCellEmpty(pos) && !cells.get(pos).containsUnremovableComponents()) {
-			cells.remove(pos);
+			CircuitCellModel cell = cells.remove(pos);
+			cell.streamComponents()
+				.flatMap(it -> it.accept(CableMatcher.INSTANCE).stream())
+				.forEach(cable -> removeCableListeners.fire(new CableEvent(cable, pos)));
 		}
 		
 		if (largeComponents.containsKey(pos)) {
@@ -87,20 +107,26 @@ public class CircuitGridModel {
 	}
 	
 	public void put(Circuit1x1ComponentModel component, RelativePos pos) {
-		getCell(pos).place(component);
+		CircuitCellModel cell = getCell(pos);
+		Option<CableModel> removedCable = Option.of(StreamUtils.stream(cell.getComponents()).flatMap(it -> it.accept(CableMatcher.INSTANCE).stream()).findAny());
 		
-		Map<Direction, CircuitCellModel> neighbors = getNeighbors(pos);
-		component.onPlace(neighbors);
-		
-		for (CircuitCellModel cell : neighbors.values()) {
-			if (!cell.isEmpty()) {
-				for (Circuit1x1ComponentModel neighborComponent : cell.getComponents()) {
-					neighborComponent.onPlace(getNeighbors(cell.getPos()));
+		if (cell.place(component)) {
+			Map<Direction, CircuitCellModel> neighbors = getNeighbors(pos);
+			component.onPlace(neighbors);
+			
+			for (CircuitCellModel neighborCell : neighbors.values()) {
+				if (!neighborCell.isEmpty()) {
+					for (Circuit1x1ComponentModel neighborComponent : neighborCell.getComponents()) {
+						neighborComponent.onPlace(getNeighbors(neighborCell.getPos()));
+					}
 				}
 			}
+			
+			Option<CableModel> addedCable = component.accept(CableMatcher.INSTANCE);
+			removedCable.filter(it -> !addedCable.isPresent()).ifPresent(removed -> removeCableListeners.fire(new CableEvent(removed, pos)));
+			addedCable.ifPresent(added -> addCableListeners.fire(new CableEvent(added, pos)));
+			changeListeners.fire();
 		}
-		
-		changeListeners.fire();
 	}
 	
 	public void forEach1x1(BiConsumer<CircuitCellModel, Circuit1x1ComponentModel> consumer) {
@@ -108,8 +134,6 @@ public class CircuitGridModel {
 			cell.getComponents().forEach(component -> consumer.accept(cell, component));
 		}
 	}
-	
-	public ListenerList getChangeListeners() { return changeListeners; }
 	
 	/**
 	 * A read-only view of all large components on this grid.
@@ -128,6 +152,15 @@ public class CircuitGridModel {
 	public void clear() {
 		cells.clear();
 		largeComponents.clear();
+		clearListeners.fire();
 		changeListeners.fire();
 	}
+	
+	public ListenerList getChangeListeners() { return changeListeners; }
+	
+	public ListenerList getClearListeners() { return clearListeners; }
+	
+	public EventListenerList<CableEvent> getAddCableListeners() { return addCableListeners; }
+	
+	public EventListenerList<CableEvent> getRemoveCableListeners() { return removeCableListeners; }
 }

@@ -22,7 +22,11 @@ public enum Direction {
 		}
 	}
 	
-	public Direction cycle() {
+	public boolean isAlongAxisOf(Direction direction) {
+		return equals(direction) || equals(direction.invert());
+	}
+	
+	public Direction next() {
 		return values()[(ordinal() + 1) % values().length];
 	}
 	
