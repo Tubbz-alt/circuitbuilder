@@ -46,12 +46,12 @@ public class SignalFunctionPlotView implements View {
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
-		boolean[] values = functionSegment.getValues();
-		int total = valueCount.orElse(values.length);
+		boolean[] values = functionSegment.getRawValues();
+		int total = valueCount.orElse(functionSegment.getValueCount());
 		int dx = ((int) canvasSize.getWidth() - (padding * 2)) / total;
 		int xOffset = (int) (phase * dx);
 		int height = (int) canvasSize.getHeight() - (padding * 2);
-		int count = Math.min(total, values.length);
+		int count = Math.min(total, functionSegment.getValueCount());
 		
 		g2d.setColor(Color.DARK_GRAY);
 		g2d.drawString(name, padding, padding);
