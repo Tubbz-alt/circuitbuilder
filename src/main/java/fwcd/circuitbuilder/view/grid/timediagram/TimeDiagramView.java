@@ -18,6 +18,7 @@ public class TimeDiagramView implements View {
 		SignalFunctionPlot signalFunctionPlot = new SignalFunctionPlot("Test", new DemoFunctionSegment());
 		signalFunctionPlot.setValueCount(20);
 		signalFunctionPlot.setHeight(40);
+		signalFunctionPlot.setPhase(0.5);
 		component.add(signalFunctionPlot.getComponent());
 	}
 	

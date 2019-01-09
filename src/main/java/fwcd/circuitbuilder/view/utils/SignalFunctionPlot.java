@@ -23,6 +23,7 @@ public class SignalFunctionPlot implements View {
 	private int height = 100;
 	private int padding = 12;
 	private int nameYOffset = 10;
+	private double phase = 0;
 	private OptionInt valueCount = OptionInt.empty();
 	private boolean showGridLines = true;
 	
@@ -35,14 +36,20 @@ public class SignalFunctionPlot implements View {
 		component.setMaximumSize(new Dimension(Integer.MAX_VALUE, height));
 	}
 	
-	private void repaint() {
+	private void repaintLater() {
 		SwingUtilities.invokeLater(component::repaint);
+	}
+	
+	public void setPhase(double phase) {
+		this.phase = phase;
+		repaintLater();
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		boolean[] values = functionSegment.getValues();
 		int total = valueCount.orElse(values.length);
 		int dx = ((int) canvasSize.getWidth() - (padding * 2)) / total;
+		int xOffset = (int) (phase * dx);
 		int height = (int) canvasSize.getHeight() - (padding * 2);
 		int count = Math.min(total, values.length);
 		
@@ -54,7 +61,7 @@ public class SignalFunctionPlot implements View {
 			g2d.setColor(Color.GRAY);
 			
 			for (int i = 0; i < total; i++) {
-				int x = padding + (i * dx);
+				int x = (padding - xOffset) + (i * dx);
 				g2d.drawLine(x, padding + nameYOffset, x, (height - padding) - nameYOffset);
 			}
 		}
@@ -72,7 +79,12 @@ public class SignalFunctionPlot implements View {
 	}
 	
 	private AbsolutePos toAbsolutePos(boolean[] values, int dx, int height, int i) {
-		return new AbsolutePos(padding + (i * dx), (values[Math.min(i, values.length - 1)] ? padding + nameYOffset : (height - padding) - nameYOffset));
+		return new AbsolutePos(
+			(padding - (int) (phase * dx)) + (i * dx),
+			(values[Math.min(i, values.length - 1)]
+				? padding + nameYOffset
+				: (height - padding) - nameYOffset)
+		);
 	}
 	
 	@Override
@@ -82,21 +94,21 @@ public class SignalFunctionPlot implements View {
 	
 	public void setValueCount(OptionInt valueCount) {
 		this.valueCount = valueCount;
-		repaint();
+		repaintLater();
 	}
 	
 	public void setShowGridLines(boolean showGridLines) {
 		this.showGridLines = showGridLines;
-		repaint();
+		repaintLater();
 	}
 	
 	public void setHeight(int height) {
 		this.height = height;
-		repaint();
+		repaintLater();
 	}
 	
 	public void setPadding(int padding) {
 		this.padding = padding;
-		repaint();
+		repaintLater();
 	}
 }
