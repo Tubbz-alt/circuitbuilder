@@ -8,4 +8,6 @@ public class TimeDiagramModel {
 	public TimeDiagramModel(SignalFunctionSegment functionSegment) {
 		this.functionSegment = functionSegment;
 	}
+	
+	public SignalFunctionSegment getFunctionSegment() { return functionSegment; }
 }

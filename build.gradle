@@ -11,7 +11,7 @@ repositories {
 mainClassName = 'fwcd.circuitbuilder.CircuitBuilderMain'
 
 dependencies {
-	implementation 'com.github.fwcd:Fructose:23a7c0fb2aaa3450e80f6486fc71038084046c1f'
+	implementation 'com.github.fwcd:Fructose:bbb4440c0a92a10c011802b2018d745986c9811a'
 	implementation 'com.github.fwcd:Palm:c50f9260875fb8ec52b23d40f06eb5255f28bddc'
 	implementation 'com.google.code.gson:gson:2.8.5'
 	testImplementation 'junit:junit:4.12'

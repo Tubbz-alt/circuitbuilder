@@ -9,52 +9,50 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import fwcd.circuitbuilder.model.utils.SignalFunctionPlotModel;
 import fwcd.circuitbuilder.model.utils.SignalFunctionSegment;
 import fwcd.circuitbuilder.utils.AbsolutePos;
+import fwcd.fructose.Closer;
 import fwcd.fructose.OptionInt;
 import fwcd.fructose.swing.DashedStroke;
 import fwcd.fructose.swing.RenderPanel;
 import fwcd.fructose.swing.View;
 
-public class SignalFunctionPlotView implements View {
+public class SignalFunctionPlotView implements View, AutoCloseable {
 	private final JPanel component;
-	private final SignalFunctionSegment functionSegment;
-	private final String name;
+	private final Closer closer = new Closer();
+	private final SignalFunctionPlotModel model;
 	private int height = 100;
 	private int padding = 12;
 	private int nameYOffset = 10;
-	private double phase = 0;
 	private OptionInt valueCount = OptionInt.empty();
 	private boolean showGridLines = true;
 	
-	public SignalFunctionPlotView(String name, SignalFunctionSegment functionSegment) {
-		this.name = name;
-		this.functionSegment = functionSegment;
+	public SignalFunctionPlotView(SignalFunctionPlotModel model) {
+		this.model = model;
 		
 		component = new RenderPanel(this::render);
 		component.setMinimumSize(new Dimension(1, height));
 		component.setMaximumSize(new Dimension(Integer.MAX_VALUE, height));
+		
+		model.getPhase().subscribe(it -> repaintLater()).to(closer);
 	}
 	
 	private void repaintLater() {
 		SwingUtilities.invokeLater(component::repaint);
 	}
 	
-	public void setPhase(double phase) {
-		this.phase = phase;
-		repaintLater();
-	}
-	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
-		boolean[] values = functionSegment.getRawValues();
-		int total = valueCount.orElse(functionSegment.getValueCount());
+		SignalFunctionSegment segment = model.getSegment();
+		boolean[] values = segment.getRawValues();
+		int total = valueCount.orElse(segment.getValueCount());
 		int dx = ((int) canvasSize.getWidth() - (padding * 2)) / total;
-		int xOffset = (int) (phase * dx);
+		int xOffset = (int) (model.getPhase().get() * dx);
 		int height = (int) canvasSize.getHeight() - (padding * 2);
-		int count = Math.min(total, functionSegment.getValueCount());
+		int count = Math.min(total, segment.getValueCount());
 		
 		g2d.setColor(Color.DARK_GRAY);
-		g2d.drawString(name, padding, padding);
+		g2d.drawString(model.getName(), padding, padding);
 		
 		if (showGridLines) {
 			g2d.setStroke(new DashedStroke(1, 2));
@@ -70,17 +68,17 @@ public class SignalFunctionPlotView implements View {
 		g2d.setColor(Color.BLUE);
 		
 		for (int i = 0; i < count; i++) {
-			AbsolutePos pos = toAbsolutePos(values, dx, height, i);
-			AbsolutePos next = toAbsolutePos(values, dx, height, i + 1);
+			AbsolutePos pos = toAbsolutePos(values, dx, xOffset, height, i);
+			AbsolutePos next = toAbsolutePos(values, dx, xOffset, height, i + 1);
 			
 			g2d.drawLine(pos.getX(), pos.getY(), next.getX(), pos.getY());
 			g2d.drawLine(next.getX(), pos.getY(), next.getX(), next.getY());
 		}
 	}
 	
-	private AbsolutePos toAbsolutePos(boolean[] values, int dx, int height, int i) {
+	private AbsolutePos toAbsolutePos(boolean[] values, int dx, int xOffset, int height, int i) {
 		return new AbsolutePos(
-			(padding - (int) (phase * dx)) + (i * dx),
+			(padding - xOffset) + (i * dx),
 			(values[Math.min(i, values.length - 1)]
 				? padding + nameYOffset
 				: (height - padding) - nameYOffset)
@@ -110,5 +108,10 @@ public class SignalFunctionPlotView implements View {
 	public void setPadding(int padding) {
 		this.padding = padding;
 		repaintLater();
+	}
+	
+	@Override
+	public void close() {
+		closer.close();
 	}
 }
