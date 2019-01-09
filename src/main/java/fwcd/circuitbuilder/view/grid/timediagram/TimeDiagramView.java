@@ -5,7 +5,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import fwcd.circuitbuilder.model.utils.DemoFunctionSegment;
-import fwcd.circuitbuilder.view.utils.SignalFunctionPlot;
+import fwcd.circuitbuilder.view.utils.SignalFunctionPlotView;
 import fwcd.fructose.swing.View;
 
 public class TimeDiagramView implements View {
@@ -15,7 +15,7 @@ public class TimeDiagramView implements View {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
-		SignalFunctionPlot signalFunctionPlot = new SignalFunctionPlot("Test", new DemoFunctionSegment());
+		SignalFunctionPlotView signalFunctionPlot = new SignalFunctionPlotView("Test", new DemoFunctionSegment());
 		signalFunctionPlot.setValueCount(20);
 		signalFunctionPlot.setHeight(40);
 		signalFunctionPlot.setPhase(0.5);

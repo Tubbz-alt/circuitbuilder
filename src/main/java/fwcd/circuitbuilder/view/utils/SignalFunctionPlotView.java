@@ -16,7 +16,7 @@ import fwcd.fructose.swing.DashedStroke;
 import fwcd.fructose.swing.RenderPanel;
 import fwcd.fructose.swing.View;
 
-public class SignalFunctionPlot implements View {
+public class SignalFunctionPlotView implements View {
 	private final JPanel component;
 	private final SignalFunctionSegment functionSegment;
 	private final String name;
@@ -27,7 +27,7 @@ public class SignalFunctionPlot implements View {
 	private OptionInt valueCount = OptionInt.empty();
 	private boolean showGridLines = true;
 	
-	public SignalFunctionPlot(String name, SignalFunctionSegment functionSegment) {
+	public SignalFunctionPlotView(String name, SignalFunctionSegment functionSegment) {
 		this.name = name;
 		this.functionSegment = functionSegment;
 		
