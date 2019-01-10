@@ -47,7 +47,8 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 		boolean[] values = segment.getRawValues();
 		int total = valueCount.orElse(segment.getValueCount());
 		int dx = ((int) canvasSize.getWidth() - (padding * 2)) / total;
-		int xOffset = (int) (model.getPhase().get() * dx);
+		int xOffset = (int) ((model.getPhase().get() % 1.0) * dx);
+		int width = (int) canvasSize.getWidth() - (padding * 2);
 		int height = (int) canvasSize.getHeight() - (padding * 2);
 		int count = Math.min(total, segment.getValueCount());
 		
@@ -58,8 +59,7 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 			g2d.setStroke(new DashedStroke(1, 2));
 			g2d.setColor(Color.GRAY);
 			
-			for (int i = 0; i < total; i++) {
-				int x = (padding - xOffset) + (i * dx);
+			for (int x = padding + (dx - xOffset); x < width; x += dx) {
 				g2d.drawLine(x, padding + nameYOffset, x, (height - padding) - nameYOffset);
 			}
 		}
@@ -78,7 +78,7 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 	
 	private AbsolutePos toAbsolutePos(boolean[] values, int dx, int xOffset, int height, int i) {
 		return new AbsolutePos(
-			(padding - xOffset) + (i * dx),
+			padding + Math.max(0, (i * dx) - xOffset),
 			(values[Math.min(i, values.length - 1)]
 				? padding + nameYOffset
 				: (height - padding) - nameYOffset)
