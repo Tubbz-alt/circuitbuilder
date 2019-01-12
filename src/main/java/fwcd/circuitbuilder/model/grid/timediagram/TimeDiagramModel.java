@@ -1,13 +1,14 @@
 package fwcd.circuitbuilder.model.grid.timediagram;
 
 import fwcd.circuitbuilder.model.utils.SignalFunctionSegment;
+import fwcd.fructose.Observable;
+import fwcd.fructose.structs.ObservableList;
 
 public class TimeDiagramModel {
-	private final SignalFunctionSegment functionSegment;
+	private final ObservableList<SignalFunctionSegment> segments = new ObservableList<>();
+	private final Observable<Double> phase = new Observable<>(0.0);
 	
-	public TimeDiagramModel(SignalFunctionSegment functionSegment) {
-		this.functionSegment = functionSegment;
-	}
+	public ObservableList<SignalFunctionSegment> getSegments() { return segments; }
 	
-	public SignalFunctionSegment getFunctionSegment() { return functionSegment; }
+	public Observable<Double> getPhase() { return phase; }
 }

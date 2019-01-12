@@ -1,14 +1,21 @@
 package fwcd.circuitbuilder.model.utils;
 
+import fwcd.fructose.ListenerList;
+import fwcd.fructose.OptionInt;
+import fwcd.fructose.function.Subscription;
+
 public class ValueOverTime implements SignalFunctionSegment {
+	private final String name;
 	private final boolean[] values;
+	private final ListenerList listeners = new ListenerList();
 	private int valueCount;
 	
-	public ValueOverTime() {
-		this(10);
+	public ValueOverTime(String name) {
+		this(name, 10);
 	}
 	
-	public ValueOverTime(int capacity) {
+	public ValueOverTime(String name, int capacity) {
+		this.name = name;
 		values = new boolean[capacity];
 		valueCount = 0;
 	}
@@ -19,6 +26,7 @@ public class ValueOverTime implements SignalFunctionSegment {
 		}
 		shift();
 		values[0] = value;
+		listeners.fire();
 	}
 	
 	private void shift() {
@@ -35,5 +43,21 @@ public class ValueOverTime implements SignalFunctionSegment {
 	@Override
 	public int getValueCount() {
 		return valueCount;
+	}
+	
+	@Override
+	public Subscription subscribeToUpdates(Runnable listener) {
+		listeners.add(listener);
+		return () -> listeners.remove(listener);
+	}
+	
+	@Override
+	public String getName() {
+		return name;
+	}
+	
+	@Override
+	public OptionInt getCapacity() {
+		return OptionInt.of(values.length);
 	}
 }

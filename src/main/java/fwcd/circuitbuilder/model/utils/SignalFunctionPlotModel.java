@@ -3,16 +3,17 @@ package fwcd.circuitbuilder.model.utils;
 import fwcd.fructose.Observable;
 
 public class SignalFunctionPlotModel {
-	private final String name;
 	private final SignalFunctionSegment segment;
-	private final Observable<Double> phase = new Observable<>(0.0);
+	private final Observable<Double> phase;
 	
-	public SignalFunctionPlotModel(String name, SignalFunctionSegment segment) {
-		this.name = name;
-		this.segment = segment;
+	public SignalFunctionPlotModel(SignalFunctionSegment segment) {
+		this(segment, new Observable<>(0.0));
 	}
 	
-	public String getName() { return name; }
+	public SignalFunctionPlotModel(SignalFunctionSegment segment, Observable<Double> phase) {
+		this.segment = segment;
+		this.phase = phase;
+	}
 	
 	public Observable<Double> getPhase() { return phase; }
 	

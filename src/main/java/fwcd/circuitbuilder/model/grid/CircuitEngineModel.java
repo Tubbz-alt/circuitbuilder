@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
+import fwcd.circuitbuilder.model.grid.timediagram.TimeDiagramModel;
 
 /**
  * An engine that ticks and updates components on a circuit grid.
@@ -12,6 +13,7 @@ public class CircuitEngineModel {
 	private static final boolean DEBUG_NETWORKS = false;
 	private final CircuitGridModel grid;
 	private final Set<CableNetwork> networks = new HashSet<>();
+	private final TimeDiagramModel timeDiagram = new TimeDiagramModel();
 	
 	private boolean autoCleanCells = true;
 	
@@ -59,5 +61,9 @@ public class CircuitEngineModel {
 	 */
 	public Set<? extends CableNetwork> getCableNetworks() {
 		return networks;
+	}
+	
+	public TimeDiagramModel getTimeDiagram() {
+		return timeDiagram;
 	}
 }

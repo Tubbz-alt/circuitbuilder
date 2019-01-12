@@ -25,7 +25,6 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 	private int height = 100;
 	private int padding = 12;
 	private int nameYOffset = 10;
-	private OptionInt valueCount = OptionInt.empty();
 	private boolean showGridLines = true;
 	
 	public SignalFunctionPlotView(SignalFunctionPlotModel model) {
@@ -45,7 +44,7 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		SignalFunctionSegment segment = model.getSegment();
 		boolean[] values = segment.getRawValues();
-		int total = valueCount.orElse(segment.getValueCount());
+		int total = segment.getCapacity().orElseGet(segment::getValueCount);
 		int dx = ((int) canvasSize.getWidth() - (padding * 2)) / total;
 		int xOffset = (int) ((model.getPhase().get() % 1.0) * dx);
 		int width = (int) canvasSize.getWidth() - (padding * 2);
@@ -53,7 +52,7 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 		int count = Math.min(total, segment.getValueCount());
 		
 		g2d.setColor(Color.DARK_GRAY);
-		g2d.drawString(model.getName(), padding, padding);
+		g2d.drawString(segment.getName(), padding, padding);
 		
 		if (showGridLines) {
 			g2d.setStroke(new DashedStroke(1, 2));
@@ -87,13 +86,6 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 	
 	@Override
 	public JComponent getComponent() { return component; }
-	
-	public void setValueCount(int valueCount) { setValueCount(OptionInt.of(valueCount)); }
-	
-	public void setValueCount(OptionInt valueCount) {
-		this.valueCount = valueCount;
-		repaintLater();
-	}
 	
 	public void setShowGridLines(boolean showGridLines) {
 		this.showGridLines = showGridLines;

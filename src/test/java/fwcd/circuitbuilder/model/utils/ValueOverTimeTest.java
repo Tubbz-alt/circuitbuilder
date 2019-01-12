@@ -9,7 +9,7 @@ import org.junit.Test;
 public class ValueOverTimeTest {
 	@Test
 	public void testValueOverTime() {
-		ValueOverTime vot = new ValueOverTime(4);
+		ValueOverTime vot = new ValueOverTime("VOT", 4);
 		vot.add(true);
 		vot.add(true);
 		vot.add(false);
