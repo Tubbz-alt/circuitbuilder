@@ -14,7 +14,9 @@ public interface SignalFunctionSegment {
 	
 	void setName(String name);
 	
-	boolean[] getRawValues();
+	boolean get(int index);
+	
+	int getValueCount();
 	
 	Subscription subscribeToUpdates(Runnable listener);
 	
@@ -22,12 +24,7 @@ public interface SignalFunctionSegment {
 		return OptionInt.empty();
 	}
 	
-	default int getValueCount() {
-		return getRawValues().length;
-	}
-	
 	default Stream<Boolean> streamValues() {
-		boolean[] values = getRawValues();
-		return IntStream.range(0, getValueCount()).mapToObj(i -> values[i]);
+		return IntStream.range(0, getValueCount()).mapToObj(this::get);
 	}
 }

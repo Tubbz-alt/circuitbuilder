@@ -44,7 +44,6 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
 		SignalFunctionSegment segment = model.getSegment();
-		boolean[] values = segment.getRawValues();
 		int total = segment.getCapacity().orElseGet(segment::getValueCount);
 		int dx = ((int) canvasSize.getWidth() - (padding * 2)) / total;
 		int xOffset = (int) ((model.getPhase().get() % 1.0) * dx);
@@ -68,18 +67,18 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 		g2d.setColor(Color.BLUE);
 		
 		for (int i = 0; i < count; i++) {
-			AbsolutePos pos = toAbsolutePos(values, dx, xOffset, height, i);
-			AbsolutePos next = toAbsolutePos(values, dx, xOffset, height, i + 1);
+			AbsolutePos pos = toAbsolutePos(segment, dx, xOffset, height, i);
+			AbsolutePos next = toAbsolutePos(segment, dx, xOffset, height, i + 1);
 			
 			g2d.drawLine(pos.getX(), pos.getY(), next.getX(), pos.getY());
 			g2d.drawLine(next.getX(), pos.getY(), next.getX(), next.getY());
 		}
 	}
 	
-	private AbsolutePos toAbsolutePos(boolean[] values, int dx, int xOffset, int height, int i) {
+	private AbsolutePos toAbsolutePos(SignalFunctionSegment segment, int dx, int xOffset, int height, int i) {
 		return new AbsolutePos(
 			padding + Math.max(0, (i * dx) - xOffset),
-			(values[Math.min(i, values.length - 1)]
+			(segment.get(Math.min(i, segment.getValueCount() - 1))
 				? padding + nameYOffset
 				: (height - padding) - nameYOffset)
 		);

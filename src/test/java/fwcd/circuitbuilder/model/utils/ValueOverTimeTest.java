@@ -1,9 +1,10 @@
 package fwcd.circuitbuilder.model.utils;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
-
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 public class ValueOverTimeTest {
@@ -13,14 +14,35 @@ public class ValueOverTimeTest {
 		vot.add(true);
 		vot.add(true);
 		vot.add(false);
-		assertVOTEquals(new boolean[] {false, true, true}, vot);
+		assertThat(vot, votEquals(false, true, true));
 		
 		vot.add(false);
 		vot.add(true);
-		assertVOTEquals(new boolean[] {true, false, false, true}, vot);
+		assertThat(vot, votEquals(true, false, false, true));
 	}
 	
-	private void assertVOTEquals(boolean[] bools, ValueOverTime vot) {
-		assertArrayEquals(bools, Arrays.copyOf(vot.getRawValues(), vot.getValueCount()));
+	private Matcher<ValueOverTime> votEquals(Boolean... expected) {
+		return new BaseMatcher<ValueOverTime>() {
+			@Override
+			public boolean matches(Object item) {
+				ValueOverTime actual = (ValueOverTime) item;
+				if (actual.getValueCount() != expected.length) {
+					return false;
+				}
+				for (int i = 0; i < expected.length; i++) {
+					if (expected[i] != actual.get(i)) {
+						return false;
+					}
+				}
+				return true;
+			}
+			
+			@Override
+			public void describeTo(Description description) {
+				description
+					.appendText("ValueOverTime should equal")
+					.appendValueList("[", ",", "]", expected);
+			}
+		};
 	}
 }

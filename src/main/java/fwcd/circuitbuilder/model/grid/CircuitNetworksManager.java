@@ -1,6 +1,5 @@
 package fwcd.circuitbuilder.model.grid;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
