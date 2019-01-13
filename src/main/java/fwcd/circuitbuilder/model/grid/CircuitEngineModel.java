@@ -12,30 +12,29 @@ import fwcd.circuitbuilder.model.grid.timediagram.TimeDiagramModel;
 public class CircuitEngineModel {
 	private static final boolean DEBUG_NETWORKS = false;
 	private final CircuitGridModel grid;
-	private final Set<CableNetwork> networks = new HashSet<>();
-	private final TimeDiagramModel timeDiagram = new TimeDiagramModel();
+	private final CircuitNetworksManager networkManager;
 	
 	private boolean autoCleanCells = true;
 	
 	public CircuitEngineModel(CircuitGridModel grid) {
 		this.grid = grid;
 		
-		CircuitNetworksManager networkBuilder = new CircuitNetworksManager(networks);
-		grid.getAddCableListeners().add(networkBuilder::onAddCable);
-		grid.getRemoveCableListeners().add(networkBuilder::onRemoveCable);
-		grid.getClearListeners().add(networkBuilder::onClear);
+		networkManager = new CircuitNetworksManager(new HashSet<>());
+		grid.getAddCableListeners().add(networkManager::onAddCable);
+		grid.getRemoveCableListeners().add(networkManager::onRemoveCable);
+		grid.getClearListeners().add(networkManager::onClear);
 	}
 	
 	public void tick() {
 		// Pre ticking - Updating networks
 		
-		for (CableNetwork network : networks) {
+		for (CableNetwork network : getCableNetworks()) {
 			network.updateStatus(grid);
 		}
 		
 		if (DEBUG_NETWORKS) {
 			// TODO: Logging
-			System.out.println("Networks: [\n" + networks.stream().map(Object::toString).reduce((a, b) -> a + "\n" + b).orElse("") + "\n]");
+			System.out.println("Networks: [\n" + getCableNetworks().stream().map(Object::toString).reduce((a, b) -> a + "\n" + b).orElse("") + "\n]");
 		}
 		
 		// Main ticking
@@ -46,6 +45,7 @@ public class CircuitEngineModel {
 		// Updating
 		
 		grid.forEach1x1((cell, component) -> component.update());
+		getTimeDiagram().onTick();
 		
 		// Cleaning
 		
@@ -60,10 +60,10 @@ public class CircuitEngineModel {
 	 * A set of cable networks.
 	 */
 	public Set<? extends CableNetwork> getCableNetworks() {
-		return networks;
+		return networkManager.getNetworks();
 	}
 	
 	public TimeDiagramModel getTimeDiagram() {
-		return timeDiagram;
+		return networkManager.getTimeDiagram();
 	}
 }

@@ -14,11 +14,12 @@ import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.RelativePos;
+import fwcd.fructose.Observable;
 import fwcd.fructose.Option;
 
 public class CableNetwork {
 	private final CableNetworkStatus status = new CableNetworkStatus();
-	private Option<String> name = Option.empty();
+	private final Observable<Option<String>> name = new Observable<>(Option.empty());
 	private Option<CableColor> color = Option.empty();
 	private Map<RelativePos, CableModel> cables = new HashMap<>();
 	
@@ -27,7 +28,7 @@ public class CableNetwork {
 	 * into this one.
 	 */
 	public void merge(CableNetwork other) {
-		name = name.or(other::getName);
+		name.set(name.get().or(other.getName()::get));
 		cables.putAll(other.cables);
 		
 		for (CableModel cable : cables.values()) {
@@ -95,7 +96,7 @@ public class CableNetwork {
 				
 				if (!connectedSegment.isEmpty()) {
 					CableNetwork network = new CableNetwork();
-					network.setName(name);
+					network.getName().set(name.get());
 					network.color = color;
 					
 					for (RelativePos connectedPos : connectedSegment) {
@@ -182,18 +183,14 @@ public class CableNetwork {
 	
 	public CableNetworkStatus getStatus() { return status; }
 	
-	public Option<String> getName() { return name; }
+	public Observable<Option<String>> getName() { return name; }
 	
 	public Option<CableColor> getColor() { return color; }
-	
-	public void setName(Option<String> name) { this.name = name; }
-	
-	public void setName(String name) { this.name = Option.of(name); }
 
 	public boolean isEmpty() { return cables.isEmpty(); }
 	
-	public String toDebugString() { return name.orElse("<Network>") + " " + getPositions() + " >> " + getStatus().isPowered(); }
+	public String toDebugString() { return name.get().orElse("<Network>") + " " + getPositions() + " >> " + getStatus().isPowered(); }
 	
 	@Override
-	public String toString() { return name.orElse("<Network>"); }
+	public String toString() { return name.get().orElse("<Network>"); }
 }

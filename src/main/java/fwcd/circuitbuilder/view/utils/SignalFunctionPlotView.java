@@ -13,7 +13,6 @@ import fwcd.circuitbuilder.model.utils.SignalFunctionPlotModel;
 import fwcd.circuitbuilder.model.utils.SignalFunctionSegment;
 import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.fructose.Closer;
-import fwcd.fructose.OptionInt;
 import fwcd.fructose.swing.DashedStroke;
 import fwcd.fructose.swing.RenderPanel;
 import fwcd.fructose.swing.View;

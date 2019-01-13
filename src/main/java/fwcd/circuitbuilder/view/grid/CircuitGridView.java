@@ -198,7 +198,7 @@ public class CircuitGridView implements View {
 		g2d.setFont(g2d.getFont().deriveFont(14F));
 		
 		for (CableNetwork network : engine.getCableNetworks()) {
-			String name = network.getName().orElse("");
+			String name = network.getName().get().orElse("");
 			
 			g2d.setColor(Color.BLACK);
 			network.streamPositions()

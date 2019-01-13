@@ -12,6 +12,8 @@ import fwcd.fructose.function.Subscription;
 public interface SignalFunctionSegment {
 	String getName();
 	
+	void setName(String name);
+	
 	boolean[] getRawValues();
 	
 	Subscription subscribeToUpdates(Runnable listener);

@@ -16,6 +16,7 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.utils.RelativePos;
+import fwcd.fructose.Option;
 
 public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 	private final JComponent baseComponent;
@@ -67,8 +68,8 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 			
 			if (confirmed && networks.size() > 0) {
 				CableNetwork first = networks.iterator().next();
-				String newName = JOptionPane.showInputDialog(baseComponent, "Enter the new cable network name:", first.getName().orElse(""));
-				first.setName(newName);
+				String newName = JOptionPane.showInputDialog(baseComponent, "Enter the new cable network name:", first.getName().get().orElse(""));
+				first.getName().set(Option.of(newName));
 			}
 		});
 	}

@@ -1,6 +1,6 @@
 package fwcd.circuitbuilder.view.grid.timediagram;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -25,10 +25,10 @@ public class TimeDiagramView implements View, AutoCloseable {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
-		model.getSegments().subscribe(this::updateAll).to(closer);
+		model.getSegmentListeners().subscribe(this::updateAll).to(closer);
 	}
 	
-	private void updateAll(List<? extends SignalFunctionSegment> segments) {
+	private void updateAll(Collection<? extends SignalFunctionSegment> segments) {
 		closer.disposeAll();
 		component.removeAll();
 		

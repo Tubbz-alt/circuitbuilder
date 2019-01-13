@@ -5,9 +5,9 @@ import fwcd.fructose.OptionInt;
 import fwcd.fructose.function.Subscription;
 
 public class ValueOverTime implements SignalFunctionSegment {
-	private final String name;
 	private final boolean[] values;
 	private final ListenerList listeners = new ListenerList();
+	private String name;
 	private int valueCount;
 	
 	public ValueOverTime(String name) {
@@ -49,6 +49,10 @@ public class ValueOverTime implements SignalFunctionSegment {
 	public Subscription subscribeToUpdates(Runnable listener) {
 		listeners.add(listener);
 		return () -> listeners.remove(listener);
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@Override

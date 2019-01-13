@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 import fwcd.circuitbuilder.model.grid.cable.CableEvent;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
+import fwcd.circuitbuilder.model.grid.timediagram.TimeDiagramModel;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 public class CircuitNetworksManager {
 	private final Set<CableNetwork> networks;
+	private final TimeDiagramModel timeDiagram = new TimeDiagramModel();
 	
 	public CircuitNetworksManager(Set<CableNetwork> networks) {
 		this.networks = networks;
@@ -25,6 +27,7 @@ public class CircuitNetworksManager {
 			CableNetwork network = new CableNetwork();
 			network.add(event.getPos(), event.getCable());
 			networks.add(network);
+			timeDiagram.onAdd(network);
 		} else {
 			Iterator<CableNetwork> iterator = extendableNetworks.iterator();
 			CableNetwork first = iterator.next();
@@ -51,6 +54,7 @@ public class CircuitNetworksManager {
 				
 				if (removedCable) {
 					networks.remove(network);
+					timeDiagram.onRemove(network);
 					
 					if (!network.isEmpty()) {
 						Set<CableNetwork> splitted = network.splitAt(pos);
@@ -68,5 +72,14 @@ public class CircuitNetworksManager {
 			.flatMap(it -> it.getCables().stream())
 			.forEach(CableModel::clearNetworkStatus);
 		networks.clear();
+		timeDiagram.onClear();
+	}
+	
+	public Set<? extends CableNetwork> getNetworks() {
+		return networks;
+	}
+	
+	public TimeDiagramModel getTimeDiagram() {
+		return timeDiagram;
 	}
 }
