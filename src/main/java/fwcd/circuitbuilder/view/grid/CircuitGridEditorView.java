@@ -13,12 +13,12 @@ import fwcd.circuitbuilder.view.utils.CollapsibleView;
 import fwcd.fructose.swing.View;
 
 public class CircuitGridEditorView implements View, AutoCloseable {
-	private static final int TICK_DELAY = 80; // ms tick delay
+	private static final int ENGINE_UPDATE_DELAY = 40; // ms
 	private final JPanel component;
 	private final BackgroundLooper engineLooper;
 	
 	public CircuitGridEditorView(CircuitGridModel model, CircuitEngineModel engine, CircuitGridContext context) {
-		engineLooper = new BackgroundLooper(TICK_DELAY, engine::tick);
+		engineLooper = new BackgroundLooper(ENGINE_UPDATE_DELAY, engine::update);
 		
 		component = new JPanel();
 		component.setLayout(new BorderLayout());

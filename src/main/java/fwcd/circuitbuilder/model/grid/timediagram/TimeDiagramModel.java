@@ -18,14 +18,14 @@ import fwcd.fructose.Option;
 import fwcd.fructose.function.Subscription;
 
 public class TimeDiagramModel {
-	private static final int VALUE_COUNT = 20;
+	private static final int VALUE_COUNT = 150;
 	private static final String UNNAMED_NETWORK = "Unnamed network";
 	
 	private final Map<CableNetwork, TimeDiagramRow> rows = new HashMap<>();
 	private final Observable<Double> phase = new Observable<>(0.0);
 	
 	private final EventListenerList<Collection<? extends SignalFunctionSegment>> segmentListeners = new EventListenerList<>();
-	private final ListenerList tickListeners = new ListenerList();
+	private final ListenerList partialTickListeners = new ListenerList();
 	
 	public void onAdd(CableNetwork network) {
 		Observable<Option<String>> name = network.getName();
@@ -51,13 +51,15 @@ public class TimeDiagramModel {
 		fireSegmentListeners();
 	}
 	
-	public void onTick() {
+	public void onPartialTick(double phase) {
+		this.phase.set(phase);
+		
 		for (Map.Entry<CableNetwork, TimeDiagramRow> entry : rows.entrySet()) {
 			CableNetwork network = entry.getKey();
 			entry.getValue().getSegment().add(network.getStatus().isPowered());
 		}
 		
-		tickListeners.fire();
+		partialTickListeners.fire();
 	}
 	
 	private void fireSegmentListeners() {
@@ -70,7 +72,7 @@ public class TimeDiagramModel {
 	
 	public EventListenerList<Collection<? extends SignalFunctionSegment>> getSegmentListeners() { return segmentListeners; }
 	
-	public ListenerList getTickListeners() { return tickListeners; }
+	public ListenerList getPartialTickListeners() { return partialTickListeners; }
 	
 	public Observable<Double> getPhase() { return phase; }
 	

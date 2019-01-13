@@ -14,6 +14,8 @@ public class CircuitEngineModel {
 	private final CircuitGridModel grid;
 	private final CircuitNetworksManager networkManager;
 	
+	private long lastTick = 0;
+	private long tickDelay = 80; // ms
 	private boolean autoCleanCells = true;
 	
 	public CircuitEngineModel(CircuitGridModel grid) {
@@ -25,7 +27,19 @@ public class CircuitEngineModel {
 		grid.getClearListeners().add(networkManager::onClear);
 	}
 	
-	public void tick() {
+	public void update() {
+		long now = System.currentTimeMillis();
+		long delta = now - lastTick;
+		
+		if (delta > tickDelay) {
+			tick();
+			lastTick = now;
+		}
+		
+		getTimeDiagram().onPartialTick((double) delta / tickDelay);
+	}
+	
+	private void tick() {
 		// Pre ticking - Updating networks
 		
 		for (CableNetwork network : getCableNetworks()) {
@@ -45,7 +59,6 @@ public class CircuitEngineModel {
 		// Updating
 		
 		grid.forEach1x1((cell, component) -> component.update());
-		getTimeDiagram().onTick();
 		
 		// Cleaning
 		

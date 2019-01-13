@@ -21,10 +21,12 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 	private final JPanel component;
 	private final Closer closer = new Closer();
 	private final SignalFunctionPlotModel model;
+	
 	private int height = 100;
 	private int padding = 12;
 	private int nameYOffset = 10;
-	private boolean showGridLines = true;
+	private int gridLineDistance = 20;
+	private boolean showGridLines = false;
 	
 	public SignalFunctionPlotView(SignalFunctionPlotModel model) {
 		this.model = model;
@@ -57,7 +59,7 @@ public class SignalFunctionPlotView implements View, AutoCloseable {
 			g2d.setStroke(new DashedStroke(1, 2));
 			g2d.setColor(Color.GRAY);
 			
-			for (int x = padding + (dx - xOffset); x < width; x += dx) {
+			for (int x = padding + (dx - xOffset); x < width; x += (dx * gridLineDistance)) {
 				g2d.drawLine(x, padding + nameYOffset, x, (height - padding) - nameYOffset);
 			}
 		}

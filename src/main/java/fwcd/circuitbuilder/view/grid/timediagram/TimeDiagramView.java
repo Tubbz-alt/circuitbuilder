@@ -17,6 +17,7 @@ import fwcd.fructose.Closer;
 
 public class TimeDiagramView implements ToggledView, AutoCloseable {
 	private static final int PLOT_HEIGHT = 40;
+	
 	private final Debouncer debouncer = new Debouncer(100); // Plot refresh rate in ms
 	private final TimeDiagramModel model;
 	private final JPanel component;
@@ -32,7 +33,7 @@ public class TimeDiagramView implements ToggledView, AutoCloseable {
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
 		model.getSegmentListeners().subscribe(this::updateAll).to(modelListenerCloser);
-		model.getTickListeners().subscribe(this::repaintMaybe).to(modelListenerCloser);
+		model.getPartialTickListeners().subscribe(this::repaintMaybe).to(modelListenerCloser);
 	}
 	
 	private void updateAll(Collection<? extends SignalFunctionSegment> segments) {
