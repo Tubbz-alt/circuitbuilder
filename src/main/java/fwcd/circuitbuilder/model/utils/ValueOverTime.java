@@ -47,8 +47,7 @@ public class ValueOverTime implements SignalFunctionSegment {
 	
 	@Override
 	public Subscription subscribeToUpdates(Runnable listener) {
-		listeners.add(listener);
-		return () -> listeners.remove(listener);
+		return listeners.subscribe(listener);
 	}
 	
 	public void setName(String name) {

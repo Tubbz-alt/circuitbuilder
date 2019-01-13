@@ -5,8 +5,10 @@ import java.util.Collection;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.model.grid.timediagram.TimeDiagramModel;
+import fwcd.circuitbuilder.model.utils.Debouncer;
 import fwcd.circuitbuilder.model.utils.SignalFunctionPlotModel;
 import fwcd.circuitbuilder.model.utils.SignalFunctionSegment;
 import fwcd.circuitbuilder.view.utils.SignalFunctionPlotView;
@@ -15,9 +17,12 @@ import fwcd.fructose.swing.View;
 
 public class TimeDiagramView implements View, AutoCloseable {
 	private static final int PLOT_HEIGHT = 40;
+	private final Debouncer debouncer = new Debouncer(100); // Plot refresh rate in ms
 	private final TimeDiagramModel model;
 	private final JPanel component;
-	private final Closer closer = new Closer();
+	
+	private final Closer modelListenerCloser = new Closer();
+	private final Closer plotCloser = new Closer();
 	
 	public TimeDiagramView(TimeDiagramModel model) {
 		this.model = model;
@@ -25,11 +30,12 @@ public class TimeDiagramView implements View, AutoCloseable {
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 		
-		model.getSegmentListeners().subscribe(this::updateAll).to(closer);
+		model.getSegmentListeners().subscribe(this::updateAll).to(modelListenerCloser);
+		model.getTickListeners().subscribe(this::repaintMaybe).to(modelListenerCloser);
 	}
 	
 	private void updateAll(Collection<? extends SignalFunctionSegment> segments) {
-		closer.disposeAll();
+		plotCloser.disposeAll();
 		component.removeAll();
 		
 		for (SignalFunctionSegment segment : segments) {
@@ -38,8 +44,21 @@ public class TimeDiagramView implements View, AutoCloseable {
 			
 			plotView.setHeight(PLOT_HEIGHT);
 			component.add(plotView.getComponent());
-			closer.add(plotView);
+			plotCloser.add(plotView);
 		}
+		
+		repaint();
+	}
+	
+	private void repaintMaybe() {
+		debouncer.runMaybe(this::repaint);
+	}
+	
+	private void repaint() {
+		SwingUtilities.invokeLater(() -> {
+			component.revalidate();
+			component.repaint();
+		});
 	}
 	
 	@Override
@@ -47,6 +66,7 @@ public class TimeDiagramView implements View, AutoCloseable {
 	
 	@Override
 	public void close() {
-		closer.close();
+		modelListenerCloser.close();
+		plotCloser.close();
 	}
 }

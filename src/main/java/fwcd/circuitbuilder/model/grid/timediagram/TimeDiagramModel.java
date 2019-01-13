@@ -16,7 +16,6 @@ import fwcd.fructose.ListenerList;
 import fwcd.fructose.Observable;
 import fwcd.fructose.Option;
 import fwcd.fructose.function.Subscription;
-import fwcd.fructose.structs.ObservableList;
 
 public class TimeDiagramModel {
 	private static final int VALUE_COUNT = 20;
