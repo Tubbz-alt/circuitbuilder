@@ -12,14 +12,15 @@ import fwcd.circuitbuilder.model.utils.Debouncer;
 import fwcd.circuitbuilder.model.utils.SignalFunctionPlotModel;
 import fwcd.circuitbuilder.model.utils.SignalFunctionSegment;
 import fwcd.circuitbuilder.view.utils.SignalFunctionPlotView;
+import fwcd.circuitbuilder.view.utils.ToggledView;
 import fwcd.fructose.Closer;
-import fwcd.fructose.swing.View;
 
-public class TimeDiagramView implements View, AutoCloseable {
+public class TimeDiagramView implements ToggledView, AutoCloseable {
 	private static final int PLOT_HEIGHT = 40;
 	private final Debouncer debouncer = new Debouncer(100); // Plot refresh rate in ms
 	private final TimeDiagramModel model;
 	private final JPanel component;
+	private boolean visible = true;
 	
 	private final Closer modelListenerCloser = new Closer();
 	private final Closer plotCloser = new Closer();
@@ -55,14 +56,23 @@ public class TimeDiagramView implements View, AutoCloseable {
 	}
 	
 	private void repaint() {
-		SwingUtilities.invokeLater(() -> {
-			component.revalidate();
-			component.repaint();
-		});
+		if (visible) {
+			SwingUtilities.invokeLater(() -> {
+				if (visible) {
+					component.revalidate();
+					component.repaint();
+				}
+			});
+		}
 	}
 	
 	@Override
 	public JComponent getComponent() { return component; }
+	
+	@Override
+	public void onUpdateVisibility(boolean visible) {
+		this.visible = visible;
+	}
 	
 	@Override
 	public void close() {

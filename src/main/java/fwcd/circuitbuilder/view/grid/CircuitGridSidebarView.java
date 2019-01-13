@@ -6,9 +6,9 @@ import javax.swing.JTabbedPane;
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.view.grid.timediagram.TimeDiagramView;
-import fwcd.fructose.swing.View;
+import fwcd.circuitbuilder.view.utils.ToggledView;
 
-public class CircuitGridSidebarView implements View {
+public class CircuitGridSidebarView implements ToggledView {
 	private final JTabbedPane component;
 	private final TimeDiagramView timeDiagram;
 	
@@ -17,6 +17,11 @@ public class CircuitGridSidebarView implements View {
 		
 		timeDiagram = new TimeDiagramView(engine.getTimeDiagram());
 		component.addTab("Time Diagram", timeDiagram.getComponent());
+	}
+	
+	@Override
+	public void onUpdateVisibility(boolean visible) {
+		timeDiagram.onUpdateVisibility(visible);
 	}
 	
 	@Override
