@@ -19,6 +19,8 @@ import fwcd.fructose.function.Subscription;
 
 public class TimeDiagramModel {
 	private static final int VALUE_COUNT = 20;
+	private static final String UNNAMED_NETWORK = "Unnamed network";
+	
 	private final Map<CableNetwork, TimeDiagramRow> rows = new HashMap<>();
 	private final Observable<Double> phase = new Observable<>(0.0);
 	
@@ -27,8 +29,8 @@ public class TimeDiagramModel {
 	
 	public void onAdd(CableNetwork network) {
 		Observable<Option<String>> name = network.getName();
-		ValueOverTime segment = new ValueOverTime(name.get().orElse(""), VALUE_COUNT);
-		rows.put(network, new TimeDiagramRow(segment, name.subscribe(it -> segment.setName(name.get().orElse("Unnamed network")))));
+		ValueOverTime segment = new ValueOverTime(name.get().orElse(UNNAMED_NETWORK), VALUE_COUNT);
+		rows.put(network, new TimeDiagramRow(segment, name.subscribe(it -> segment.setName(name.get().orElse(UNNAMED_NETWORK)))));
 		fireSegmentListeners();
 	}
 	

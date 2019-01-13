@@ -1,5 +1,6 @@
 package fwcd.circuitbuilder.model.grid;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,8 +27,7 @@ public class CircuitNetworksManager {
 		if (extendableNetworks.isEmpty()) {
 			CableNetwork network = new CableNetwork();
 			network.add(event.getPos(), event.getCable());
-			networks.add(network);
-			timeDiagram.onAdd(network);
+			addNetwork(network);
 		} else {
 			Iterator<CableNetwork> iterator = extendableNetworks.iterator();
 			CableNetwork first = iterator.next();
@@ -36,7 +36,7 @@ public class CircuitNetworksManager {
 			while (iterator.hasNext()) {
 				CableNetwork network = iterator.next();
 				first.merge(network);
-				networks.remove(network);
+				removeNetwork(network);
 			}
 		}
 	}
@@ -53,18 +53,33 @@ public class CircuitNetworksManager {
 				removedCable = network.getPositions().contains(pos);
 				
 				if (removedCable) {
-					networks.remove(network);
-					timeDiagram.onRemove(network);
+					removeNetwork(network);
 					
 					if (!network.isEmpty()) {
 						Set<CableNetwork> splitted = network.splitAt(pos);
-						networks.addAll(splitted);
+						addAllNetworks(splitted);
 					}
 					
 					network.remove(pos);
 				}
 			}
 		}
+	}
+	
+	private void addNetwork(CableNetwork network) {
+		networks.add(network);
+		timeDiagram.onAdd(network);
+	}
+	
+	private void addAllNetworks(Iterable<? extends CableNetwork> added) {
+		for (CableNetwork network : added) {
+			addNetwork(network);
+		}
+	}
+	
+	private void removeNetwork(CableNetwork network) {
+		networks.remove(network);
+		timeDiagram.onRemove(network);
 	}
 	
 	public void onClear() {
