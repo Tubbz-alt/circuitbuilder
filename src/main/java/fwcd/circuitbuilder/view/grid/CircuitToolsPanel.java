@@ -29,6 +29,7 @@ import fwcd.circuitbuilder.model.grid.components.NorGateModel;
 import fwcd.circuitbuilder.model.grid.components.OrGateModel;
 import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.RsLatchModel;
+import fwcd.circuitbuilder.model.grid.components.RsMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
@@ -75,7 +76,8 @@ public class CircuitToolsPanel implements View {
 		};
 		advancedTools = new CircuitTool[] {
 			new PlaceLargeItemTool<>(RsFlipFlopModel::new, imageProvider),
-			new PlaceLargeItemTool<>(RsLatchModel::new, imageProvider)
+			new PlaceLargeItemTool<>(RsLatchModel::new, imageProvider),
+			new PlaceLargeItemTool<>(RsMasterSlaveModel::new, imageProvider)
 		};
 		
 		component = new JToolBar(JToolBar.VERTICAL);

@@ -63,7 +63,7 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 		return new RelativePos(1, index * 2 + outputYOffset);
 	}
 	
-	protected abstract boolean[] compute(boolean[] inputs);
+	protected abstract boolean[] compute(boolean... inputs);
 	
 	@Override
 	public List<RelativePos> getOccupiedPositions(RelativePos topLeft) {

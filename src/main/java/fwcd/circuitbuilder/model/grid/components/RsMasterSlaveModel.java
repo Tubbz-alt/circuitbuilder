@@ -3,7 +3,7 @@ package fwcd.circuitbuilder.model.grid.components;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.RelativePos;
 
-public class RsLatchModel extends BasicLargeComponent {
+public class RsMasterSlaveModel extends BasicLargeComponent {
 	private static final int INPUT_COUNT = 3;
 	private static final int OUTPUT_COUNT = 2;
 	private static final RelativePos[] INPUT_POSITIONS = {
@@ -16,21 +16,21 @@ public class RsLatchModel extends BasicLargeComponent {
 		new RelativePos(3, 2) // Q*
 	};
 	
-	private boolean q = false;
-	private boolean qStar = true;
+	private final RsLatchModel master = new RsLatchModel();
+	private final RsLatchModel slave = new RsLatchModel();
 	
-	public RsLatchModel() {
+	public RsMasterSlaveModel() {
 		super(INPUT_COUNT, OUTPUT_COUNT);
 	}
 	
 	@Override
-	public String getName() { return "RS-Latch"; }
+	public String getName() { return "RS-MS-FF"; }
 	
 	@Override
 	public String getSymbol() { return "RS"; }
 	
 	@Override
-	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitRsLatch(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitRsMasterSlave(this); }
 	
 	@Override
 	protected RelativePos getInputPosition(int index) { return INPUT_POSITIONS[index]; }
@@ -43,11 +43,8 @@ public class RsLatchModel extends BasicLargeComponent {
 		boolean s = inputs[0];
 		boolean clk = inputs[1];
 		boolean r = inputs[2];
-		boolean nextQ = (s && clk) || !qStar;
-		boolean nextQStar = (r && clk) || !q;
+		boolean[] masterOut = master.compute(s, !clk, r);
 		
-		q = nextQ;
-		qStar = nextQStar;
-		return new boolean[] {q, qStar};
+		return slave.compute(masterOut[0], clk, masterOut[1]);
 	}
 }

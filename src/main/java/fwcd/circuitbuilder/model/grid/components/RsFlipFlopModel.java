@@ -38,7 +38,7 @@ public class RsFlipFlopModel extends BasicLargeComponent {
 	protected RelativePos getOutputPosition(int index) { return OUTPUT_POSITIONS[index]; }
 	
 	@Override
-	protected boolean[] compute(boolean[] inputs) {
+	protected boolean[] compute(boolean... inputs) {
 		boolean s = inputs[0];
 		boolean r = inputs[1];
 		boolean nextQ = s || !qStar;

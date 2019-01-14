@@ -25,6 +25,7 @@ import fwcd.circuitbuilder.model.grid.components.OrGateModel;
 import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.RsLatchModel;
+import fwcd.circuitbuilder.model.grid.components.RsMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.fructose.Option;
@@ -105,6 +106,9 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	
 	@Override
 	public Option<Image> visitRsLatch(RsLatchModel ff) { return imageFromJsonKey("rsLatch"); }
+	
+	@Override
+	public Option<Image> visitRsMasterSlave(RsMasterSlaveModel ff) { return imageFromJsonKey("rsEdgeTriggered"); }
 	
 	@Override
 	public Option<Image> visitItem(CircuitItemModel item) {

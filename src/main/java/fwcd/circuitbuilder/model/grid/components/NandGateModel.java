@@ -23,7 +23,7 @@ public class NandGateModel extends BasicLargeComponent {
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitNand(this); }
 	
 	@Override
-	protected boolean[] compute(boolean[] inputs) {
+	protected boolean[] compute(boolean... inputs) {
 		return new boolean[] {!inputs[0] || !inputs[1]};
 	}
 }
