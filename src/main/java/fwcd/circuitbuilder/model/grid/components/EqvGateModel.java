@@ -6,11 +6,11 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
  * An EQV logic gate.
  */
 public class EqvGateModel extends BasicLargeComponent {
-	private static final int INPUTS_COUNT = 2;
-	private static final int OUTPUTS_COUNT = 1;
+	private static final int INPUT_COUNT = 2;
+	private static final int OUTPUT_COUNT = 1;
 	
 	public EqvGateModel() {
-		super(INPUTS_COUNT, OUTPUTS_COUNT);
+		super(INPUT_COUNT, OUTPUT_COUNT);
 	}
 		
 	@Override
