@@ -2,13 +2,13 @@ package fwcd.circuitbuilder.model.grid.components;
 
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 
-public class RsLatch extends BasicLargeComponent {
+public class RsLatchModel extends BasicLargeComponent {
 	private static final int INPUT_COUNT = 3;
 	private static final int OUTPUT_COUNT = 2;
 	private boolean q = false;
 	private boolean qStar = true;
 	
-	public RsLatch() {
+	public RsLatchModel() {
 		super(INPUT_COUNT, OUTPUT_COUNT);
 	}
 	

@@ -14,8 +14,8 @@ import fwcd.circuitbuilder.model.grid.components.NandGateModel;
 import fwcd.circuitbuilder.model.grid.components.NorGateModel;
 import fwcd.circuitbuilder.model.grid.components.OrGateModel;
 import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
-import fwcd.circuitbuilder.model.grid.components.RsFlipFlop;
-import fwcd.circuitbuilder.model.grid.components.RsLatch;
+import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
+import fwcd.circuitbuilder.model.grid.components.RsLatchModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 
 public interface CircuitItemVisitor<T> {
@@ -51,7 +51,7 @@ public interface CircuitItemVisitor<T> {
 	
 	default T visitNor(NorGateModel nor) { return visitLargeComponent(nor); }
 	
-	default T visitRsFlipFlop(RsFlipFlop ff) { return visitLargeComponent(ff); }
+	default T visitRsFlipFlop(RsFlipFlopModel ff) { return visitLargeComponent(ff); }
 	
-	default T visitRsLatch(RsLatch ff) { return visitLargeComponent(ff); }
+	default T visitRsLatch(RsLatchModel ff) { return visitLargeComponent(ff); }
 }

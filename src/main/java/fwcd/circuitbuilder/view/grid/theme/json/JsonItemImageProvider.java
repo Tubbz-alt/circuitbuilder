@@ -23,6 +23,8 @@ import fwcd.circuitbuilder.model.grid.components.NandGateModel;
 import fwcd.circuitbuilder.model.grid.components.NorGateModel;
 import fwcd.circuitbuilder.model.grid.components.OrGateModel;
 import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
+import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
+import fwcd.circuitbuilder.model.grid.components.RsLatchModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.fructose.Option;
@@ -40,7 +42,7 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 		this.fileMap = fileMap;
 	}
 	
-	private Image imageFromJsonKey(String key) {
+	private Option<Image> imageFromJsonKey(String key) {
 		Image image = cachedImages.get(key);
 		if (image == null) {
 			try {
@@ -56,73 +58,53 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 				throw new UncheckedIOException(e);
 			}
 		}
-		return image;
+		return Option.of(image);
 	}
 	
 	@Override
-	public Option<Image> visitCable(CableModel cable) {
-		return Option.of(imageFromJsonKey("cable"));
-	}
+	public Option<Image> visitCable(CableModel cable) { return imageFromJsonKey("cable"); }
 	
 	@Override
-	public Option<Image> visitInputComponent(InputComponentModel input) {
-		return Option.of(imageFromJsonKey("input"));
-	}
+	public Option<Image> visitInputComponent(InputComponentModel input) { return imageFromJsonKey("input"); }
 	
 	@Override
-	public Option<Image> visitInverter(InverterModel inverter) {
-		return Option.of(imageFromJsonKey(inverter.isPowered() ? "inverterOn" : "inverterOff"));
-	}
+	public Option<Image> visitInverter(InverterModel inverter) { return imageFromJsonKey(inverter.isPowered() ? "inverterOn" : "inverterOff"); }
 	
 	@Override
-	public Option<Image> visitLamp(LampModel lamp) {
-		return Option.of(imageFromJsonKey(lamp.isPowered() ? "lampOn" : "lampOff"));
-	}
+	public Option<Image> visitLamp(LampModel lamp) { return imageFromJsonKey(lamp.isPowered() ? "lampOn" : "lampOff"); }
 	
 	@Override
-	public Option<Image> visitLever(LeverModel lever) {
-		return Option.of(imageFromJsonKey(lever.isPowered() ? "leverOn" : "leverOff"));
-	}
+	public Option<Image> visitLever(LeverModel lever) { return imageFromJsonKey(lever.isPowered() ? "leverOn" : "leverOff"); }
 	
 	@Override
-	public Option<Image> visitOutputComponent(OutputComponentModel output) {
-		return Option.of(imageFromJsonKey("output"));
-	}
+	public Option<Image> visitOutputComponent(OutputComponentModel output) { return imageFromJsonKey("output"); }
 	
 	@Override
-	public Option<Image> visitTickingClock(ClockModel clock) {
-		return Option.of(imageFromJsonKey(clock.isPowered() ? "clockOn" : "clockOff"));
-	}
+	public Option<Image> visitTickingClock(ClockModel clock) { return imageFromJsonKey(clock.isPowered() ? "clockOn" : "clockOff"); }
 	
 	@Override
-	public Option<Image> visitXor(XorGateModel xor) {
-		return Option.of(imageFromJsonKey("xor"));
-	}
+	public Option<Image> visitXor(XorGateModel xor) { return imageFromJsonKey("xor"); }
 	
 	@Override
-	public Option<Image> visitAnd(AndGateModel and) {
-		return Option.of(imageFromJsonKey("and"));
-	}
+	public Option<Image> visitAnd(AndGateModel and) { return imageFromJsonKey("and"); }
 	
 	@Override
-	public Option<Image> visitEqv(EqvGateModel eqv) {
-		return Option.of(imageFromJsonKey("eqv"));
-	}
+	public Option<Image> visitEqv(EqvGateModel eqv) { return imageFromJsonKey("eqv"); }
 	
 	@Override
-	public Option<Image> visitNand(NandGateModel nand) {
-		return Option.of(imageFromJsonKey("nand"));
-	}
+	public Option<Image> visitNand(NandGateModel nand) { return imageFromJsonKey("nand"); }
 	
 	@Override
-	public Option<Image> visitNor(NorGateModel nor) {
-		return Option.of(imageFromJsonKey("nor"));
-	}
+	public Option<Image> visitNor(NorGateModel nor) { return imageFromJsonKey("nor"); }
 	
 	@Override
-	public Option<Image> visitOr(OrGateModel or) {
-		return Option.of(imageFromJsonKey("or"));
-	}
+	public Option<Image> visitOr(OrGateModel or) { return imageFromJsonKey("or"); }
+	
+	@Override
+	public Option<Image> visitRsFlipFlop(RsFlipFlopModel ff) { return imageFromJsonKey("rsFF"); }
+	
+	@Override
+	public Option<Image> visitRsLatch(RsLatchModel ff) { return imageFromJsonKey("rsLatch"); }
 	
 	@Override
 	public Option<Image> visitItem(CircuitItemModel item) {

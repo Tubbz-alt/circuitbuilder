@@ -16,22 +16,51 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	private final List<InputComponentModel> inputs;
 	private final List<OutputComponentModel> outputs;
 	
+	private final int outputYOffset;
 	private final int rows;
-	private final int cols = 2;
+	private final int cols;
 	
 	public BasicLargeComponent(int inputCount, int outputCount) {
-		// The total amount of rows needed
-		rows = 2 * Math.max(inputCount, outputCount) - 1;
+		RelativePos topLeft = IntStream.range(0, inputCount)
+			.mapToObj(this::getInputPosition)
+			.reduce(RelativePos::min)
+			.orElse(new RelativePos(0, 0));
+		RelativePos bottomRight = IntStream.range(0, outputCount)
+			.mapToObj(this::getOutputPosition)
+			.reduce(RelativePos::max)
+			.orElse(new RelativePos(0, 0));
+		
+		rows = bottomRight.getY() - topLeft.getY();
+		cols = bottomRight.getX() - topLeft.getX();
+		
 		// The vertical offset needed to center the output cells
-		int outputYOffset = (rows / 2) - (outputCount / 2);
+		outputYOffset = ((2 * Math.max(inputCount, outputCount) - 1) - outputCount) / 2;
 		
 		inputs = IntStream.range(0, inputCount)
-			.mapToObj(i -> new InputComponentModel(new RelativePos(0, i * 2), Direction.LEFT))
+			.mapToObj(i -> new InputComponentModel(getInputPosition(i), Direction.LEFT))
 			.collect(Collectors.toList());
 		
 		outputs = IntStream.range(0, outputCount)
-			.mapToObj(i -> new OutputComponentModel(new RelativePos(1, i * 2 + outputYOffset)))
+			.mapToObj(i -> new OutputComponentModel(getOutputPosition(i)))
 			.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Fetches the relative position delta for an
+	 * input component index. This method is required
+	 * to be idempotent.
+	 */
+	protected RelativePos getInputPosition(int index) {
+		return new RelativePos(0, index * 2);
+	}
+	
+	/**
+	 * Fetches the relative position delta for an
+	 * output component index. This method is required
+	 * to be idempotent.
+	 */
+	protected RelativePos getOutputPosition(int index) {
+		return new RelativePos(1, index * 2 + outputYOffset);
 	}
 	
 	protected abstract boolean[] compute(boolean[] inputs);

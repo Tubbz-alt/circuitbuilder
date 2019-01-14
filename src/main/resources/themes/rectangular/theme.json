@@ -19,6 +19,8 @@
 		"and": "and.png",
 		"or": "or.png",
 		"nand": "nand.png",
-		"nor": "nor.png"
+		"nor": "nor.png",
+		"rsFF": "flipflops/rsFF.png",
+		"rsLatch": "flipflops/rsLatch.png"
 	}
 }

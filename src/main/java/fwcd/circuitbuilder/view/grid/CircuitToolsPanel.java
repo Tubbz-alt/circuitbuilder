@@ -24,6 +24,7 @@ import fwcd.circuitbuilder.model.grid.components.LeverModel;
 import fwcd.circuitbuilder.model.grid.components.NandGateModel;
 import fwcd.circuitbuilder.model.grid.components.NorGateModel;
 import fwcd.circuitbuilder.model.grid.components.OrGateModel;
+import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
@@ -58,6 +59,7 @@ public class CircuitToolsPanel implements View {
 			new PlaceLargeItemTool<>(EqvGateModel::new, imageProvider),
 			new PlaceLargeItemTool<>(NandGateModel::new, imageProvider),
 			new PlaceLargeItemTool<>(NorGateModel::new, imageProvider),
+			new PlaceLargeItemTool<>(RsFlipFlopModel::new, imageProvider),
 			new Screwdriver()
 		};
 		

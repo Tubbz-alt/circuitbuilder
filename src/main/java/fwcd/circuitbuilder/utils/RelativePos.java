@@ -19,6 +19,14 @@ public class RelativePos extends GridPos {
 		return new RelativePos(add(direction.getVector()));
 	}
 	
+	public RelativePos min(RelativePos other) {
+		return new RelativePos(Math.min(getX(), other.getX()), Math.min(getY(), other.getY()));
+	}
+	
+	public RelativePos max(RelativePos other) {
+		return new RelativePos(Math.max(getX(), other.getX()), Math.max(getY(), other.getY()));
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		return ((RelativePos) obj).getX() == getX()
