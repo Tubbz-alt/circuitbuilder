@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
+import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.view.utils.BackgroundLooper;
 import fwcd.circuitbuilder.view.utils.CollapsibleView;
 import fwcd.fructose.swing.View;
@@ -28,7 +29,12 @@ public class CircuitGridEditorView implements View, AutoCloseable {
 		
 		CircuitGridSidebarView sideBar = new CircuitGridSidebarView(model, engine);
 		sideBar.getComponent().setPreferredSize(new Dimension(350, 1));
-		component.add(new CollapsibleView(sideBar).getComponent(), BorderLayout.EAST);
+		component.add(new CollapsibleView.Builder(sideBar)
+			.expandSymbol("<")
+			.collapseSymbol(">")
+			.expandDirection(Direction.RIGHT)
+			.build()
+			.getComponent(), BorderLayout.EAST);
 		
 		engineLooper.start();
 	}
