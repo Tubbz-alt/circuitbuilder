@@ -42,6 +42,27 @@ public class KarnaughMapView implements View {
 		g2d.drawString(xVars, xOffset / 2, yOffset / 2);
 		g2d.drawString(yVars, xOffset / 2 - metrics.stringWidth(yVars), yOffset / 2 + metrics.getHeight());
 		
+		// Draw row/column labels
+		
+		g2d.setFont(g2d.getFont().deriveFont(14F));
+		
+		int[] xCode = model.getXAxisCode().toArray();
+		int[] yCode = model.getYAxisCode().toArray();
+		int xBits = model.getXAxisBitCount();
+		int yBits = model.getYAxisBitCount();
+		
+		for (int col = 0; col < colCount; col++) {
+			String str = BoolUtils.toBinaryString(xCode[col], xBits);
+			g2d.drawString(str, xOffset + (cellWidth * col), yOffset);
+		}
+		
+		for (int row = 0; row < rowCount; row++) {
+			String str = BoolUtils.toBinaryString(yCode[row], yBits);
+			g2d.drawString(str, xOffset - metrics.stringWidth(str), yOffset + (cellHeight * row) + (cellHeight / 2));
+		}
+		
+		// Draw cells
+		
 		g2d.setFont(g2d.getFont().deriveFont((float) Math.min(cellWidth, cellHeight) * 0.8F));
 		
 		for (int row = 0; row < rowCount; row++) {
