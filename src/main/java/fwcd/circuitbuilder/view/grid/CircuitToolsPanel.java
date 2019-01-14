@@ -45,7 +45,6 @@ import fwcd.fructose.swing.View;
  * A view where the user can select a circuit tool.
  */
 public class CircuitToolsPanel implements View {
-	private static final Dimension BUTTON_SIZE = new Dimension(24, 24);
 	private static final Dimension TOOLBAR_PREFERRED_SIZE = new Dimension(50, 10);
 	
 	private final JToolBar component;
@@ -94,10 +93,12 @@ public class CircuitToolsPanel implements View {
 	}
 	
 	private JComponent createLeftToolBar() {
+		Dimension buttonSize = new Dimension(24, 24);
+		
 		JPanel leftToolBar = new JPanel();
 		leftToolBar.setLayout(new BoxLayout(leftToolBar, BoxLayout.Y_AXIS));
 		
-		leftToolBar.add(createToolPanel(basicTools));
+		leftToolBar.add(createToolPanel((int) buttonSize.getWidth(), basicTools));
 		
 		SelectedButtonPanel colorsPanel = new SelectedButtonPanel(false, Color.LIGHT_GRAY);
 		colorsPanel.getComponent().setPreferredSize(TOOLBAR_PREFERRED_SIZE);
@@ -113,7 +114,7 @@ public class CircuitToolsPanel implements View {
 				g2d.fillOval((w / 2) - (iconSize / 2), (h / 2) - (iconSize / 2), iconSize, iconSize);
 			};
 			
-			JButton button = new DrawGraphicsButton(BUTTON_SIZE, circle);
+			JButton button = new DrawGraphicsButton(buttonSize, circle);
 			colorsPanel.add(button, () -> context.getSelectedColor().set(color));
 		}
 		
@@ -121,13 +122,13 @@ public class CircuitToolsPanel implements View {
 		return leftToolBar;
 	}
 	
-	private JComponent createToolPanel(CircuitTool... tools) {
+	private JComponent createToolPanel(int buttonSize, CircuitTool... tools) {
 		SelectedButtonPanel toolPanel = new SelectedButtonPanel(false, Color.LIGHT_GRAY);
 		toolPanel.getComponent().setPreferredSize(TOOLBAR_PREFERRED_SIZE);
 		
 		for (CircuitTool tool : tools) {
 			JButton button = tool.getImage()
-				.map(this::scaleImageToButtonSize)
+				.map(it -> scaleImageToSize(it, buttonSize))
 				.map(ImageIcon::new)
 				.map(JButton::new)
 				.filter(it -> tool.useImageButton())
@@ -145,15 +146,15 @@ public class CircuitToolsPanel implements View {
 		JPanel rightToolBar = new JPanel();
 		rightToolBar.setLayout(new BoxLayout(rightToolBar, BoxLayout.Y_AXIS));
 		
-		rightToolBar.add(createToolPanel(advancedTools));
+		rightToolBar.add(createToolPanel(48, advancedTools));
 		
 		return rightToolBar;
 	}
 	
-	private Image scaleImageToButtonSize(Image image) {
+	private Image scaleImageToSize(Image image, int size) {
 		int oldWidth = image.getWidth(null);
 		int oldHeight = image.getHeight(null);
-		int newWidth = (int) BUTTON_SIZE.getWidth();
+		int newWidth = size;
 		int newHeight = (oldHeight * newWidth) / oldWidth;
 		
 		if (oldWidth == newWidth) {
