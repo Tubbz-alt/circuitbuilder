@@ -1,6 +1,8 @@
 package fwcd.circuitbuilder.view.logic.karnaugh;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
@@ -14,8 +16,8 @@ import fwcd.fructose.swing.View;
 public class KarnaughMapView implements View {
 	private final JPanel view;
 	private final KarnaughMapModel model;
-	private final int cellWidth = 20;
-	private final int cellHeight = 20;
+	private final int cellWidth = 30;
+	private final int cellHeight = 30;
 	
 	public KarnaughMapView(KarnaughMapModel model) {
 		this.model = model;
@@ -24,15 +26,32 @@ public class KarnaughMapView implements View {
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
+		FontMetrics metrics = g2d.getFontMetrics();
 		int rowCount = model.getRowCount();
 		int colCount = model.getColCount();
-		g2d.setFont(g2d.getFont().deriveFont((float) Math.min(cellWidth, cellHeight)));
+		
+		g2d.setFont(g2d.getFont().deriveFont(16F));
+		g2d.setColor(Color.BLACK);
+		
+		String xVars = model.getXAxisVariables().reduce((a, b) -> a + ", " + b).orElse("");
+		String yVars = model.getYAxisVariables().reduce((a, b) -> a + ", " + b).orElse("");
+		int xOffset = metrics.stringWidth(yVars) * 2;
+		int yOffset = metrics.getHeight() * 2;
+		
+		g2d.drawLine(0, 0, xOffset, yOffset);
+		g2d.drawString(xVars, xOffset / 2, yOffset / 2);
+		g2d.drawString(yVars, xOffset / 2 - metrics.stringWidth(yVars), yOffset / 2 + metrics.getHeight());
+		
+		g2d.setFont(g2d.getFont().deriveFont((float) Math.min(cellWidth, cellHeight) * 0.8F));
 		
 		for (int row = 0; row < rowCount; row++) {
 			for (int col = 0; col < colCount; col++) {
-				int x = col * cellWidth;
-				int y = row * cellHeight;
-				g2d.drawString(Integer.toString(BoolUtils.toBit(model.getCell(col, row))), x, y + cellHeight);
+				String str = Integer.toString(BoolUtils.toBit(model.getCell(col, row)));
+				int x = xOffset + (col * cellWidth);
+				int y = yOffset + (row * cellHeight);
+				
+				g2d.drawRect(x, y, cellWidth, cellHeight);
+				g2d.drawString(str, x + ((cellWidth - metrics.stringWidth(str)) / 2), y + cellHeight - (metrics.getAscent() / 2));
 			}
 		}
 	}

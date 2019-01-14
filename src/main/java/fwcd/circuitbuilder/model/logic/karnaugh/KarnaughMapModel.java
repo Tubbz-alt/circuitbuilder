@@ -3,6 +3,7 @@ package fwcd.circuitbuilder.model.logic.karnaugh;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
 import fwcd.circuitbuilder.model.logic.expression.LogicVariable;
@@ -47,7 +48,17 @@ public class KarnaughMapModel {
 	
 	public IntStream getYAxisCode() { return Graycode.nBits(yAxisBitCount); }
 	
-	public int getCode(int x, int y) { return BoolUtils.concatBinary(Graycode.ofBinary(x), Graycode.ofBinary(y), yAxisBitCount); }
+	public Stream<String> getXAxisVariables() {
+		return IntStream.range(0, xAxisBitCount).mapToObj(inputVariables::get);
+	}
+	
+	public Stream<String> getYAxisVariables() {
+		return IntStream.range(0, yAxisBitCount).mapToObj(i -> inputVariables.get(i + xAxisBitCount));
+	}
+	
+	public int getCode(int x, int y) {
+		return BoolUtils.concatBinary(Graycode.ofBinary(x), Graycode.ofBinary(y), yAxisBitCount);
+	}
 	
 	public int getXAxisBitCount() { return xAxisBitCount; }
 	
