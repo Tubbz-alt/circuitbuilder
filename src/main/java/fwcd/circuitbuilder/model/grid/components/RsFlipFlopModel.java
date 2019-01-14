@@ -41,8 +41,8 @@ public class RsFlipFlopModel extends BasicLargeComponent {
 	protected boolean[] compute(boolean[] inputs) {
 		boolean s = inputs[0];
 		boolean r = inputs[1];
-		boolean nextQ = !qStar && !r;
-		boolean nextQStar = !q && !s;
+		boolean nextQ = s || !qStar;
+		boolean nextQStar = r || !q;
 		boolean[] result = {q, qStar};
 		
 		q = nextQ;
