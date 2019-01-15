@@ -4,34 +4,32 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**
- * A level-triggered reset-set flip flop.
+ * A level-triggered delay flip flop.
  */
-public class RsLatchModel extends ClockControlledFlipFlop {
+public class DLatchModel extends ClockControlledFlipFlop {
 	private static final RelativePos[] INPUT_POSITIONS = {
-		new RelativePos(0, 0), // s
-		new RelativePos(0, 1), // clk
-		new RelativePos(0, 2) // r
+		new RelativePos(0, 0), // D
+		new RelativePos(0, 1) // clk
 	};
 	private static final RelativePos[] OUTPUT_POSITIONS = {
 		new RelativePos(3, 0), // Q
 		new RelativePos(3, 2) // Q*
 	};
 	
-	private boolean q = false;
-	private boolean qStar = true;
+	private final RsLatchModel rs = new RsLatchModel();
 	
-	public RsLatchModel() {
+	public DLatchModel() {
 		super(INPUT_POSITIONS.length, OUTPUT_POSITIONS.length);
 	}
 	
 	@Override
-	public String getName() { return "RS-Latch"; }
+	public String getName() { return "D-Latch"; }
 	
 	@Override
-	public String getSymbol() { return "RS"; }
+	public String getSymbol() { return "D"; }
 	
 	@Override
-	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitRsLatch(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitDLatch(this); }
 	
 	@Override
 	protected RelativePos getInputPosition(int index) { return INPUT_POSITIONS[index]; }
@@ -41,18 +39,8 @@ public class RsLatchModel extends ClockControlledFlipFlop {
 	
 	@Override
 	protected boolean[] compute(boolean... inputs) {
-		boolean s = inputs[0];
+		boolean d = inputs[0];
 		boolean clk = applyInversion(inputs[1]);
-		boolean r = inputs[2];
-		boolean nextQ = (s && clk) || !qStar;
-		boolean nextQStar = (r && clk) || !q;
-		
-		q = nextQ;
-		qStar = nextQStar;
-		return new boolean[] {q, qStar};
+		return rs.compute(d, clk, !d);
 	}
-	
-	public boolean getQ() { return q; }
-	
-	public boolean getQStar() { return qStar; }
 }

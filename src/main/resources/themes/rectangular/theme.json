@@ -24,6 +24,14 @@
 		"rsLatch": "flipflops/rsLatch.png",
 		"rsLatchInverted": "flipflops/rsLatchInverted.png",
 		"rsEdgeTriggered": "flipflops/rsEdgeTriggered.png",
-		"rsEdgeTriggeredInverted": "flipflops/rsEdgeTriggeredInverted.png"
+		"rsEdgeTriggeredInverted": "flipflops/rsEdgeTriggeredInverted.png",
+		"dLatch": "flipflops/dLatch.png",
+		"dLatchInverted": "flipflops/dLatchInverted.png",
+		"dEdgeTriggered": "flipflops/dEdgeTriggered.png",
+		"dEdgeTriggeredInverted": "flipflops/dEdgeTriggeredInverted.png",
+		"jkEdgeTriggered": "flipflops/jkEdgeTriggered.png",
+		"jkEdgeTriggeredInverted": "flipflops/jkEdgeTriggeredInverted.png",
+		"tEdgeTriggered": "flipflops/tEdgeTriggered.png",
+		"tEdgeTriggeredInverted": "flipflops/tEdgeTriggeredInverted.png"
 	}
 }

@@ -17,6 +17,7 @@ import fwcd.circuitbuilder.model.grid.components.AndGateModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
+import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
 import fwcd.circuitbuilder.model.grid.components.NandGateModel;
@@ -26,7 +27,10 @@ import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.RsLatchModel;
 import fwcd.circuitbuilder.model.grid.components.RsMasterSlaveModel;
+import fwcd.circuitbuilder.model.grid.components.TFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
+import fwcd.circuitbuilder.model.grid.components.DLatchModel;
+import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.fructose.Option;
 
@@ -50,7 +54,7 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 				String path = baseResourcePath + File.separator + fileMap.get(key);
 				try (InputStream stream = JsonItemImageProvider.class.getResourceAsStream(path)) {
 					if (stream == null) {
-						throw new IllegalStateException("Missing image resource: " + path);
+						throw new IllegalStateException("Missing image resource: " + path + " (key: " + key + ")");
 					}
 					image = ImageIO.read(stream);
 					cachedImages.put(key, image);
@@ -109,6 +113,18 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	
 	@Override
 	public Option<Image> visitRsMasterSlave(RsMasterSlaveModel ff) { return imageFromJsonKey(ff.isInverted() ? "rsEdgeTriggeredInverted" : "rsEdgeTriggered"); }
+	
+	@Override
+	public Option<Image> visitDLatch(DLatchModel ff) { return imageFromJsonKey(ff.isInverted() ? "dLatchInverted" : "dLatch"); }
+	
+	@Override
+	public Option<Image> visitDMasterSlave(DMasterSlaveModel ff) { return imageFromJsonKey(ff.isInverted() ? "dEdgeTriggeredInverted" : "dEdgeTriggered"); }
+	
+	@Override
+	public Option<Image> visitJkFlipFlop(JkFlipFlopModel ff) { return imageFromJsonKey(ff.isInverted() ? "jkEdgeTriggeredInverted" : "jkEdgeTriggered"); }
+	
+	@Override
+	public Option<Image> visitTFlipFlop(TFlipFlopModel ff) { return imageFromJsonKey(ff.isInverted() ? "tEdgeTriggeredInverted" : "tEdgeTriggered"); }
 	
 	@Override
 	public Option<Image> visitItem(CircuitItemModel item) {

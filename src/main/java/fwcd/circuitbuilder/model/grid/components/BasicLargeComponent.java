@@ -109,4 +109,9 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	public int getRows() { return rows; }
 	
 	public int getCols() { return cols; }
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

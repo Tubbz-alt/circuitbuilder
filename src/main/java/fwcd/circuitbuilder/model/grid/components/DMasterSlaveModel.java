@@ -4,33 +4,33 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**
- * A basic, asynchronous reset-set flip flop.
+ * An edge-triggered delay flip flop.
  */
-public class RsFlipFlopModel extends BasicLargeComponent {
+public class DMasterSlaveModel extends ClockControlledFlipFlop {
 	private static final RelativePos[] INPUT_POSITIONS = {
-		new RelativePos(0, 0), // s
-		new RelativePos(0, 2) // r
+		new RelativePos(0, 0), // D
+		new RelativePos(0, 1) // clk
 	};
 	private static final RelativePos[] OUTPUT_POSITIONS = {
 		new RelativePos(3, 0), // Q
 		new RelativePos(3, 2) // Q*
 	};
 	
-	private boolean q = false;
-	private boolean qStar = true;
+	private final DLatchModel master = new DLatchModel();
+	private final DLatchModel slave = new DLatchModel();
 	
-	public RsFlipFlopModel() {
+	public DMasterSlaveModel() {
 		super(INPUT_POSITIONS.length, OUTPUT_POSITIONS.length);
 	}
 	
 	@Override
-	public String getName() { return "RS-FF"; }
+	public String getName() { return "D-MS-FF"; }
 	
 	@Override
-	public String getSymbol() { return "RS"; }
+	public String getSymbol() { return "D"; }
 	
 	@Override
-	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitRsFlipFlop(this); }
+	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitDMasterSlave(this); }
 	
 	@Override
 	protected RelativePos getInputPosition(int index) { return INPUT_POSITIONS[index]; }
@@ -40,18 +40,10 @@ public class RsFlipFlopModel extends BasicLargeComponent {
 	
 	@Override
 	protected boolean[] compute(boolean... inputs) {
-		boolean s = inputs[0];
-		boolean r = inputs[1];
-		boolean nextQ = s || !qStar;
-		boolean nextQStar = r || !q;
-		boolean[] result = {q, qStar};
+		boolean d = inputs[0];
+		boolean clk = applyInversion(inputs[1]);
+		boolean[] masterOut = master.compute(d, !clk);
 		
-		q = nextQ;
-		qStar = nextQStar;
-		return result;
+		return slave.compute(masterOut[0], clk);
 	}
-	
-	public boolean getQ() { return q; }
-	
-	public boolean getQStar() { return qStar; }
 }

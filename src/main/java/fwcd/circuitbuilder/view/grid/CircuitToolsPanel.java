@@ -20,8 +20,11 @@ import fwcd.circuitbuilder.model.grid.cable.CableColor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.AndGateModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
+import fwcd.circuitbuilder.model.grid.components.DLatchModel;
+import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
+import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
 import fwcd.circuitbuilder.model.grid.components.NandGateModel;
@@ -30,6 +33,7 @@ import fwcd.circuitbuilder.model.grid.components.OrGateModel;
 import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.RsLatchModel;
 import fwcd.circuitbuilder.model.grid.components.RsMasterSlaveModel;
+import fwcd.circuitbuilder.model.grid.components.TFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
@@ -77,7 +81,11 @@ public class CircuitToolsPanel implements View {
 		advancedTools = new CircuitTool[] {
 			new PlaceLargeItemTool<>(RsFlipFlopModel::new, imageProvider),
 			new PlaceLargeItemTool<>(RsLatchModel::new, imageProvider),
-			new PlaceLargeItemTool<>(RsMasterSlaveModel::new, imageProvider)
+			new PlaceLargeItemTool<>(RsMasterSlaveModel::new, imageProvider),
+			new PlaceLargeItemTool<>(DLatchModel::new, imageProvider),
+			new PlaceLargeItemTool<>(DMasterSlaveModel::new, imageProvider),
+			new PlaceLargeItemTool<>(JkFlipFlopModel::new, imageProvider),
+			new PlaceLargeItemTool<>(TFlipFlopModel::new, imageProvider)
 		};
 		
 		component = new JToolBar(JToolBar.VERTICAL);

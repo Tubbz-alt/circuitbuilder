@@ -3,6 +3,9 @@ package fwcd.circuitbuilder.model.grid.components;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.RelativePos;
 
+/**
+ * An edge-triggered reset-set master slave flip flop.
+ */
 public class RsMasterSlaveModel extends ClockControlledFlipFlop {
 	private static final RelativePos[] INPUT_POSITIONS = {
 		new RelativePos(0, 0), // s
@@ -45,4 +48,8 @@ public class RsMasterSlaveModel extends ClockControlledFlipFlop {
 		
 		return slave.compute(masterOut[0], clk, masterOut[1]);
 	}
+	
+	public RsLatchModel getMaster() { return master; }
+	
+	public RsLatchModel getSlave() { return slave; }
 }

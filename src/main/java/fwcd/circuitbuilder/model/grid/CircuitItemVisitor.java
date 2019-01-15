@@ -6,9 +6,12 @@ import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
+import fwcd.circuitbuilder.model.grid.components.DLatchModel;
+import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
+import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
 import fwcd.circuitbuilder.model.grid.components.NandGateModel;
@@ -18,6 +21,7 @@ import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.RsLatchModel;
 import fwcd.circuitbuilder.model.grid.components.RsMasterSlaveModel;
+import fwcd.circuitbuilder.model.grid.components.TFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 
 public interface CircuitItemVisitor<T> {
@@ -60,4 +64,12 @@ public interface CircuitItemVisitor<T> {
 	default T visitRsLatch(RsLatchModel ff) { return visitLargeComponent(ff); }
 	
 	default T visitRsMasterSlave(RsMasterSlaveModel ff) { return visitLargeComponent(ff); }
+	
+	default T visitDLatch(DLatchModel ff) { return visitLargeComponent(ff); }
+	
+	default T visitDMasterSlave(DMasterSlaveModel ff) { return visitLargeComponent(ff); }
+	
+	default T visitTFlipFlop(TFlipFlopModel ff) { return visitLargeComponent(ff); }
+	
+	default T visitJkFlipFlop(JkFlipFlopModel ff) { return visitLargeComponent(ff); }
 }
