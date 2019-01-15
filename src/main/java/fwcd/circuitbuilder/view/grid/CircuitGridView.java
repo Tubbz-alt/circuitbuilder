@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JComponent;
@@ -19,7 +20,10 @@ import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.model.grid.components.CircuitComponentModel;
+import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
 import fwcd.circuitbuilder.utils.AbsolutePos;
+import fwcd.circuitbuilder.utils.ConcatIterable;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.circuitbuilder.view.grid.components.CircuitItemRenderer;
@@ -68,21 +72,25 @@ public class CircuitGridView implements View {
 				gridPos.ifPresent(pos -> {
 					selectedTool.ifPresent(tool -> {
 						CircuitCellModel cell = model.getCell(pos);
+						Option<CircuitLargeComponentModel> largeComponent = Option.ofNullable(model.getLargeComponents().get(pos));
+						Iterable<CircuitComponentModel> components = new ConcatIterable<>(largeComponent, cell.getComponents());
 						boolean handled = false;
 						
 						if (mouseButton == MouseEvent.BUTTON1) {
 							// Delegate left click to tool
-							handled = tool.onLeftClick(model, cell);
+							handled = tool.onLeftClick(model, pos, components);
 						} else if (mouseButton == MouseEvent.BUTTON3) {
 							// Delegate right click to tool
-							handled = tool.onRightClick(model, cell);
+							handled = tool.onRightClick(model, pos, components);
 							
 							if (!handled) {
 								// Display content menu if the tool did not handle the request
 								CircuitItemVisitor<JPopupMenu> ctxMenuProvider = new ItemContextMenuProvider(component, model, engine, pos);
+								Iterator<CircuitComponentModel> componentIterator = components.iterator();
 								
-								cell.getComponent()
-									.ifPresent(it -> it.accept(ctxMenuProvider).show(component, e.getX(), e.getY()));
+								if (componentIterator.hasNext()) {
+									componentIterator.next().accept(ctxMenuProvider).show(component, e.getX(), e.getY());
+								}
 							}
 						}
 						

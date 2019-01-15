@@ -3,6 +3,7 @@ package fwcd.circuitbuilder.model.grid;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.AndGateModel;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.model.grid.components.CircuitComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
@@ -22,9 +23,11 @@ import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 public interface CircuitItemVisitor<T> {
 	T visitItem(CircuitItemModel item);
 	
-	default T visitLargeComponent(CircuitLargeComponentModel largeComponent) { return visitItem(largeComponent); }
+	default T visitComponent(CircuitComponentModel component) { return visitItem(component); }
 	
-	default T visit1x1Component(Circuit1x1ComponentModel component) { return visitItem(component); }
+	default T visitLargeComponent(CircuitLargeComponentModel largeComponent) { return visitComponent(largeComponent); }
+	
+	default T visit1x1Component(Circuit1x1ComponentModel component) { return visitComponent(component); }
 	
 	default T visitInverter(InverterModel inverter) { return visit1x1Component(inverter); }
 	

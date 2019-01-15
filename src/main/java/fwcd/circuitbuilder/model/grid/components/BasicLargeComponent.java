@@ -1,8 +1,10 @@
 package fwcd.circuitbuilder.model.grid.components;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.RelativePos;
@@ -21,17 +23,19 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	private final int cols;
 	
 	public BasicLargeComponent(int inputCount, int outputCount) {
-		RelativePos topLeft = IntStream.range(0, inputCount)
-			.mapToObj(this::getInputPosition)
+		Collection<RelativePos> ioPositions = Stream.concat(
+			IntStream.range(0, inputCount).mapToObj(this::getInputPosition),
+			IntStream.range(0, outputCount).mapToObj(this::getOutputPosition)
+		).collect(Collectors.toList());
+		RelativePos topLeft = ioPositions.stream()
 			.reduce(RelativePos::min)
 			.orElse(new RelativePos(0, 0));
-		RelativePos bottomRight = IntStream.range(0, outputCount)
-			.mapToObj(this::getOutputPosition)
+		RelativePos bottomRight = ioPositions.stream()
 			.reduce(RelativePos::max)
 			.orElse(new RelativePos(0, 0));
 		
-		rows = bottomRight.getY() - topLeft.getY();
-		cols = bottomRight.getX() - topLeft.getX();
+		rows = (bottomRight.getY() - topLeft.getY()) + 1;
+		cols = (bottomRight.getX() - topLeft.getX()) + 1;
 		
 		// The vertical offset needed to center the output cells
 		outputYOffset = ((2 * Math.max(inputCount, outputCount) - 1) - outputCount) / 2;

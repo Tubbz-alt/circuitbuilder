@@ -15,6 +15,7 @@ import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.swing.View;
+import fwcd.fructose.text.StringUtils;
 
 /**
  * A debug inspector for circuit items that uses
@@ -66,7 +67,7 @@ public class DebugItemInspector implements View {
 			String text;
 			try {
 				Object value = field.get(obj);
-				text = field.getName() + ":  " + value.toString() + " (@" + Integer.toHexString(value.hashCode()) + ")";
+				text = field.getName() + ":  " + StringUtils.toString(value) + " (@" + Integer.toHexString(value.hashCode()) + ")";
 			} catch (ReflectiveOperationException e) {
 				text = "Error: " + e.getMessage();
 			}

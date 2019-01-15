@@ -2,8 +2,9 @@ package fwcd.circuitbuilder.view.grid.tools;
 
 import java.awt.Image;
 
-import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
+import fwcd.circuitbuilder.model.grid.components.CircuitComponentModel;
+import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
 import fwcd.fructose.swing.ResourceImage;
 
@@ -20,8 +21,8 @@ public class Screwdriver implements CircuitTool {
 	public Option<Image> getImage() { return Option.of(IMAGE); }
 	
 	@Override
-	public boolean onLeftClick(CircuitGridModel grid, CircuitCellModel cell) {
-		grid.clearCell(cell.getPos());
+	public boolean onLeftClick(CircuitGridModel grid, RelativePos pos, Iterable<? extends CircuitComponentModel> components) {
+		grid.clearCell(pos);
 		return true;
 	}
 }

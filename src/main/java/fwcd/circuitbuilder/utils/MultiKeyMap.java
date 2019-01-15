@@ -38,7 +38,7 @@ public interface MultiKeyMap<K, V> {
 	 */
 	V get(K key);
 	
-	Set<K> getAllMappings(K key);
+	Set<K> getSubKeys(K key);
 	
 	/**
 	 * Removes all main and sub key associations

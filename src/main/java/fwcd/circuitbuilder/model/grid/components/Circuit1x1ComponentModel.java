@@ -3,7 +3,6 @@ package fwcd.circuitbuilder.model.grid.components;
 import java.util.Map;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
-import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.model.grid.cable.CableColor;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.fructose.Option;
@@ -11,7 +10,7 @@ import fwcd.fructose.Option;
 /**
  * A placeable 1x1 circuit grid component.
  */
-public interface Circuit1x1ComponentModel extends CircuitItemModel {
+public interface Circuit1x1ComponentModel extends CircuitComponentModel {
 	boolean isPowered();
 	
 	boolean outputsTowards(Direction outputDir);
@@ -27,14 +26,6 @@ public interface Circuit1x1ComponentModel extends CircuitItemModel {
 	 * top of another component.
 	 */
 	default boolean canBeStackedOnTopOf(Circuit1x1ComponentModel other) { return false; }
-	
-	/**
-	 * "Toggles" this component in some way. The precise meaning
-	 * may depend on the implementation.
-	 * 
-	 * @return Whether the component could be toggled
-	 */
-	default boolean toggle() { return false; }
 	
 	/**
 	 * Fetches a color associated with this component.
