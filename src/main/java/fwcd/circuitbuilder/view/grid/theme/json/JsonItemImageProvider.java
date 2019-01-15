@@ -105,10 +105,10 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	public Option<Image> visitRsFlipFlop(RsFlipFlopModel ff) { return imageFromJsonKey("rsFF"); }
 	
 	@Override
-	public Option<Image> visitRsLatch(RsLatchModel ff) { return imageFromJsonKey("rsLatch"); }
+	public Option<Image> visitRsLatch(RsLatchModel ff) { return imageFromJsonKey(ff.isInverted() ? "rsLatchInverted" : "rsLatch"); }
 	
 	@Override
-	public Option<Image> visitRsMasterSlave(RsMasterSlaveModel ff) { return imageFromJsonKey("rsEdgeTriggered"); }
+	public Option<Image> visitRsMasterSlave(RsMasterSlaveModel ff) { return imageFromJsonKey(ff.isInverted() ? "rsEdgeTriggeredInverted" : "rsEdgeTriggered"); }
 	
 	@Override
 	public Option<Image> visitItem(CircuitItemModel item) {

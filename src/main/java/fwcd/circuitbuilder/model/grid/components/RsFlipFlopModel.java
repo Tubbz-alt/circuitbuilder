@@ -4,8 +4,6 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 public class RsFlipFlopModel extends BasicLargeComponent {
-	private static final int INPUT_COUNT = 2;
-	private static final int OUTPUT_COUNT = 2;
 	private static final RelativePos[] INPUT_POSITIONS = {
 		new RelativePos(0, 0), // s
 		new RelativePos(0, 2) // r
@@ -19,7 +17,7 @@ public class RsFlipFlopModel extends BasicLargeComponent {
 	private boolean qStar = true;
 	
 	public RsFlipFlopModel() {
-		super(INPUT_COUNT, OUTPUT_COUNT);
+		super(INPUT_POSITIONS.length, OUTPUT_POSITIONS.length);
 	}
 	
 	@Override

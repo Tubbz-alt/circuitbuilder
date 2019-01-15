@@ -22,6 +22,8 @@
 		"nor": "nor.png",
 		"rsFF": "flipflops/rsFF.png",
 		"rsLatch": "flipflops/rsLatch.png",
-		"rsEdgeTriggered": "flipflops/rsEdgeTriggered.png"
+		"rsLatchInverted": "flipflops/rsLatchInverted.png",
+		"rsEdgeTriggered": "flipflops/rsEdgeTriggered.png",
+		"rsEdgeTriggeredInverted": "flipflops/rsEdgeTriggeredInverted.png"
 	}
 }

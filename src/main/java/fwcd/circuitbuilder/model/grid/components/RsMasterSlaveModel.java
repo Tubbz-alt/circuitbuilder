@@ -3,9 +3,7 @@ package fwcd.circuitbuilder.model.grid.components;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.RelativePos;
 
-public class RsMasterSlaveModel extends BasicLargeComponent {
-	private static final int INPUT_COUNT = 3;
-	private static final int OUTPUT_COUNT = 2;
+public class RsMasterSlaveModel extends ClockControlledFlipFlop {
 	private static final RelativePos[] INPUT_POSITIONS = {
 		new RelativePos(0, 0), // s
 		new RelativePos(0, 1), // clk
@@ -20,7 +18,7 @@ public class RsMasterSlaveModel extends BasicLargeComponent {
 	private final RsLatchModel slave = new RsLatchModel();
 	
 	public RsMasterSlaveModel() {
-		super(INPUT_COUNT, OUTPUT_COUNT);
+		super(INPUT_POSITIONS.length, OUTPUT_POSITIONS.length);
 	}
 	
 	@Override
@@ -41,7 +39,7 @@ public class RsMasterSlaveModel extends BasicLargeComponent {
 	@Override
 	protected boolean[] compute(boolean... inputs) {
 		boolean s = inputs[0];
-		boolean clk = inputs[1];
+		boolean clk = applyInversion(inputs[1]);
 		boolean r = inputs[2];
 		boolean[] masterOut = master.compute(s, !clk, r);
 		
