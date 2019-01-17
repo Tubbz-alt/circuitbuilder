@@ -14,15 +14,15 @@ import fwcd.fructose.swing.RenderPanel;
 import fwcd.fructose.swing.View;
 
 public class KarnaughMapView implements View {
-	private final JPanel view;
+	private final JPanel component;
 	private final KarnaughMapModel model;
 	private final int cellWidth = 30;
 	private final int cellHeight = 30;
 	
 	public KarnaughMapView(KarnaughMapModel model) {
 		this.model = model;
-		view = new RenderPanel(this::render);
-		view.setPreferredSize(new Dimension(cellWidth * model.getColCount(), cellHeight * model.getRowCount()));
+		component = new RenderPanel(this::render);
+		component.setPreferredSize(new Dimension(cellWidth * model.getColCount(), cellHeight * model.getRowCount()));
 	}
 	
 	private void render(Graphics2D g2d, Dimension canvasSize) {
@@ -78,5 +78,5 @@ public class KarnaughMapView implements View {
 	}
 	
 	@Override
-	public JComponent getComponent() { return view; }
+	public JComponent getComponent() { return component; }
 }
