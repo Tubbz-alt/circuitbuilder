@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.utils.Direction;
+import fwcd.circuitbuilder.utils.Directioned;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**
@@ -54,8 +55,8 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	 * input component index. This method is required
 	 * to be idempotent.
 	 */
-	protected RelativePos getInputPosition(int index) {
-		return new RelativePos(0, index * 2);
+	protected Directioned<RelativePos> getInputPosition(int index) {
+		return new Directioned<>(new RelativePos(0, index * 2));
 	}
 	
 	/**
@@ -63,8 +64,8 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	 * output component index. This method is required
 	 * to be idempotent.
 	 */
-	protected RelativePos getOutputPosition(int index) {
-		return new RelativePos(1, index * 2 + outputYOffset);
+	protected Directioned<RelativePos> getOutputPosition(int index) {
+		return new Directioned<>(new RelativePos(1, index * 2 + outputYOffset));
 	}
 	
 	protected abstract boolean[] compute(boolean... inputs);

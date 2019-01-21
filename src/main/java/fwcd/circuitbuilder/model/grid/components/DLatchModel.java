@@ -1,25 +1,30 @@
 package fwcd.circuitbuilder.model.grid.components;
 
+import java.util.Arrays;
+import java.util.List;
+
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
+import fwcd.circuitbuilder.utils.Direction;
+import fwcd.circuitbuilder.utils.Directioned;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**
  * A level-triggered delay flip flop.
  */
 public class DLatchModel extends ClockControlledFlipFlop {
-	private static final RelativePos[] INPUT_POSITIONS = {
-		new RelativePos(0, 0), // D
-		new RelativePos(0, 1) // clk
-	};
-	private static final RelativePos[] OUTPUT_POSITIONS = {
-		new RelativePos(3, 0), // Q
-		new RelativePos(3, 2) // Q*
-	};
+	private static final List<Directioned<RelativePos>> INPUT_POSITIONS = Arrays.asList(
+		new Directioned<>(new RelativePos(0, 0), Direction.LEFT), // D
+		new Directioned<>(new RelativePos(0, 1), Direction.LEFT) // clk
+	);
+	private static final List<Directioned<RelativePos>> OUTPUT_POSITIONS = Arrays.asList(
+		new Directioned<>(new RelativePos(3, 0), Direction.RIGHT), // Q
+		new Directioned<>(new RelativePos(3, 2), Direction.RIGHT) // Q*
+	);
 	
 	private final RsLatchModel rs = new RsLatchModel();
 	
 	public DLatchModel() {
-		super(INPUT_POSITIONS.length, OUTPUT_POSITIONS.length);
+		super(INPUT_POSITIONS.size(), OUTPUT_POSITIONS.size());
 	}
 	
 	@Override
@@ -32,10 +37,10 @@ public class DLatchModel extends ClockControlledFlipFlop {
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitDLatch(this); }
 	
 	@Override
-	protected RelativePos getInputPosition(int index) { return INPUT_POSITIONS[index]; }
+	protected Directioned<RelativePos> getInputPosition(int index) { return INPUT_POSITIONS.get(index); }
 	
 	@Override
-	protected RelativePos getOutputPosition(int index) { return OUTPUT_POSITIONS[index]; }
+	protected Directioned<RelativePos> getOutputPosition(int index) { return OUTPUT_POSITIONS.get(index); }
 	
 	@Override
 	protected boolean[] compute(boolean... inputs) {

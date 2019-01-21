@@ -14,6 +14,7 @@ import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
+import fwcd.circuitbuilder.model.grid.components.MultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.NandGateModel;
 import fwcd.circuitbuilder.model.grid.components.NorGateModel;
 import fwcd.circuitbuilder.model.grid.components.OrGateModel;
@@ -72,4 +73,6 @@ public interface CircuitItemVisitor<T> {
 	default T visitTFlipFlop(TFlipFlopModel ff) { return visitLargeComponent(ff); }
 	
 	default T visitJkFlipFlop(JkFlipFlopModel ff) { return visitLargeComponent(ff); }
+	
+	default T visitMultiplexer(MultiplexerModel mux) { return visitLargeComponent(mux); }
 }

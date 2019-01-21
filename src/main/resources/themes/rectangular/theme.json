@@ -32,6 +32,8 @@
 		"jkEdgeTriggered": "flipflops/jkEdgeTriggered.png",
 		"jkEdgeTriggeredInverted": "flipflops/jkEdgeTriggeredInverted.png",
 		"tEdgeTriggered": "flipflops/tEdgeTriggered.png",
-		"tEdgeTriggeredInverted": "flipflops/tEdgeTriggeredInverted.png"
+		"tEdgeTriggeredInverted": "flipflops/tEdgeTriggeredInverted.png",
+		"mux": "mux.png",
+		"demux": "demux.png"
 	}
 }
