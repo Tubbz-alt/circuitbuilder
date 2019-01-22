@@ -8,6 +8,7 @@ import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
 import fwcd.circuitbuilder.model.grid.components.DLatchModel;
 import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
+import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
@@ -75,4 +76,6 @@ public interface CircuitItemVisitor<T> {
 	default T visitJkFlipFlop(JkFlipFlopModel ff) { return visitLargeComponent(ff); }
 	
 	default T visitMultiplexer(MultiplexerModel mux) { return visitLargeComponent(mux); }
+	
+	default T visitDemultiplexer(DemultiplexerModel mux) { return visitLargeComponent(mux); }
 }

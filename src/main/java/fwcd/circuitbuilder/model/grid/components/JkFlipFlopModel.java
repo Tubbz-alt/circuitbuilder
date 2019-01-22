@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
+import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.Directioned;
 import fwcd.circuitbuilder.utils.RelativePos;
 
@@ -12,13 +13,13 @@ import fwcd.circuitbuilder.utils.RelativePos;
  */
 public class JkFlipFlopModel extends ClockControlledFlipFlop {
 	private static final List<Directioned<RelativePos>> INPUT_POSITIONS = Arrays.asList(
-		new Directioned<>(new RelativePos(0, 0)), // J
-		new Directioned<>(new RelativePos(0, 1)), // clk
-		new Directioned<>(new RelativePos(0, 2)) // K
+		new Directioned<>(new RelativePos(0, 0), Direction.LEFT), // J
+		new Directioned<>(new RelativePos(0, 1), Direction.LEFT), // clk
+		new Directioned<>(new RelativePos(0, 2), Direction.LEFT) // K
 	);
 	private static final List<Directioned<RelativePos>> OUTPUT_POSITIONS = Arrays.asList(
-		new Directioned<>(new RelativePos(3, 0)), // Q
-		new Directioned<>(new RelativePos(3, 2)) // Q*
+		new Directioned<>(new RelativePos(3, 0), Direction.RIGHT), // Q
+		new Directioned<>(new RelativePos(3, 2), Direction.RIGHT) // Q*
 	);
 	
 	private final RsMasterSlaveModel rs = new RsMasterSlaveModel();

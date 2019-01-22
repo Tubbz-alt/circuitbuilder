@@ -20,6 +20,7 @@ import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
+import fwcd.circuitbuilder.model.grid.components.MultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.NandGateModel;
 import fwcd.circuitbuilder.model.grid.components.NorGateModel;
 import fwcd.circuitbuilder.model.grid.components.OrGateModel;
@@ -31,6 +32,7 @@ import fwcd.circuitbuilder.model.grid.components.TFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
 import fwcd.circuitbuilder.model.grid.components.DLatchModel;
 import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
+import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.fructose.Option;
 
@@ -125,6 +127,12 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	
 	@Override
 	public Option<Image> visitTFlipFlop(TFlipFlopModel ff) { return imageFromJsonKey(ff.isInverted() ? "tEdgeTriggeredInverted" : "tEdgeTriggered"); }
+	
+	@Override
+	public Option<Image> visitMultiplexer(MultiplexerModel mux) { return imageFromJsonKey("mux"); }
+	
+	@Override
+	public Option<Image> visitDemultiplexer(DemultiplexerModel demux) { return imageFromJsonKey("demux"); }
 	
 	@Override
 	public Option<Image> visitItem(CircuitItemModel item) {

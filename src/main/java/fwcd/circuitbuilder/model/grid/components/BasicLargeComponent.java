@@ -25,8 +25,12 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	
 	public BasicLargeComponent(int inputCount, int outputCount) {
 		Collection<RelativePos> ioPositions = Stream.concat(
-			IntStream.range(0, inputCount).mapToObj(this::getInputPosition),
-			IntStream.range(0, outputCount).mapToObj(this::getOutputPosition)
+			IntStream.range(0, inputCount)
+				.mapToObj(this::getInputPosition)
+				.map(Directioned::getPos),
+			IntStream.range(0, outputCount)
+				.mapToObj(this::getOutputPosition)
+				.map(Directioned::getPos)
 		).collect(Collectors.toList());
 		RelativePos topLeft = ioPositions.stream()
 			.reduce(RelativePos::min)
@@ -42,11 +46,25 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 		outputYOffset = ((2 * Math.max(inputCount, outputCount) - 1) - outputCount) / 2;
 		
 		inputs = IntStream.range(0, inputCount)
-			.mapToObj(i -> new InputComponentModel(getInputPosition(i), Direction.LEFT))
+			.mapToObj(this::getInputPosition)
+			.collect(Collectors.groupingBy(posDir -> posDir.getPos()))
+			.entrySet()
+			.stream()
+			.map(pos -> new InputComponentModel(pos.getKey(), pos.getValue()
+				.stream()
+				.map(it -> it.getDirection().orElse(Direction.LEFT))
+				.toArray(Direction[]::new)))
 			.collect(Collectors.toList());
 		
 		outputs = IntStream.range(0, outputCount)
-			.mapToObj(i -> new OutputComponentModel(getOutputPosition(i)))
+			.mapToObj(this::getOutputPosition)
+			.collect(Collectors.groupingBy(posDir -> posDir.getPos()))
+			.entrySet()
+			.stream()
+			.map(pos -> new OutputComponentModel(pos.getKey(), pos.getValue()
+				.stream()
+				.map(it -> it.getDirection().orElse(Direction.RIGHT))
+				.toArray(Direction[]::new)))
 			.collect(Collectors.toList());
 	}
 	

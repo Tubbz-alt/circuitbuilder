@@ -1,6 +1,11 @@
 package fwcd.circuitbuilder.model.grid.components;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
+import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.RelativePos;
 
 /**
@@ -8,9 +13,11 @@ import fwcd.circuitbuilder.utils.RelativePos;
  */
 public class OutputComponentModel extends BasicEmitter {
 	private final RelativePos deltaPos;
+	private final Set<Direction> outputDirections;
 	
-	public OutputComponentModel(RelativePos deltaPos) {
+	public OutputComponentModel(RelativePos deltaPos, Direction... inputDirections) {
 		this.deltaPos = deltaPos;
+		this.outputDirections = Stream.of(inputDirections).collect(Collectors.toSet());
 	}
 		
 	@Override
@@ -27,6 +34,9 @@ public class OutputComponentModel extends BasicEmitter {
 	
 	@Override
 	public boolean isAtomic() { return false; }
+	
+	@Override
+	public boolean canConnectFrom(Direction direction) { return outputDirections.contains(direction); }
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitOutputComponent(this); }
