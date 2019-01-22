@@ -22,11 +22,13 @@ import fwcd.circuitbuilder.model.grid.components.AndGateModel;
 import fwcd.circuitbuilder.model.grid.components.ClockModel;
 import fwcd.circuitbuilder.model.grid.components.DLatchModel;
 import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
+import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
 import fwcd.circuitbuilder.model.grid.components.LeverModel;
+import fwcd.circuitbuilder.model.grid.components.MultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.NandGateModel;
 import fwcd.circuitbuilder.model.grid.components.NorGateModel;
 import fwcd.circuitbuilder.model.grid.components.OrGateModel;
@@ -85,7 +87,9 @@ public class CircuitToolsPanel implements View {
 			new PlaceLargeItemTool<>(DLatchModel::new, imageProvider),
 			new PlaceLargeItemTool<>(DMasterSlaveModel::new, imageProvider),
 			new PlaceLargeItemTool<>(JkFlipFlopModel::new, imageProvider),
-			new PlaceLargeItemTool<>(TFlipFlopModel::new, imageProvider)
+			new PlaceLargeItemTool<>(TFlipFlopModel::new, imageProvider),
+			new PlaceLargeItemTool<>(MultiplexerModel::new, imageProvider),
+			new PlaceLargeItemTool<>(DemultiplexerModel::new, imageProvider)
 		};
 		
 		component = new JToolBar(JToolBar.VERTICAL);
@@ -168,6 +172,11 @@ public class CircuitToolsPanel implements View {
 		int oldHeight = image.getHeight(null);
 		int newWidth = size;
 		int newHeight = (oldHeight * newWidth) / oldWidth;
+		
+		if (newHeight > oldHeight) {
+			newWidth = oldWidth;
+			newHeight = oldHeight;
+		}
 		
 		if (oldWidth == newWidth) {
 			return image;
