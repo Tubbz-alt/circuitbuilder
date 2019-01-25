@@ -31,7 +31,7 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 			IntStream.range(0, outputCount)
 				.mapToObj(this::getOutputPosition)
 				.map(Directioned::getPos)
-		).collect(Collectors.toList());
+		).collect(Collectors.toSet());
 		RelativePos topLeft = ioPositions.stream()
 			.reduce(RelativePos::min)
 			.orElse(new RelativePos(0, 0));
