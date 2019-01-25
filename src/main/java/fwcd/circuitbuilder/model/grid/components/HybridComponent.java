@@ -2,7 +2,9 @@ package fwcd.circuitbuilder.model.grid.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.Direction;
 
@@ -31,7 +33,57 @@ public class HybridComponent implements Circuit1x1ComponentModel {
 	
 	@Override
 	public boolean isAtomic() {
-		return delegates.stream().allMatch(it -> it.isAtomic());
+		return delegates.stream().allMatch(Circuit1x1ComponentModel::isAtomic);
+	}
+	
+	@Override
+	public void tick(Map<Direction, CircuitCellModel> neighbors) {
+		for (Circuit1x1ComponentModel delegate : delegates) {
+			delegate.tick(neighbors);
+		}
+	}
+	
+	@Override
+	public String getSymbol() {
+		return "Hyb";
+	}
+	
+	@Override
+	public void update() {
+		for (Circuit1x1ComponentModel delegate : delegates) {
+			delegate.update();
+		}
+	}
+	
+	@Override
+	public boolean isEmitter() {
+		return delegates.stream().anyMatch(Circuit1x1ComponentModel::isEmitter);
+	}
+	
+	@Override
+	public void onPlace(Map<Direction, CircuitCellModel> neighbors) {
+		for (Circuit1x1ComponentModel delegate : delegates) {
+			delegate.onPlace(neighbors);
+		}
+	}
+	
+	@Override
+	public boolean toggle() {
+		boolean result = false;
+		for (Circuit1x1ComponentModel delegate : delegates) {
+			result |= delegate.toggle();
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean canReplaceOtherComponent() {
+		return delegates.stream().allMatch(Circuit1x1ComponentModel::canReplaceOtherComponent);
+	}
+	
+	@Override
+	public boolean canConnectFrom(Direction direction) {
+		return delegates.stream().anyMatch(it -> it.canConnectFrom(direction));
 	}
 	
 	@Override
@@ -66,5 +118,10 @@ public class HybridComponent implements Circuit1x1ComponentModel {
 	@Override
 	public boolean canBeStackedOnTopOf(Circuit1x1ComponentModel other) {
 		return delegates.stream().allMatch(it -> it.canBeStackedOnTopOf(other));
+	}
+	
+	@Override
+	public String toString() {
+		return "Hybrid " + delegates;
 	}
 }
