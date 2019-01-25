@@ -15,6 +15,7 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.AndGateModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
+import fwcd.circuitbuilder.model.grid.components.HybridComponent;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
@@ -133,6 +134,11 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	
 	@Override
 	public Option<Image> visitDemultiplexer(DemultiplexerModel demux) { return imageFromJsonKey("demux"); }
+	
+	@Override
+	public Option<Image> visitHybrid(HybridComponent hybrid) {
+		
+	}
 	
 	@Override
 	public Option<Image> visitItem(CircuitItemModel item) {

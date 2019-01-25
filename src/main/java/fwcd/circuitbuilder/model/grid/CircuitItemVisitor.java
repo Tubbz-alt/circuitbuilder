@@ -10,6 +10,7 @@ import fwcd.circuitbuilder.model.grid.components.DLatchModel;
 import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
+import fwcd.circuitbuilder.model.grid.components.HybridComponent;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
@@ -48,6 +49,8 @@ public interface CircuitItemVisitor<T> {
 	default T visitInputComponent(InputComponentModel input) { return visit1x1Component(input); }
 	
 	default T visitOutputComponent(OutputComponentModel output) { return visit1x1Component(output); }
+	
+	default T visitHybrid(HybridComponent hybrid) { return visit1x1Component(hybrid); }
 	
 	default T visitXor(XorGateModel xor) { return visitLargeComponent(xor); }
 	
