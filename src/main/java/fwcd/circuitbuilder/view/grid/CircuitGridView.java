@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
@@ -90,7 +91,7 @@ public class CircuitGridView implements View {
 								
 								for (CircuitComponentModel circuitComponent : components) {
 									if (i > 0) {
-										menu.add(new JSeparator());
+										menu.add(new JSeparator(SwingConstants.HORIZONTAL));
 									}
 									
 									JMenuItem nameItem = new JMenuItem(circuitComponent.getName());

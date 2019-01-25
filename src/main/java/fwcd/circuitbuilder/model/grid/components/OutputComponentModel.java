@@ -44,4 +44,7 @@ public class OutputComponentModel extends BasicEmitter implements IOComponentMod
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitOutputComponent(this); }
+	
+	@Override
+	public String toString() { return "Output"; }
 }

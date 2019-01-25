@@ -54,7 +54,6 @@ public class DebugItemInspector implements View {
 	
 	private void appendObjectInfo(Object obj) {
 		Class<?> objClass = obj.getClass();
-		Field[] fields = objClass.getDeclaredFields();
 		
 		JLabel label = new JLabel(objClass.getSimpleName());
 		label.setFont(label.getFont().deriveFont(18F));
@@ -78,19 +77,26 @@ public class DebugItemInspector implements View {
 		
 		component.add(new JSeparator(SwingConstants.HORIZONTAL));
 		
-		for (Field field : fields) {
-			field.setAccessible(true);
-			
-			String text;
-			try {
-				Object value = field.get(obj);
-				text = field.getName() + ":  " + StringUtils.toString(value) + " (@" + Integer.toHexString(value.hashCode()) + ")";
-			} catch (ReflectiveOperationException e) {
-				text = "Error: " + e.getMessage();
+		Class<?> currentClass = objClass;
+		
+		while (currentClass != null) {
+			for (Field field : currentClass.getDeclaredFields()) {
+				field.setAccessible(true);
+				
+				String text;
+				try {
+					Object value = field.get(obj);
+					text = field.getName() + ":  " + StringUtils.toString(value) + " (@" + Integer.toHexString(value.hashCode()) + ")";
+				} catch (ReflectiveOperationException e) {
+					text = "Error: " + e.getMessage();
+				}
+				
+				component.add(new JLabel(text));
 			}
 			
-			component.add(new JLabel(text));
+			currentClass = currentClass.getSuperclass();
 		}
+		
 		component.add(new JSeparator(SwingConstants.HORIZONTAL));
 	}
 	

@@ -43,4 +43,7 @@ public class InputComponentModel extends BasicReceiver implements IOComponentMod
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitInputComponent(this); }
 	
 	public Set<? extends Direction> getInputDirections() { return inputDirections; }
+	
+	@Override
+	public String toString() { return "Input"; }
 }
