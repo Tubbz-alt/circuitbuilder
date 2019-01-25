@@ -20,6 +20,9 @@ public abstract class BasicReceiver implements Circuit1x1ComponentModel {
 	@Override
 	public boolean isPowered() { return nowPowered; }
 	
+	@Override
+	public boolean isEmitter() { return false; }
+	
 	protected Set<? extends Direction> getPowerSources() { return currentPowerSources; }
 	
 	@Override

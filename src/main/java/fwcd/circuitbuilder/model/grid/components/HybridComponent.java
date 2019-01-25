@@ -8,6 +8,10 @@ import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.utils.Direction;
 
+/**
+ * A compound component that is only powered
+ * when there are any powered emitters inside.
+ */
 public class HybridComponent implements Circuit1x1ComponentModel {
 	private final List<Circuit1x1ComponentModel> delegates = new ArrayList<>();
 	
@@ -107,7 +111,7 @@ public class HybridComponent implements Circuit1x1ComponentModel {
 	
 	@Override
 	public boolean isPowered() {
-		return delegates.stream().anyMatch(it -> it.isPowered());
+		return delegates.stream().anyMatch(it -> it.isEmitter() && it.isPowered());
 	}
 	
 	@Override
