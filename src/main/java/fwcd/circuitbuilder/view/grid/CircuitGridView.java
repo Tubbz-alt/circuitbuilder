@@ -5,19 +5,19 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemModel;
-import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitComponentModel;
@@ -85,11 +85,25 @@ public class CircuitGridView implements View {
 							
 							if (!handled) {
 								// Display content menu if the tool did not handle the request
-								CircuitItemVisitor<JPopupMenu> ctxMenuProvider = new ItemContextMenuProvider(component, model, engine, pos);
-								Iterator<CircuitComponentModel> componentIterator = components.iterator();
+								JPopupMenu menu = new JPopupMenu();
+								int i = 0;
 								
-								if (componentIterator.hasNext()) {
-									componentIterator.next().accept(ctxMenuProvider).show(component, e.getX(), e.getY());
+								for (CircuitComponentModel circuitComponent : components) {
+									if (i > 0) {
+										menu.add(new JSeparator());
+									}
+									
+									JMenuItem nameItem = new JMenuItem(circuitComponent.getName());
+									nameItem.setEnabled(false);
+									menu.add(nameItem);
+									
+									// Extend the menu using item-specific entries
+									circuitComponent.accept(new ItemContextMenuProvider(menu, component, model, engine, pos));
+									i++;
+								}
+								
+								if (menu.getComponentCount() > 0) {
+									menu.show(component, e.getX(), e.getY());
 								}
 							}
 						}

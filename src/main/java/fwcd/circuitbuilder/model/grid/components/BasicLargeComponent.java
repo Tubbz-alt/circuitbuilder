@@ -52,18 +52,12 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 		
 		inputs = IntStream.range(0, inputCount)
 			.mapToObj(this::getInputPosition)
-			.map(pos -> new InputComponentModel(pos.getPos(), pos.getDirection().toArray(Direction[]::new)))
+			.map(pos -> new InputComponentModel(pos.getPos(), pos.getDirection().orElse(Direction.LEFT)))
 			.collect(Collectors.toList());
 		
 		outputs = IntStream.range(0, outputCount)
 			.mapToObj(this::getOutputPosition)
-			.collect(Collectors.groupingBy(posDir -> posDir.getPos()))
-			.entrySet()
-			.stream()
-			.map(pos -> new OutputComponentModel(pos.getKey(), pos.getValue()
-				.stream()
-				.map(it -> it.getDirection().orElse(Direction.RIGHT))
-				.toArray(Direction[]::new)))
+			.map(pos -> new OutputComponentModel(pos.getPos(), pos.getDirection().orElse(Direction.RIGHT)))
 			.collect(Collectors.toList());
 	}
 	
