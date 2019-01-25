@@ -19,7 +19,6 @@ import fwcd.circuitbuilder.model.grid.components.IOComponentModel;
 import fwcd.circuitbuilder.utils.ConcurrentMultiKeyHashMap;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.MultiKeyMap;
-import fwcd.circuitbuilder.utils.Positioned;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.EventListenerList;
 import fwcd.fructose.ListenerList;
@@ -98,8 +97,8 @@ public class CircuitGridModel {
 	
 	public void putLarge(CircuitLargeComponentModel component, RelativePos pos) {
 		Stream.<IOComponentModel>concat(
-			component.getInputs().stream().map(Positioned::getValue),
-			component.getOutputs().stream().map(Positioned::getValue)
+			component.getInputs().stream(),
+			component.getOutputs().stream()
 		)
 			.collect(Collectors.groupingBy(it -> new RelativePos(pos.add(it.getDeltaPos()))))
 			.entrySet()

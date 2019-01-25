@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.Directioned;
-import fwcd.circuitbuilder.utils.Positioned;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
 
@@ -18,14 +17,19 @@ import fwcd.fructose.Option;
  * and a boolean function to route a signal.
  */
 public abstract class BasicLargeComponent implements CircuitLargeComponentModel {
-	private final List<Positioned<InputComponentModel>> inputs;
-	private final List<Positioned<OutputComponentModel>> outputs;
+	private final List<InputComponentModel> inputs;
+	private final List<OutputComponentModel> outputs;
+	private final int inputCount;
+	private final int outputCount;
 	
 	private final int outputYOffset;
 	private final int rows;
 	private final int cols;
 	
 	public BasicLargeComponent(int inputCount, int outputCount) {
+		this.inputCount = inputCount;
+		this.outputCount = outputCount;
+		
 		Collection<RelativePos> ioPositions = Stream.concat(
 			IntStream.range(0, inputCount)
 				.mapToObj(this::getInputPosition)
@@ -122,10 +126,10 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	}
 	
 	@Override
-	public List<Positioned<InputComponentModel>> getInputs() { return inputs; }
+	public List<InputComponentModel> getInputs() { return inputs; }
 	
 	@Override
-	public List<Positioned<OutputComponentModel>> getOutputs() { return outputs; }
+	public List<OutputComponentModel> getOutputs() { return outputs; }
 	
 	public int getRows() { return rows; }
 	
