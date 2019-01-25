@@ -11,7 +11,7 @@ import fwcd.circuitbuilder.utils.RelativePos;
 /**
  * An output for a large circuit component.
  */
-public class OutputComponentModel extends BasicEmitter {
+public class OutputComponentModel extends BasicEmitter implements IOComponentModel {
 	private final RelativePos deltaPos;
 	private final Set<Direction> outputDirections;
 	
@@ -27,6 +27,7 @@ public class OutputComponentModel extends BasicEmitter {
 	 * Fetches the offset from the parent component's
 	 * top-left grid position.
 	 */
+	@Override
 	public RelativePos getDeltaPos() { return deltaPos; }
 	
 	@Override

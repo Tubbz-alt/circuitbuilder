@@ -29,6 +29,12 @@ public class MultiplexerModel extends BasicLargeComponent {
 	public String getSymbol() { return "MUX"; }
 	
 	@Override
+	protected Directioned<RelativePos> getInputPosition(int index) { return INPUT_POSITIONS.get(index); }
+	
+	@Override
+	protected Directioned<RelativePos> getOutputPosition(int index) { return OUTPUT_POSITIONS.get(index); }
+	
+	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) {
 		return visitor.visitMultiplexer(this);
 	}

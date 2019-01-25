@@ -9,6 +9,12 @@ import fwcd.circuitbuilder.utils.Direction;
 public class HybridComponent implements Circuit1x1ComponentModel {
 	private final List<Circuit1x1ComponentModel> delegates = new ArrayList<>();
 	
+	public HybridComponent(Iterable<? extends Circuit1x1ComponentModel> initialDelegates) {
+		for (Circuit1x1ComponentModel delegate : initialDelegates) {
+			delegates.add(delegate);
+		}
+	}
+	
 	public HybridComponent(Circuit1x1ComponentModel... initialDelegates) {
 		for (Circuit1x1ComponentModel delegate : initialDelegates) {
 			delegates.add(delegate);
@@ -21,6 +27,11 @@ public class HybridComponent implements Circuit1x1ComponentModel {
 	
 	public void remove(Circuit1x1ComponentModel delegate) {
 		delegates.remove(delegate);
+	}
+	
+	@Override
+	public boolean isAtomic() {
+		return delegates.stream().allMatch(it -> it.isAtomic());
 	}
 	
 	@Override

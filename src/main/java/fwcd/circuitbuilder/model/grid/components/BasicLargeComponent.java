@@ -8,7 +8,9 @@ import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.Directioned;
+import fwcd.circuitbuilder.utils.Positioned;
 import fwcd.circuitbuilder.utils.RelativePos;
+import fwcd.fructose.Option;
 
 /**
  * A basic large component implementation that
@@ -16,8 +18,8 @@ import fwcd.circuitbuilder.utils.RelativePos;
  * and a boolean function to route a signal.
  */
 public abstract class BasicLargeComponent implements CircuitLargeComponentModel {
-	private final List<InputComponentModel> inputs;
-	private final List<OutputComponentModel> outputs;
+	private final List<Positioned<InputComponentModel>> inputs;
+	private final List<Positioned<OutputComponentModel>> outputs;
 	
 	private final int outputYOffset;
 	private final int rows;
@@ -100,30 +102,30 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	
 	@Override
 	public void tick() {
-		int inputsCount = inputs.size();
-		int outputsCount = outputs.size();
-		boolean[] boolInputs = new boolean[inputsCount];
+		boolean[] boolInputs = new boolean[inputCount];
 		
-		for (int i = 0; i < inputsCount; i++) {
-			boolInputs[i] = inputs.get(i).isPowered();
+		for (int i = 0; i < inputCount; i++) {
+			Option<Direction> direction = getInputPosition(i).getDirection();
+			InputComponentModel input = inputs.get(i);
+			boolInputs[i] = direction.map(it -> input.outputsTowards(it.invert())).orElse(input.isPowered());
 		}
 		
 		boolean[] boolOutputs = compute(boolInputs);
 		
-		if (boolOutputs.length != outputsCount) {
-			throw new RuntimeException("compute() can't return more output booleans than there are outputs in this nested circuit!");
+		if (boolOutputs.length != outputCount) {
+			throw new RuntimeException("compute() can't return more output booleans than there are outputs in this large component!");
 		}
 		
-		for (int i = 0; i < outputsCount; i++) {
+		for (int i = 0; i < outputCount; i++) {
 			outputs.get(i).setPowered(boolOutputs[i]);
 		}
 	}
 	
 	@Override
-	public List<InputComponentModel> getInputs() { return inputs; }
+	public List<Positioned<InputComponentModel>> getInputs() { return inputs; }
 	
 	@Override
-	public List<OutputComponentModel> getOutputs() { return outputs; }
+	public List<Positioned<OutputComponentModel>> getOutputs() { return outputs; }
 	
 	public int getRows() { return rows; }
 	
