@@ -23,4 +23,24 @@ public class Directioned<P extends GridPos> {
 	public Option<Direction> getDirection() { return direction; }
 	
 	public P getPos() { return pos; }
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (this == obj) return true;
+		if (!getClass().equals(obj.getClass())) return false;
+		Directioned<?> other = (Directioned<?>) obj;
+		return pos.equals(other.pos)
+			&& direction.equals(other.direction);
+	}
+	
+	@Override
+	public int hashCode() {
+		return pos.hashCode() * direction.hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return pos + " (" + direction + ")";
+	}
 }
