@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.Directioned;
 import fwcd.circuitbuilder.utils.RelativePos;
-import fwcd.fructose.Option;
 
 /**
  * A basic large component implementation that
@@ -109,9 +108,7 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 		boolean[] boolInputs = new boolean[inputCount];
 		
 		for (int i = 0; i < inputCount; i++) {
-			Option<Direction> direction = getInputPosition(i).getDirection();
-			InputComponentModel input = inputs.get(i);
-			boolInputs[i] = direction.map(it -> input.outputsTowards(it.invert())).orElse(input.isPowered());
+			boolInputs[i] = inputs.get(i).isPowered();
 		}
 		
 		boolean[] boolOutputs = compute(boolInputs);

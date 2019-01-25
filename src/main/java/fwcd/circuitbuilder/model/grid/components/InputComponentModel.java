@@ -37,5 +37,10 @@ public class InputComponentModel extends BasicReceiver implements IOComponentMod
 	public boolean canConnectFrom(Direction direction) { return inputDirections.contains(direction); }
 	
 	@Override
+	protected boolean canReceiveFrom(Direction direction) { return inputDirections.contains(direction); }
+	
+	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitInputComponent(this); }
+	
+	public Set<? extends Direction> getInputDirections() { return inputDirections; }
 }
