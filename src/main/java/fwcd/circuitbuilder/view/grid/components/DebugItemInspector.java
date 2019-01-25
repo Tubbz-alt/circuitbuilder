@@ -12,8 +12,11 @@ import javax.swing.SwingConstants;
 
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemModel;
+import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
+import fwcd.circuitbuilder.model.grid.components.HybridComponent;
 import fwcd.circuitbuilder.utils.RelativePos;
+import fwcd.fructose.Option;
 import fwcd.fructose.swing.View;
 import fwcd.fructose.text.StringUtils;
 
@@ -32,7 +35,21 @@ public class DebugItemInspector implements View {
 		
 		component = new JPanel();
 		component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
+		
 		appendObjectInfo(item);
+		
+		item.accept(new HybridMatcher())
+			.stream()
+			.flatMap(it -> it.getDelegates().stream())
+			.forEach(this::appendObjectInfo);
+	}
+	
+	private static class HybridMatcher implements CircuitItemVisitor<Option<HybridComponent>> {
+		@Override
+		public Option<HybridComponent> visitItem(CircuitItemModel item) { return Option.empty(); }
+		
+		@Override
+		public Option<HybridComponent> visitHybrid(HybridComponent hybrid) { return Option.of(hybrid); }
 	}
 	
 	private void appendObjectInfo(Object obj) {
