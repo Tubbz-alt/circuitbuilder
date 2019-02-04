@@ -1,18 +1,21 @@
 package fwcd.circuitbuilder.model.grid;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import fwcd.circuitbuilder.model.grid.cable.CableEvent;
 import fwcd.circuitbuilder.model.grid.cable.CableMatcher;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitLargeComponentModel;
-import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
-import fwcd.circuitbuilder.model.grid.components.OutputComponentModel;
+import fwcd.circuitbuilder.model.grid.components.HybridComponent;
+import fwcd.circuitbuilder.model.grid.components.IOComponentModel;
 import fwcd.circuitbuilder.utils.ConcurrentMultiKeyHashMap;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.utils.MultiKeyMap;
@@ -93,15 +96,22 @@ public class CircuitGridModel {
 	}
 	
 	public void putLarge(CircuitLargeComponentModel component, RelativePos pos) {
-		for (InputComponentModel input : component.getInputs()) {
-			RelativePos inputPos = new RelativePos(pos.add(input.getDeltaPos()));
-			put(input, inputPos);
-		}
-
-		for (OutputComponentModel output : component.getOutputs()) {
-			RelativePos outputPos = new RelativePos(pos.add(output.getDeltaPos()));
-			put(output, outputPos);
-		}
+		Stream.<IOComponentModel>concat(
+			component.getInputs().stream(),
+			component.getOutputs().stream()
+		)
+			.collect(Collectors.groupingBy(it -> new RelativePos(pos.add(it.getDeltaPos()))))
+			.entrySet()
+			.forEach(positionedComponent -> {
+				RelativePos componentPos = positionedComponent.getKey();
+				List<IOComponentModel> stacked = positionedComponent.getValue();
+				
+				if (stacked.size() == 1) {
+					put(stacked.get(0), componentPos);
+				} else {
+					put(new HybridComponent(stacked.stream().toArray(Circuit1x1ComponentModel[]::new)), componentPos);
+				}
+			});
 		
 		largeComponents.put(pos, component, component.getOccupiedPositions(pos));
 	}

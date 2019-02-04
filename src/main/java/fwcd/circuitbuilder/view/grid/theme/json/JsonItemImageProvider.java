@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -14,6 +15,11 @@ import fwcd.circuitbuilder.model.grid.CircuitItemModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.AndGateModel;
+import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
+import fwcd.circuitbuilder.model.grid.components.ClockModel;
+import fwcd.circuitbuilder.model.grid.components.DLatchModel;
+import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
+import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
 import fwcd.circuitbuilder.model.grid.components.HybridComponent;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
@@ -30,10 +36,6 @@ import fwcd.circuitbuilder.model.grid.components.RsFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.RsLatchModel;
 import fwcd.circuitbuilder.model.grid.components.RsMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.TFlipFlopModel;
-import fwcd.circuitbuilder.model.grid.components.ClockModel;
-import fwcd.circuitbuilder.model.grid.components.DLatchModel;
-import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
-import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.XorGateModel;
 import fwcd.fructose.Option;
 
@@ -137,7 +139,8 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	
 	@Override
 	public Option<Image> visitHybrid(HybridComponent hybrid) {
-		return hybrid.getDelegates().get(0).accept(this);
+		List<? extends Circuit1x1ComponentModel> delegates = hybrid.getDelegates();
+		return delegates.get(delegates.size() - 1).accept(this);
 	}
 	
 	@Override

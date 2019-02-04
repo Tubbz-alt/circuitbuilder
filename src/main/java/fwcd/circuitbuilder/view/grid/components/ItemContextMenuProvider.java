@@ -19,12 +19,14 @@ import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
 
 public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
+	private final JPopupMenu baseMenu;
 	private final JComponent baseComponent;
 	private final CircuitGridModel grid;
 	private final CircuitEngineModel engine;
 	private final RelativePos pos;
 	
-	public ItemContextMenuProvider(JComponent baseComponent, CircuitGridModel grid, CircuitEngineModel engine, RelativePos pos) {
+	public ItemContextMenuProvider(JPopupMenu baseMenu, JComponent baseComponent, CircuitGridModel grid, CircuitEngineModel engine, RelativePos pos) {
+		this.baseMenu = baseMenu;
 		this.baseComponent = baseComponent;
 		this.grid = grid;
 		this.engine = engine;
@@ -33,7 +35,7 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 	
 	@Override
 	public JPopupMenu visitItem(CircuitItemModel item) {
-		return menuOf(
+		return extend(baseMenu,
 			menuItemOf("Delete", () -> grid.clearCell(pos)),
 			menuItemOf("Inspect", () -> showItemInspector(item))
 		);
@@ -81,15 +83,9 @@ public class ItemContextMenuProvider implements CircuitItemVisitor<JPopupMenu> {
 	}
 	
 	private JPopupMenu extend(JPopupMenu menu, JMenuItem... items) {
-		menu.addSeparator();
-		for (JMenuItem item : items) {
-			menu.add(item);
+		if (menu.getComponentCount() > 0) {
+			menu.addSeparator();
 		}
-		return menu;
-	}
-	
-	private JPopupMenu menuOf(JMenuItem... items) {
-		JPopupMenu menu = new JPopupMenu();
 		for (JMenuItem item : items) {
 			menu.add(item);
 		}

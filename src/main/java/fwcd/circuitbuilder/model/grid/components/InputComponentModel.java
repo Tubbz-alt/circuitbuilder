@@ -11,7 +11,7 @@ import fwcd.circuitbuilder.utils.RelativePos;
 /**
  * An input for a large circuit component.
  */
-public class InputComponentModel extends BasicReceiver {
+public class InputComponentModel extends BasicReceiver implements IOComponentModel {
 	private final RelativePos deltaPos;
 	private final Set<Direction> inputDirections;
 	
@@ -24,6 +24,7 @@ public class InputComponentModel extends BasicReceiver {
 	 * Fetches the offset from the parent component's
 	 * top-left grid position.
 	 */
+	@Override
 	public RelativePos getDeltaPos() { return deltaPos; }
 		
 	@Override
@@ -36,5 +37,13 @@ public class InputComponentModel extends BasicReceiver {
 	public boolean canConnectFrom(Direction direction) { return inputDirections.contains(direction); }
 	
 	@Override
+	protected boolean canReceiveFrom(Direction direction) { return inputDirections.contains(direction); }
+	
+	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitInputComponent(this); }
+	
+	public Set<? extends Direction> getInputDirections() { return inputDirections; }
+	
+	@Override
+	public String toString() { return "Input"; }
 }

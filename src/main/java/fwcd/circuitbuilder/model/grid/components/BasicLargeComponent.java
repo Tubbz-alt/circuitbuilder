@@ -18,12 +18,17 @@ import fwcd.circuitbuilder.utils.RelativePos;
 public abstract class BasicLargeComponent implements CircuitLargeComponentModel {
 	private final List<InputComponentModel> inputs;
 	private final List<OutputComponentModel> outputs;
+	private final int inputCount;
+	private final int outputCount;
 	
 	private final int outputYOffset;
 	private final int rows;
 	private final int cols;
 	
 	public BasicLargeComponent(int inputCount, int outputCount) {
+		this.inputCount = inputCount;
+		this.outputCount = outputCount;
+		
 		Collection<RelativePos> ioPositions = Stream.concat(
 			IntStream.range(0, inputCount)
 				.mapToObj(this::getInputPosition)
@@ -47,24 +52,12 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 		
 		inputs = IntStream.range(0, inputCount)
 			.mapToObj(this::getInputPosition)
-			.collect(Collectors.groupingBy(posDir -> posDir.getPos()))
-			.entrySet()
-			.stream()
-			.map(pos -> new InputComponentModel(pos.getKey(), pos.getValue()
-				.stream()
-				.map(it -> it.getDirection().orElse(Direction.LEFT))
-				.toArray(Direction[]::new)))
+			.map(pos -> new InputComponentModel(pos.getPos(), pos.getDirection().orElse(Direction.LEFT)))
 			.collect(Collectors.toList());
 		
 		outputs = IntStream.range(0, outputCount)
 			.mapToObj(this::getOutputPosition)
-			.collect(Collectors.groupingBy(posDir -> posDir.getPos()))
-			.entrySet()
-			.stream()
-			.map(pos -> new OutputComponentModel(pos.getKey(), pos.getValue()
-				.stream()
-				.map(it -> it.getDirection().orElse(Direction.RIGHT))
-				.toArray(Direction[]::new)))
+			.map(pos -> new OutputComponentModel(pos.getPos(), pos.getDirection().orElse(Direction.RIGHT)))
 			.collect(Collectors.toList());
 	}
 	
@@ -100,21 +93,19 @@ public abstract class BasicLargeComponent implements CircuitLargeComponentModel 
 	
 	@Override
 	public void tick() {
-		int inputsCount = inputs.size();
-		int outputsCount = outputs.size();
-		boolean[] boolInputs = new boolean[inputsCount];
+		boolean[] boolInputs = new boolean[inputCount];
 		
-		for (int i = 0; i < inputsCount; i++) {
+		for (int i = 0; i < inputCount; i++) {
 			boolInputs[i] = inputs.get(i).isPowered();
 		}
 		
 		boolean[] boolOutputs = compute(boolInputs);
 		
-		if (boolOutputs.length != outputsCount) {
-			throw new RuntimeException("compute() can't return more output booleans than there are outputs in this nested circuit!");
+		if (boolOutputs.length != outputCount) {
+			throw new RuntimeException("compute() can't return more output booleans than there are outputs in this large component!");
 		}
 		
-		for (int i = 0; i < outputsCount; i++) {
+		for (int i = 0; i < outputCount; i++) {
 			outputs.get(i).setPowered(boolOutputs[i]);
 		}
 	}

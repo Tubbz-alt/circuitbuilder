@@ -11,13 +11,13 @@ import fwcd.circuitbuilder.utils.RelativePos;
 /**
  * An output for a large circuit component.
  */
-public class OutputComponentModel extends BasicEmitter {
+public class OutputComponentModel extends BasicEmitter implements IOComponentModel {
 	private final RelativePos deltaPos;
 	private final Set<Direction> outputDirections;
 	
-	public OutputComponentModel(RelativePos deltaPos, Direction... inputDirections) {
+	public OutputComponentModel(RelativePos deltaPos, Direction... outputDirections) {
 		this.deltaPos = deltaPos;
-		this.outputDirections = Stream.of(inputDirections).collect(Collectors.toSet());
+		this.outputDirections = Stream.of(outputDirections).collect(Collectors.toSet());
 	}
 		
 	@Override
@@ -27,6 +27,7 @@ public class OutputComponentModel extends BasicEmitter {
 	 * Fetches the offset from the parent component's
 	 * top-left grid position.
 	 */
+	@Override
 	public RelativePos getDeltaPos() { return deltaPos; }
 	
 	@Override
@@ -36,8 +37,14 @@ public class OutputComponentModel extends BasicEmitter {
 	public boolean isAtomic() { return false; }
 	
 	@Override
-	public boolean canConnectFrom(Direction direction) { return outputDirections.contains(direction); }
+	public boolean canConnectFrom(Direction direction) { return outputsTowards(direction); }
+	
+	@Override
+	public boolean outputsTowards(Direction outputDir) { return outputDirections.isEmpty() || outputDirections.contains(outputDir); }
 	
 	@Override
 	public <T> T accept(CircuitItemVisitor<T> visitor) { return visitor.visitOutputComponent(this); }
+	
+	@Override
+	public String toString() { return "Output"; }
 }
