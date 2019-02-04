@@ -137,7 +137,7 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 	
 	@Override
 	public Option<Image> visitHybrid(HybridComponent hybrid) {
-		
+		return hybrid.getDelegates().get(0).accept(this);
 	}
 	
 	@Override
