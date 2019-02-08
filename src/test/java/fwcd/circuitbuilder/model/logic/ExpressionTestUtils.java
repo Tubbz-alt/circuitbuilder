@@ -28,7 +28,11 @@ public class ExpressionTestUtils {
 		return Arrays.stream(productTerms)
 			.<LogicExpression>map(conj -> Arrays.stream(conj.split(" "))
 				.<LogicExpression>map(v -> {
-					if (v.startsWith("n")) {
+					if (v.equals("1")) {
+						return LogicBoolean.TRUE;
+					} else if (v.equals("0")) {
+						return LogicBoolean.FALSE;
+					} else if (v.startsWith("n")) {
 						return new Negation(new LogicVariable(v.substring(1)));
 					} else {
 						return new LogicVariable(v);

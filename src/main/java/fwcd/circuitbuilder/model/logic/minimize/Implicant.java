@@ -61,7 +61,7 @@ public class Implicant {
 				? new LogicVariable(variables.get(i))
 				: new Negation(new LogicVariable(variables.get(i))))
 			.reduce(Conjunction::new)
-			.orElse(LogicBoolean.FALSE);
+			.orElse(LogicBoolean.TRUE);
 	}
 	
 	public int getMintermCount() {

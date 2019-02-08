@@ -19,6 +19,6 @@ public class QuineMcCluskeyMinimizer implements ExpressionTransformer {
 		return quine.findMinimalImplicants().stream()
 			.map(it -> it.toExpression(table.getInputs()))
 			.reduce(Disjunction::new)
-			.orElse(LogicBoolean.TRUE);
+			.orElse(LogicBoolean.FALSE);
 	}
 }
