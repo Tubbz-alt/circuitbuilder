@@ -11,12 +11,16 @@ import javax.swing.SwingConstants;
 import fwcd.circuitbuilder.model.logic.LogicEditorModel;
 import fwcd.circuitbuilder.model.logic.expression.EvaluationException;
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
+import fwcd.circuitbuilder.model.logic.notation.ToNotationConverter;
+import fwcd.circuitbuilder.model.logic.transform.ExpressionTransformer;
+import fwcd.circuitbuilder.model.logic.transform.QuineMcCluskeyMinimizer;
 import fwcd.circuitbuilder.model.utils.BoolUtils;
 import fwcd.fructose.swing.StatusBar;
 import fwcd.fructose.swing.View;
 
 public class LogicEvaluatorView implements View {
 	private final JPanel component;
+	private final ExpressionTransformer minimizer = new QuineMcCluskeyMinimizer();
 	
 	public LogicEvaluatorView(LogicEditorModel model) {
 		component = new JPanel();
@@ -38,6 +42,8 @@ public class LogicEvaluatorView implements View {
 					.orElse("= ?"));
 				statusBar.reset();
 			} catch (EvaluationException e) {
+				ToNotationConverter converter = new ToNotationConverter(model.getNotation());
+				label.setText(expr.map(minimizer::transform).map(it -> it.accept(converter)).orElse("= ?"));
 				statusBar.display(e.getMessage(), Color.ORANGE);
 			}
 		});

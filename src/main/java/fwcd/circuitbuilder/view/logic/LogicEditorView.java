@@ -14,6 +14,7 @@ import fwcd.circuitbuilder.model.logic.karnaugh.KarnaughMapModel;
 import fwcd.circuitbuilder.view.CircuitBuilderAppContext;
 import fwcd.circuitbuilder.view.logic.formula.FormulaEditorView;
 import fwcd.circuitbuilder.view.logic.karnaugh.KarnaughMapView;
+import fwcd.circuitbuilder.view.logic.minimize.QuineMcCluskeyView;
 import fwcd.fructose.swing.View;
 
 public class LogicEditorView implements View {
@@ -48,10 +49,13 @@ public class LogicEditorView implements View {
 	
 	private void updateView(LogicExpression expression) {
 		JPanel expressionViews = new JPanel();
-		expressionViews.setLayout(new BoxLayout(expressionViews, BoxLayout.Y_AXIS));
+		expressionViews.setLayout(new BoxLayout(expressionViews, BoxLayout.X_AXIS));
 		
-		KarnaughMapView view = new KarnaughMapView(new KarnaughMapModel(expression));
-		expressionViews.add(view.getComponent());
+		KarnaughMapView karnaugh = new KarnaughMapView(new KarnaughMapModel(expression));
+		expressionViews.add(karnaugh.getComponent());
+		
+		QuineMcCluskeyView qmc = new QuineMcCluskeyView(expression);
+		expressionViews.add(qmc.getComponent());
 		
 		expressionViewsPane.setViewportView(expressionViews);
 	}

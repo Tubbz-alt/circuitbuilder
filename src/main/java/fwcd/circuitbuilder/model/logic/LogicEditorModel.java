@@ -1,6 +1,7 @@
 package fwcd.circuitbuilder.model.logic;
 
 import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
+import fwcd.circuitbuilder.model.logic.notation.LogicNotation;
 import fwcd.circuitbuilder.model.logic.notation.MathematicalNotation;
 import fwcd.circuitbuilder.model.logic.parse.ParseException;
 import fwcd.fructose.Observable;
@@ -8,7 +9,8 @@ import fwcd.fructose.Option;
 import fwcd.fructose.ReadOnlyObservable;
 
 public class LogicEditorModel {
-	private final LogicExpressionParser parser = new LogicExpressionParser(new MathematicalNotation());
+	private final LogicNotation notation = new MathematicalNotation();
+	private final LogicExpressionParser parser = new LogicExpressionParser(notation);
 	private final Observable<String> rawFormula = new Observable<>("");
 	private final Observable<Option<String>> errorMessage = new Observable<>(Option.empty());
 	private final Observable<Option<LogicExpression>> expression = new Observable<>(Option.empty());
@@ -28,6 +30,8 @@ public class LogicEditorModel {
 			}
 		});
 	}
+	
+	public LogicNotation getNotation() { return notation; }
 	
 	public Observable<String> getRawFormula() { return rawFormula; }
 	
