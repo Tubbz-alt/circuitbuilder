@@ -21,6 +21,7 @@ import fwcd.circuitbuilder.model.grid.components.DLatchModel;
 import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
+import fwcd.circuitbuilder.model.grid.components.FullAdderModel;
 import fwcd.circuitbuilder.model.grid.components.HybridComponent;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
@@ -142,6 +143,9 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 		List<? extends Circuit1x1ComponentModel> delegates = hybrid.getDelegates();
 		return delegates.get(delegates.size() - 1).accept(this);
 	}
+	
+	@Override
+	public Option<Image> visitFullAdder(FullAdderModel fa) { return imageFromJsonKey("fulladder"); }
 	
 	@Override
 	public Option<Image> visitItem(CircuitItemModel item) {

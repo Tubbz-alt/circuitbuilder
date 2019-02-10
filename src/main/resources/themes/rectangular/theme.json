@@ -34,6 +34,7 @@
 		"tEdgeTriggered": "flipflops/tEdgeTriggered.png",
 		"tEdgeTriggeredInverted": "flipflops/tEdgeTriggeredInverted.png",
 		"mux": "mux.png",
-		"demux": "demux.png"
+		"demux": "demux.png",
+		"fulladder": "fulladder.png"
 	}
 }

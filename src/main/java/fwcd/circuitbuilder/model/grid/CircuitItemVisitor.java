@@ -10,6 +10,7 @@ import fwcd.circuitbuilder.model.grid.components.DLatchModel;
 import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
+import fwcd.circuitbuilder.model.grid.components.FullAdderModel;
 import fwcd.circuitbuilder.model.grid.components.HybridComponent;
 import fwcd.circuitbuilder.model.grid.components.InputComponentModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
@@ -80,5 +81,7 @@ public interface CircuitItemVisitor<T> {
 	
 	default T visitMultiplexer(MultiplexerModel mux) { return visitLargeComponent(mux); }
 	
-	default T visitDemultiplexer(DemultiplexerModel mux) { return visitLargeComponent(mux); }
+	default T visitDemultiplexer(DemultiplexerModel demux) { return visitLargeComponent(demux); }
+	
+	default T visitFullAdder(FullAdderModel fa) { return visitLargeComponent(fa); }
 }

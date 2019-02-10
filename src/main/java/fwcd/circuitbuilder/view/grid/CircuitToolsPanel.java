@@ -24,6 +24,7 @@ import fwcd.circuitbuilder.model.grid.components.DLatchModel;
 import fwcd.circuitbuilder.model.grid.components.DMasterSlaveModel;
 import fwcd.circuitbuilder.model.grid.components.DemultiplexerModel;
 import fwcd.circuitbuilder.model.grid.components.EqvGateModel;
+import fwcd.circuitbuilder.model.grid.components.FullAdderModel;
 import fwcd.circuitbuilder.model.grid.components.InverterModel;
 import fwcd.circuitbuilder.model.grid.components.JkFlipFlopModel;
 import fwcd.circuitbuilder.model.grid.components.LampModel;
@@ -89,7 +90,8 @@ public class CircuitToolsPanel implements View {
 			new PlaceLargeItemTool<>(JkFlipFlopModel::new, imageProvider),
 			new PlaceLargeItemTool<>(TFlipFlopModel::new, imageProvider),
 			new PlaceLargeItemTool<>(MultiplexerModel::new, imageProvider),
-			new PlaceLargeItemTool<>(DemultiplexerModel::new, imageProvider)
+			new PlaceLargeItemTool<>(DemultiplexerModel::new, imageProvider),
+			new PlaceLargeItemTool<>(FullAdderModel::new, imageProvider)
 		};
 		
 		component = new JToolBar(JToolBar.VERTICAL);
