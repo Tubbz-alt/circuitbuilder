@@ -15,9 +15,9 @@ import fwcd.circuitbuilder.utils.AbsolutePos;
 import fwcd.fructose.Closer;
 import fwcd.fructose.swing.DashedStroke;
 import fwcd.fructose.swing.RenderPanel;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public class SignalFunctionPlotView implements View, AutoCloseable {
+public class SignalFunctionPlotView implements Viewable, AutoCloseable {
 	private final JPanel component;
 	private final Closer closer = new Closer();
 	private final SignalFunctionPlotModel model;

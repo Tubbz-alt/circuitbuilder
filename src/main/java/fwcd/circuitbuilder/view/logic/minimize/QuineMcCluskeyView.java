@@ -14,9 +14,9 @@ import fwcd.circuitbuilder.model.logic.expression.LogicExpression;
 import fwcd.circuitbuilder.model.logic.minimize.Implicant;
 import fwcd.circuitbuilder.model.logic.minimize.McCluskeyColumn;
 import fwcd.fructose.swing.RenderPanel;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public class QuineMcCluskeyView implements View {
+public class QuineMcCluskeyView implements Viewable {
 	private final JPanel component;
 	private final List<McCluskeyColumn> columns = new ArrayList<>();
 	private final int padding = 10;

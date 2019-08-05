@@ -11,9 +11,9 @@ import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.view.utils.BackgroundLooper;
 import fwcd.circuitbuilder.view.utils.CollapsibleView;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public class CircuitGridEditorView implements View, AutoCloseable {
+public class CircuitGridEditorView implements Viewable, AutoCloseable {
 	private static final int ENGINE_UPDATE_DELAY = 40; // ms
 	private final JPanel component;
 	private final BackgroundLooper engineLooper;

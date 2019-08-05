@@ -33,12 +33,12 @@ import fwcd.circuitbuilder.view.grid.tools.CircuitTool;
 import fwcd.fructose.Option;
 import fwcd.fructose.swing.MouseHandler;
 import fwcd.fructose.swing.RenderPanel;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
 /**
  * A rendered 2D-grid of circuit components.
  */
-public class CircuitGridView implements View {
+public class CircuitGridView implements Viewable {
 	private final JPanel component;
 	private final CircuitGridModel model;
 	private final CircuitEngineModel engine;

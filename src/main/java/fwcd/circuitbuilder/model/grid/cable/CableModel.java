@@ -9,7 +9,7 @@ import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.fructose.Option;
-import fwcd.fructose.StreamUtils;
+import fwcd.fructose.util.StreamUtils;
 
 public class CableModel implements Circuit1x1ComponentModel {
 	private final Set<Direction> connections = new HashSet<>();

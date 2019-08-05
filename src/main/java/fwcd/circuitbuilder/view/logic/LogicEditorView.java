@@ -15,9 +15,9 @@ import fwcd.circuitbuilder.view.CircuitBuilderAppContext;
 import fwcd.circuitbuilder.view.logic.formula.FormulaEditorView;
 import fwcd.circuitbuilder.view.logic.karnaugh.KarnaughMapView;
 import fwcd.circuitbuilder.view.logic.minimize.QuineMcCluskeyView;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public class LogicEditorView implements View {
+public class LogicEditorView implements Viewable {
 	private final JSplitPane component;
 	private final JScrollPane expressionViewsPane;
 	

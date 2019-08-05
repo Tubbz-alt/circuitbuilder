@@ -48,12 +48,12 @@ import fwcd.fructose.Option;
 import fwcd.fructose.swing.DrawGraphicsButton;
 import fwcd.fructose.swing.Renderable;
 import fwcd.fructose.swing.SelectedButtonPanel;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
 /**
  * A view where the user can select a circuit tool.
  */
-public class CircuitToolsPanel implements View {
+public class CircuitToolsPanel implements Viewable {
 	private static final Dimension TOOLBAR_PREFERRED_SIZE = new Dimension(50, 10);
 	
 	private final JToolBar component;

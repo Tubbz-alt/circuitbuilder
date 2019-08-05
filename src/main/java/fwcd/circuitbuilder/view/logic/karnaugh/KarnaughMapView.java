@@ -11,9 +11,9 @@ import javax.swing.JPanel;
 import fwcd.circuitbuilder.model.logic.karnaugh.KarnaughMapModel;
 import fwcd.circuitbuilder.model.utils.BoolUtils;
 import fwcd.fructose.swing.RenderPanel;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public class KarnaughMapView implements View {
+public class KarnaughMapView implements Viewable {
 	private final JPanel component;
 	private final KarnaughMapModel model;
 	private final int cellWidth = 30;

@@ -10,9 +10,9 @@ import javax.swing.KeyStroke;
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
 import fwcd.circuitbuilder.utils.ObservableUtils;
 import fwcd.circuitbuilder.view.utils.KeyUtils;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public class CircuitBuilderMenuBar implements View {
+public class CircuitBuilderMenuBar implements Viewable {
 	private final JMenuBar component;
 	
 	public CircuitBuilderMenuBar(CircuitBuilderView view, CircuitBuilderModel model, CircuitBuilderAppContext context) {

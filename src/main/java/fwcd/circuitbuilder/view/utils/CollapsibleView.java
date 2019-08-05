@@ -11,9 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.utils.Direction;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public class CollapsibleView implements View {
+public class CollapsibleView implements Viewable {
 	private final JPanel component;
 	private final JButton expander;
 	private final JComponent wrapped;
@@ -86,7 +86,7 @@ public class CollapsibleView implements View {
 		private String collapseSymbol = "-";
 		private Direction expandDirection = Direction.LEFT;
 		
-		public Builder(View view) { this(view.getComponent()); }
+		public Builder(Viewable view) { this(view.getComponent()); }
 		
 		public Builder(JComponent component) { this(new SimpleToggledView(component)); }
 		

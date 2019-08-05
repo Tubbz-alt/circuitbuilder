@@ -16,9 +16,9 @@ import fwcd.circuitbuilder.model.logic.transform.ExpressionTransformer;
 import fwcd.circuitbuilder.model.logic.transform.QuineMcCluskeyMinimizer;
 import fwcd.circuitbuilder.model.utils.BoolUtils;
 import fwcd.fructose.swing.StatusBar;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public class LogicEvaluatorView implements View {
+public class LogicEvaluatorView implements Viewable {
 	private final JPanel component;
 	private final ExpressionTransformer minimizer = new QuineMcCluskeyMinimizer();
 	

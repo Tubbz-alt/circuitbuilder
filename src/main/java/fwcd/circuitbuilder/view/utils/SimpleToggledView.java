@@ -2,12 +2,12 @@ package fwcd.circuitbuilder.view.utils;
 
 import javax.swing.JComponent;
 
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
 public class SimpleToggledView implements ToggledView {
 	private final JComponent component;
 	
-	public SimpleToggledView(View view) {
+	public SimpleToggledView(Viewable view) {
 		this(view.getComponent());
 	}
 	

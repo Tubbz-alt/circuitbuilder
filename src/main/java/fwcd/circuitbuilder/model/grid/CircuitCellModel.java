@@ -6,9 +6,9 @@ import fwcd.circuitbuilder.model.grid.cable.CableColorEqualityChecker;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
-import fwcd.fructose.StreamUtils;
 import fwcd.fructose.structs.ArraySetStack;
 import fwcd.fructose.structs.SetStack;
+import fwcd.fructose.util.StreamUtils;
 
 /**
  * A cell that holds a stack of 1x1 components.

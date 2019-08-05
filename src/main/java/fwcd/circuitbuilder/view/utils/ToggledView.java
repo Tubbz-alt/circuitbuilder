@@ -1,8 +1,8 @@
 package fwcd.circuitbuilder.view.utils;
 
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
-public interface ToggledView extends View {
+public interface ToggledView extends Viewable {
 	/**
 	 * Allows the wrapped component to respond
 	 * to visibility updates in order to pause

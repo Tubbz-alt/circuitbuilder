@@ -17,14 +17,14 @@ import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.grid.components.HybridComponent;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 import fwcd.fructose.text.StringUtils;
 
 /**
  * A debug inspector for circuit items that uses
  * reflection to display the internal representation.
  */
-public class DebugItemInspector implements View {
+public class DebugItemInspector implements Viewable {
 	private final JPanel component;
 	private final CircuitEngineModel engine;
 	private final RelativePos pos;

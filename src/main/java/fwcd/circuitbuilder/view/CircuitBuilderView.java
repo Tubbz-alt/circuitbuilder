@@ -6,13 +6,13 @@ import javax.swing.JTabbedPane;
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
 import fwcd.circuitbuilder.view.grid.CircuitGridEditorView;
 import fwcd.circuitbuilder.view.logic.LogicEditorView;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 
 /**
  * The main application component that contains the circuit editor, sidebar and
  * more.
  */
-public class CircuitBuilderView implements View {
+public class CircuitBuilderView implements Viewable {
 	private final JTabbedPane component;
 	
 	private final CircuitGridEditorView gridEditor;

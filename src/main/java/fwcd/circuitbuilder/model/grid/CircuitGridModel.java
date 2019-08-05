@@ -23,7 +23,7 @@ import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.EventListenerList;
 import fwcd.fructose.ListenerList;
 import fwcd.fructose.Option;
-import fwcd.fructose.StreamUtils;
+import fwcd.fructose.util.StreamUtils;
 
 /**
  * A 2D-grid of circuit components.

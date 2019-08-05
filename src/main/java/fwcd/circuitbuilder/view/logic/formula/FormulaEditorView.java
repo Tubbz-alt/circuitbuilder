@@ -11,11 +11,11 @@ import fwcd.circuitbuilder.model.logic.LogicEditorModel;
 import fwcd.circuitbuilder.model.logic.notation.MathematicalNotation;
 import fwcd.circuitbuilder.view.utils.DocumentChangeListener;
 import fwcd.fructose.swing.StatusBar;
-import fwcd.fructose.swing.View;
+import fwcd.fructose.swing.Viewable;
 import fwcd.palm.PalmEditor;
 import fwcd.palm.model.editor.PalmDocument;
 
-public class FormulaEditorView implements View {
+public class FormulaEditorView implements Viewable {
 	private final JPanel component;
 	
 	public FormulaEditorView(LogicEditorModel model) {
