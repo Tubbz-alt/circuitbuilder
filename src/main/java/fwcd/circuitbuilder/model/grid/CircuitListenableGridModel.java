@@ -9,12 +9,12 @@ import java.nio.file.Path;
 import com.google.gson.Gson;
 
 import fwcd.circuitbuilder.model.grid.cable.CableEvent;
-import fwcd.circuitbuilder.model.utils.GsonFactory;
+import fwcd.circuitbuilder.model.utils.CircuitBuilderGsonFactory;
 import fwcd.fructose.EventListenerList;
 import fwcd.fructose.ListenerList;
 
 public class CircuitListenableGridModel {
-	private static final Gson GSON = GsonFactory.newGson();
+	private static final Gson GSON = CircuitBuilderGsonFactory.newGson();
     private CircuitGridModel inner = new CircuitGridModel();
 
 	private final ListenerList changeListeners = new ListenerList();

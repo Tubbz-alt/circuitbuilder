@@ -12,7 +12,7 @@ import java.io.UncheckedIOException;
 import com.google.gson.Gson;
 
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
-import fwcd.circuitbuilder.model.utils.GsonFactory;
+import fwcd.circuitbuilder.model.utils.CircuitBuilderGsonFactory;
 import fwcd.circuitbuilder.view.grid.theme.CircuitGridTheme;
 import fwcd.fructose.Option;
 
@@ -20,7 +20,7 @@ import fwcd.fructose.Option;
  * A grid theme read from a (resource) JSON-file.
  */
 public class JsonTheme implements CircuitGridTheme {
-	private static final Gson GSON = GsonFactory.newGson();
+	private static final Gson GSON = CircuitBuilderGsonFactory.newGson();
 	private final String name;
 	private final Color gridLineColor;
 	private final JsonItemImageProvider itemImageProvider;
