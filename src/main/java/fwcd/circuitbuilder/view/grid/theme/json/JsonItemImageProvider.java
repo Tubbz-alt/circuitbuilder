@@ -1,7 +1,6 @@
 package fwcd.circuitbuilder.view.grid.theme.json;
 
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -57,7 +56,7 @@ public class JsonItemImageProvider implements CircuitItemVisitor<Option<Image>> 
 		Image image = cachedImages.get(key);
 		if (image == null) {
 			try {
-				String path = baseResourcePath + File.separator + fileMap.get(key);
+				String path = baseResourcePath + "/" + fileMap.get(key);
 				try (InputStream stream = JsonItemImageProvider.class.getResourceAsStream(path)) {
 					if (stream == null) {
 						throw new IllegalStateException("Missing image resource: " + path + " (key: " + key + ")");

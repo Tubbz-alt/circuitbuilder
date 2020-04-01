@@ -1,7 +1,6 @@
 package fwcd.circuitbuilder.view.grid;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,7 +35,7 @@ public class CircuitGridContext {
 	public CircuitGridContext() {
 		JsonThemesData rawThemes;
 		
-		try (InputStream stream = CircuitGridContext.class.getResourceAsStream(THEMES_BASE_PATH + File.separator + "themes.json");
+		try (InputStream stream = CircuitGridContext.class.getResourceAsStream(THEMES_BASE_PATH + "/themes.json");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
 			rawThemes = GSON.fromJson(reader, JsonThemesData.class);
 		} catch (IOException e) {
@@ -46,7 +45,7 @@ public class CircuitGridContext {
 		availableThemes = rawThemes.getThemes().entrySet().stream()
 			.collect(Collectors.toMap(
 				entry -> entry.getKey(),
-				entry -> new JsonTheme(entry.getValue().getName(), THEMES_BASE_PATH + File.separator + entry.getValue().getPath())
+				entry -> new JsonTheme(entry.getValue().getName(), THEMES_BASE_PATH + "/" + entry.getValue().getPath())
 			));
 		selectedTheme = new Observable<>(availableThemes.get(rawThemes.getDefaultTheme()));
 	}
