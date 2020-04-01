@@ -14,7 +14,6 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemVisitor;
 import fwcd.circuitbuilder.model.grid.cable.CableColor;
 import fwcd.circuitbuilder.model.grid.cable.CableModel;
@@ -63,7 +62,7 @@ public class CircuitToolsPanel implements Viewable {
 	private final CircuitTool[] advancedTools;
 	private Option<SelectedButtonPanel> previousToolPanel = Option.empty();
 
-	public CircuitToolsPanel(CircuitGridModel model, CircuitGridContext context) {
+	public CircuitToolsPanel(CircuitGridContext context) {
 		this.context = context;
 		
 		CircuitItemVisitor<Option<Image>> imageProvider = context.getSelectedTheme().get().getItemImageProvider();

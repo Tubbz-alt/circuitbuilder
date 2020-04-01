@@ -7,7 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
-import fwcd.circuitbuilder.model.grid.CircuitGridModel;
+import fwcd.circuitbuilder.model.grid.CircuitListenableGridModel;
 import fwcd.circuitbuilder.utils.Direction;
 import fwcd.circuitbuilder.view.utils.BackgroundLooper;
 import fwcd.circuitbuilder.view.utils.CollapsibleView;
@@ -18,16 +18,16 @@ public class CircuitGridEditorView implements Viewable, AutoCloseable {
 	private final JPanel component;
 	private final BackgroundLooper engineLooper;
 	
-	public CircuitGridEditorView(CircuitGridModel model, CircuitEngineModel engine, CircuitGridContext context) {
+	public CircuitGridEditorView(CircuitListenableGridModel model, CircuitEngineModel engine, CircuitGridContext context) {
 		engineLooper = new BackgroundLooper(ENGINE_UPDATE_DELAY, engine::update);
 		
 		component = new JPanel();
 		component.setLayout(new BorderLayout());
 		
 		component.add(new CircuitGridView(model, engine, context).getComponent(), BorderLayout.CENTER);
-		component.add(new CircuitToolsPanel(model, context).getComponent(), BorderLayout.WEST);
+		component.add(new CircuitToolsPanel(context).getComponent(), BorderLayout.WEST);
 		
-		CircuitGridSidebarView sideBar = new CircuitGridSidebarView(model, engine);
+		CircuitGridSidebarView sideBar = new CircuitGridSidebarView(engine);
 		sideBar.getComponent().setPreferredSize(new Dimension(350, 1));
 		component.add(new CollapsibleView.Builder(sideBar)
 			.expandSymbol("<")

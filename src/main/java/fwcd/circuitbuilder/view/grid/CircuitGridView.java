@@ -17,8 +17,8 @@ import javax.swing.SwingUtilities;
 
 import fwcd.circuitbuilder.model.grid.CircuitCellModel;
 import fwcd.circuitbuilder.model.grid.CircuitEngineModel;
-import fwcd.circuitbuilder.model.grid.CircuitGridModel;
 import fwcd.circuitbuilder.model.grid.CircuitItemModel;
+import fwcd.circuitbuilder.model.grid.CircuitListenableGridModel;
 import fwcd.circuitbuilder.model.grid.cable.CableNetwork;
 import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.model.grid.components.CircuitComponentModel;
@@ -40,7 +40,7 @@ import fwcd.fructose.swing.Viewable;
  */
 public class CircuitGridView implements Viewable {
 	private final JPanel component;
-	private final CircuitGridModel model;
+	private final CircuitListenableGridModel model;
 	private final CircuitEngineModel engine;
 	private final CircuitGridContext context;
 	
@@ -50,7 +50,7 @@ public class CircuitGridView implements Viewable {
 	private Option<AbsolutePos> mousePos = Option.empty();
 	private int mouseButton = 0;
 	
-	public CircuitGridView(CircuitGridModel model, CircuitEngineModel engine, CircuitGridContext context) {
+	public CircuitGridView(CircuitListenableGridModel model, CircuitEngineModel engine, CircuitGridContext context) {
 		this.model = model;
 		this.engine = engine;
 		this.context = context;
@@ -72,17 +72,17 @@ public class CircuitGridView implements Viewable {
 				
 				gridPos.ifPresent(pos -> {
 					selectedTool.ifPresent(tool -> {
-						CircuitCellModel cell = model.getCell(pos);
-						Option<CircuitLargeComponentModel> largeComponent = Option.ofNullable(model.getLargeComponents().get(pos));
+						CircuitCellModel cell = model.getInner().getCell(pos);
+						Option<CircuitLargeComponentModel> largeComponent = Option.ofNullable(model.getInner().getLargeComponents().get(pos));
 						Iterable<CircuitComponentModel> components = new ConcatIterable<>(largeComponent, cell.getComponents());
 						boolean handled = false;
 						
 						if (mouseButton == MouseEvent.BUTTON1) {
 							// Delegate left click to tool
-							handled = tool.onLeftClick(model, pos, components);
+							handled = tool.onLeftClick(model.getInner(), pos, components);
 						} else if (mouseButton == MouseEvent.BUTTON3) {
 							// Delegate right click to tool
-							handled = tool.onRightClick(model, pos, components);
+							handled = tool.onRightClick(model.getInner(), pos, components);
 							
 							if (!handled) {
 								// Display content menu if the tool did not handle the request
@@ -99,7 +99,7 @@ public class CircuitGridView implements Viewable {
 									menu.add(nameItem);
 									
 									// Extend the menu using item-specific entries
-									circuitComponent.accept(new ItemContextMenuProvider(menu, component, model, engine, pos));
+									circuitComponent.accept(new ItemContextMenuProvider(menu, component, model.getInner(), engine, pos));
 									i++;
 								}
 								
@@ -162,10 +162,10 @@ public class CircuitGridView implements Viewable {
 	}
 
 	private void notifyNeighborsAround(RelativePos pos) {
-		Map<Direction, CircuitCellModel> neighbors = model.getNeighbors(pos);
+		Map<Direction, CircuitCellModel> neighbors = model.getInner().getNeighbors(pos);
 		for (CircuitCellModel neighborCell : neighbors.values()) {
 			for (Circuit1x1ComponentModel neighborComponent : neighborCell.getComponents()) {
-				neighborComponent.onPlace(model.getNeighbors(neighborCell.getPos()));
+				neighborComponent.onPlace(model.getInner().getNeighbors(neighborCell.getPos()));
 			}
 		}
 	}
@@ -198,8 +198,8 @@ public class CircuitGridView implements Viewable {
 		
 		// Draw 1x1 components
 		
-		for (RelativePos cellPos : model.getCells().keySet()) {
-			CircuitCellModel cell = model.getCells().get(cellPos);
+		for (RelativePos cellPos : model.getInner().getCells().keySet()) {
+			CircuitCellModel cell = model.getInner().getCells().get(cellPos);
 			if (cell != null) {
 				for (Circuit1x1ComponentModel circuitComponent : cell.getComponents()) {
 					if (circuitComponent != null && circuitComponent.isAtomic()) {
@@ -211,7 +211,7 @@ public class CircuitGridView implements Viewable {
 		
 		// Draw large components
 		
-		model.getLargeComponents().forEachMainKey((pos, largeComponent) -> {
+		model.getInner().getLargeComponents().forEachMainKey((pos, largeComponent) -> {
 			renderItem(largeComponent, g2d, pos);
 		});
 		
@@ -225,7 +225,7 @@ public class CircuitGridView implements Viewable {
 			
 			g2d.setColor(Color.BLACK);
 			network.streamPositions()
-				.filter(pos -> model.isCellEmpty(new RelativePos(pos.getX(), pos.getY() - 1)))
+				.filter(pos -> model.getInner().isCellEmpty(new RelativePos(pos.getX(), pos.getY() - 1)))
 				.sorted(Comparator.comparing(pos -> pos.getX() + pos.getY()))
 				.findAny()
 				.map(coordMap::toAbsolutePos)

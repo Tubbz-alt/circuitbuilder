@@ -11,14 +11,14 @@ import fwcd.circuitbuilder.model.grid.timediagram.TimeDiagramModel;
  */
 public class CircuitEngineModel {
 	private static final boolean DEBUG_NETWORKS = false;
-	private final CircuitGridModel grid;
+	private final CircuitListenableGridModel grid;
 	private final CircuitNetworksManager networkManager;
 	
 	private long lastTick = 0;
 	private long tickDelay = 80; // ms
 	private boolean autoCleanCells = true;
 	
-	public CircuitEngineModel(CircuitGridModel grid) {
+	public CircuitEngineModel(CircuitListenableGridModel grid) {
 		this.grid = grid;
 		
 		networkManager = new CircuitNetworksManager(new HashSet<>());
@@ -43,7 +43,7 @@ public class CircuitEngineModel {
 		// Pre ticking - Updating networks
 		
 		for (CableNetwork network : getCableNetworks()) {
-			network.updateStatus(grid);
+			network.updateStatus(grid.getInner());
 		}
 		
 		if (DEBUG_NETWORKS) {
@@ -53,17 +53,17 @@ public class CircuitEngineModel {
 		
 		// Main ticking
 		
-		grid.forEach1x1((cell, component) -> component.tick(grid.getNeighbors(cell.getPos())));
-		grid.getLargeComponents().values().forEach(largeComponent -> largeComponent.tick());
+		grid.getInner().forEach1x1((cell, component) -> component.tick(grid.getInner().getNeighbors(cell.getPos())));
+		grid.getInner().getLargeComponents().values().forEach(largeComponent -> largeComponent.tick());
 		
 		// Updating
 		
-		grid.forEach1x1((cell, component) -> component.update());
+		grid.getInner().forEach1x1((cell, component) -> component.update());
 		
 		// Cleaning
 		
 		if (autoCleanCells) {
-			grid.cleanCells();
+			grid.getInner().cleanCells();
 		}
 		
 		grid.getChangeListeners().fire();

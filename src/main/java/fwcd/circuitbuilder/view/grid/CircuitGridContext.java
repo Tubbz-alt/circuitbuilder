@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 
 import fwcd.circuitbuilder.model.grid.cable.CableColor;
+import fwcd.circuitbuilder.model.utils.GsonFactory;
 import fwcd.circuitbuilder.view.grid.theme.CircuitGridTheme;
 import fwcd.circuitbuilder.view.grid.theme.json.JsonTheme;
 import fwcd.circuitbuilder.view.grid.theme.json.JsonThemesData;
@@ -22,7 +23,7 @@ import fwcd.fructose.Option;
  * Contains UI application state associated with the circuit grid builder.
  */
 public class CircuitGridContext {
-	private static final Gson GSON = new Gson();
+	private static final Gson GSON = GsonFactory.newGson();
 	private static final String THEMES_BASE_PATH = "/themes";
 	
 	private final Observable<Option<CircuitTool>> selectedTool = new Observable<>(Option.empty());

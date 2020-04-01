@@ -31,12 +31,12 @@ import fwcd.fructose.util.StreamUtils;
 public class CircuitGridModel {
 	private final Map<RelativePos, CircuitCellModel> cells = new ConcurrentHashMap<>();
 	private final MultiKeyMap<RelativePos, CircuitLargeComponentModel> largeComponents = new ConcurrentMultiKeyHashMap<>();
-	
-	private final ListenerList changeListeners = new ListenerList();
-	private final ListenerList clearListeners = new ListenerList();
-	private final EventListenerList<CableEvent> addCableListeners = new EventListenerList<>();
-	private final EventListenerList<CableEvent> removeCableListeners = new EventListenerList<>();
-	
+
+	private transient ListenerList changeListeners;
+	private transient ListenerList clearListeners;
+	private transient EventListenerList<CableEvent> addCableListeners;
+	private transient EventListenerList<CableEvent> removeCableListeners;
+
 	/**
 	 * Removes empty cells from the registered cells.<br><br>
 	 * 
@@ -166,11 +166,11 @@ public class CircuitGridModel {
 		changeListeners.fire();
 	}
 	
-	public ListenerList getChangeListeners() { return changeListeners; }
+	void setChangeListeners(ListenerList changeListeners) { this.changeListeners = changeListeners; }
 	
-	public ListenerList getClearListeners() { return clearListeners; }
+	void setClearListeners(ListenerList clearListeners) { this.clearListeners = clearListeners; }
 	
-	public EventListenerList<CableEvent> getAddCableListeners() { return addCableListeners; }
+	void setAddCableListeners(EventListenerList<CableEvent> addCableListeners) { this.addCableListeners = addCableListeners; }
 	
-	public EventListenerList<CableEvent> getRemoveCableListeners() { return removeCableListeners; }
+	void setRemoveCableListeners(EventListenerList<CableEvent> removeCableListeners) { this.removeCableListeners = removeCableListeners; }
 }
