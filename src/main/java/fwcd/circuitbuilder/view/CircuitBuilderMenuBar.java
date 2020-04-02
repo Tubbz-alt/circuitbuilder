@@ -33,7 +33,7 @@ public class CircuitBuilderMenuBar implements Viewable {
 
 		component = new JMenuBar();
 		component.add(menuOf("File",
-			itemOf("New Grid", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyUtils.CTRL_OR_META_DOWN_MASK), model.getGrid().getInner()::clear),
+			itemOf("New Grid", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyUtils.CTRL_OR_META_DOWN_MASK), () -> model.getGrid().getInner().clear()),
 			itemOf("Open Grid", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyUtils.CTRL_OR_META_DOWN_MASK), this::showOpenDialog),
 			itemOf("Save Grid", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyUtils.CTRL_OR_META_DOWN_MASK), this::showSaveDialog)
 		));
