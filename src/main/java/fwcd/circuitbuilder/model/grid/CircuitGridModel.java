@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,7 +30,7 @@ import fwcd.fructose.util.StreamUtils;
  * A 2D-grid of circuit components.
  */
 public class CircuitGridModel {
-	private final Map<RelativePos, CircuitCellModel> cells = new ConcurrentHashMap<>();
+	private final ConcurrentMap<RelativePos, CircuitCellModel> cells = new ConcurrentHashMap<>();
 	private final MultiKeyMap<RelativePos, CircuitLargeComponentModel> largeComponents = new ConcurrentMultiKeyHashMap<>();
 
 	private transient ListenerList changeListeners;

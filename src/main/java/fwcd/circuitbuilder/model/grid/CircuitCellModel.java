@@ -7,7 +7,6 @@ import fwcd.circuitbuilder.model.grid.components.Circuit1x1ComponentModel;
 import fwcd.circuitbuilder.utils.RelativePos;
 import fwcd.fructose.Option;
 import fwcd.fructose.structs.ArraySetStack;
-import fwcd.fructose.structs.SetStack;
 import fwcd.fructose.util.StreamUtils;
 
 /**
@@ -15,7 +14,9 @@ import fwcd.fructose.util.StreamUtils;
  */
 public class CircuitCellModel {
 	private final RelativePos pos;
-	private final SetStack<Circuit1x1ComponentModel> components = new ArraySetStack<>(new CableColorEqualityChecker());
+	// Declare concrete type here since Gson otherwise has
+	// trouble reifing the set-stack's inner field type parameters.
+	private final ArraySetStack<Circuit1x1ComponentModel> components = new ArraySetStack<>(new CableColorEqualityChecker());
 	
 	public CircuitCellModel(RelativePos pos) {
 		this.pos = pos;
