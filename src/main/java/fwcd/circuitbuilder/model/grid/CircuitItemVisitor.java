@@ -84,4 +84,11 @@ public interface CircuitItemVisitor<T> {
 	default T visitDemultiplexer(DemultiplexerModel demux) { return visitLargeComponent(demux); }
 	
 	default T visitFullAdder(FullAdderModel fa) { return visitLargeComponent(fa); }
+	
+	public static interface ReturningNull<T> extends CircuitItemVisitor<T> {
+		@Override
+		default T visitItem(CircuitItemModel item) {
+			return null;
+		}
+	}
 }

@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import com.google.gson.Gson;
 
 import fwcd.circuitbuilder.model.grid.cable.CableEvent;
+import fwcd.circuitbuilder.model.grid.cable.CableModel;
 import fwcd.circuitbuilder.model.utils.CircuitBuilderGsonFactory;
 import fwcd.fructose.EventListenerList;
 import fwcd.fructose.ListenerList;
@@ -40,6 +41,14 @@ public class CircuitListenableGridModel {
 		try (Reader reader = Files.newBufferedReader(path)) {
             inner = GSON.fromJson(reader, CircuitGridModel.class);
             injectListeners();
+            clearListeners.fire();
+            inner.forEach1x1((cell, item) -> item.accept(new CircuitItemVisitor.ReturningNull<Void>() {
+                @Override
+                public Void visitCable(CableModel cable) {
+                    addCableListeners.fire(new CableEvent(cable, cell.getPos()));
+                    return null;
+                }
+            }));
 		}
     }
     
