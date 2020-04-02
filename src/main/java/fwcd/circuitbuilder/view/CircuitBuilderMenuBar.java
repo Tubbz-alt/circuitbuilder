@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.google.gson.JsonParseException;
+
 import fwcd.circuitbuilder.model.CircuitBuilderModel;
 import fwcd.circuitbuilder.utils.ObservableUtils;
 import fwcd.circuitbuilder.view.utils.KeyUtils;
@@ -62,7 +64,7 @@ public class CircuitBuilderMenuBar implements Viewable {
 			if (file != null) {
 				try {
 					model.getGrid().loadGridFrom(file.toPath());
-				} catch (IOException e) {
+				} catch (IOException | JsonParseException e) {
 					showErrorDialog(e);
 				}
 			}
